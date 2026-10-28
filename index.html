@@ -3,786 +3,457 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>잎새마을</title>
-
+<title>우리의 사계절</title>
 <style>
-    :root {
-        --sky: #d5eee5;
-        --grass: #a8c98b;
-        --green: #527d61;
-        --paper: #fffbed;
-        --text: #465e4c;
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
-
-    body {
-        margin: 0;
-        color: var(--text);
-        background: var(--paper);
-        font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    }
-
-    button, a {
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    button {
-        font: inherit;
-        cursor: pointer;
-    }
-
-    header {
-        max-width: 1100px;
-        margin: auto;
-        padding: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        color: var(--green);
-        font-size: 23px;
-        font-weight: 900;
-        text-decoration: none;
-    }
-
-    nav {
-        display: flex;
-        gap: 22px;
-    }
-
-    nav a {
-        color: var(--text);
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    .hero {
-        position: relative;
-        overflow: hidden;
-        min-height: 680px;
-        padding: 75px 20px 0;
-        text-align: center;
-        background: var(--sky);
-        transition: background 0.8s;
-    }
-
-    .eyebrow {
-        font-size: 12px;
-        font-weight: bold;
-        letter-spacing: 4px;
-    }
-
-    h1 {
-        position: relative;
-        z-index: 2;
-        margin: 24px 0;
-        font-size: clamp(38px, 6vw, 68px);
-        line-height: 1.3;
-        letter-spacing: -2px;
-    }
-
-    .description {
-        position: relative;
-        z-index: 2;
-        font-size: 15px;
-        line-height: 1.9;
-    }
-
-    .button {
-        position: relative;
-        z-index: 2;
-        display: inline-block;
-        margin-top: 16px;
-        padding: 15px 28px;
-        border: none;
-        border-radius: 40px;
-        background: var(--paper);
-        color: var(--green);
-        box-shadow: 0 5px 0 #45644820;
-        text-decoration: none;
-        font-weight: bold;
-        transition: transform 0.2s;
-    }
-
-    .button:hover {
-        transform: translateY(-3px);
-    }
-
-    .sun {
-        position: absolute;
-        top: 55px;
-        right: 15%;
-        width: 65px;
-        height: 65px;
-        border-radius: 50%;
-        background: #f7d883;
-        box-shadow: 0 0 0 15px #f7d88330;
-    }
-
-    .cloud {
-        position: absolute;
-        top: 110px;
-        left: 8%;
-        width: 125px;
-        height: 35px;
-        border-radius: 50px;
-        background: #ffffffc9;
-        animation: float 6s ease-in-out infinite;
-    }
-
-    .cloud::before,
-    .cloud::after {
-        content: "";
-        position: absolute;
-        bottom: 8px;
-        border-radius: 50%;
-        background: #fff;
-    }
-
-    .cloud::before {
-        left: 20px;
-        width: 55px;
-        height: 55px;
-    }
-
-    .cloud::after {
-        right: 15px;
-        width: 40px;
-        height: 40px;
-    }
-
-    .cloud.second {
-        top: 230px;
-        left: auto;
-        right: 5%;
-        scale: 0.7;
-        animation-delay: -3s;
-    }
-
-    .village {
-        position: relative;
-        max-width: 900px;
-        height: 280px;
-        margin: 30px auto 0;
-    }
-
-    .hill {
-        position: absolute;
-        left: -50%;
-        bottom: -140px;
-        width: 200%;
-        height: 340px;
-        border-radius: 50% 50% 0 0;
-        background: var(--grass);
-        transition: background 0.8s;
-    }
-
-    .path {
-        position: absolute;
-        bottom: -25px;
-        left: calc(50% - 50px);
-        width: 120px;
-        height: 150px;
-        border-radius: 50% 50% 0 0;
-        background: #e9d5a6;
-        transform: rotate(-10deg);
-    }
-
-    .house {
-        position: absolute;
-        bottom: 50px;
-        left: calc(50% - 75px);
-        width: 150px;
-        height: 115px;
-        border-radius: 8px;
-        background: #fff2cd;
-    }
-
-    .roof {
-        position: absolute;
-        top: -65px;
-        left: -20px;
-        width: 190px;
-        height: 75px;
-        background: #bc8167;
-        clip-path: polygon(50% 0, 100% 100%, 0 100%);
-    }
-
-    .door {
-        position: absolute;
-        bottom: 0;
-        left: 58px;
-        width: 35px;
-        height: 65px;
-        border-radius: 20px 20px 0 0;
-        background: #927253;
-    }
-
-    .door::after {
-        content: "";
-        position: absolute;
-        top: 38px;
-        right: 6px;
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: #f9dfa0;
-    }
-
-    .window {
-        position: absolute;
-        top: 28px;
-        left: 15px;
-        width: 30px;
-        height: 30px;
-        border: 5px solid #fffdf0;
-        border-radius: 8px;
-        background: #aed5cc;
-    }
-
-    .window.right {
-        left: auto;
-        right: 15px;
-    }
-
-    .tree {
-        position: absolute;
-        bottom: 35px;
-        left: 15%;
-        width: 90px;
-        height: 150px;
-    }
-
-    .tree::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 37px;
-        width: 18px;
-        height: 75px;
-        background: #9b7b55;
-    }
-
-    .leaves {
-        position: absolute;
-        width: 95px;
-        height: 110px;
-        border-radius: 48% 48% 40% 40%;
-        background: var(--green);
-        transition: background 0.8s;
-    }
-
-    .tree.second {
-        left: auto;
-        right: 13%;
-        scale: 0.8;
-    }
-
-    .apple {
-        position: absolute;
-        z-index: 1;
-        top: 30px;
-        left: 18px;
-        width: 17px;
-        height: 17px;
-        border-radius: 50%;
-        background: #eda58d;
-        box-shadow: 42px 12px #eda58d, 18px 39px #eda58d;
-    }
-
-    .mailbox {
-        position: absolute;
-        bottom: 35px;
-        left: 65%;
-        padding: 5px;
-        border: 0;
-        background: transparent;
-        font-size: 48px;
-        transition: transform 0.2s;
-    }
-
-    .mailbox:hover {
-        transform: rotate(-12deg);
-    }
-
-    .flower {
-        position: absolute;
-        bottom: 20px;
-        left: 30%;
-        font-size: 30px;
-    }
-
-    .flower.second {
-        left: auto;
-        right: 22%;
-        bottom: 5px;
-    }
-
-    .content {
-        position: relative;
-        padding: 40px 24px 70px;
-        background: var(--paper);
-    }
-
-    .inner {
-        max-width: 1000px;
-        margin: auto;
-    }
-
-    .season-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        padding-bottom: 28px;
-        border-bottom: 2px dashed #dbe0ca;
-    }
-
-    .season-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .season-buttons button {
-        padding: 10px 18px;
-        border: 1px solid #d6ddc7;
-        border-radius: 30px;
-        color: var(--text);
-        background: transparent;
-    }
-
-    .season-buttons button.active {
-        border-color: var(--green);
-        background: var(--green);
-        color: white;
-    }
-
-    h2 {
-        margin: 40px 0 10px;
-        font-size: 28px;
-    }
-
-    .small {
-        color: #788370;
-        font-size: 14px;
-        line-height: 1.8;
-    }
-
-    .cards {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 24px;
-        margin-top: 25px;
-    }
-
-    .card {
-        padding: 28px;
-        border-radius: 10px 35px 10px 35px;
-        background: #efeedb;
-    }
-
-    .card:nth-child(2) {
-        background: #e6eddd;
-    }
-
-    .tag {
-        font-size: 11px;
-        letter-spacing: 2px;
-    }
-
-    .card h3 {
-        margin: 15px 0;
-        font-size: 21px;
-    }
-
-    .card ul {
-        padding: 0;
-        margin: 0;
-        list-style: none;
-    }
-
-    .card li {
-        padding: 14px 0;
-        border-bottom: 1px dashed #cbd3bc;
-        font-size: 14px;
-        line-height: 1.7;
-    }
-
-    .card li:last-child {
-        border-bottom: 0;
-    }
-
-    .task {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-    }
-
-    .task input {
-        width: 18px;
-        height: 18px;
-        accent-color: var(--green);
-    }
-
-    .task input:checked + span {
-        text-decoration: line-through;
-        opacity: 0.5;
-    }
-
-    footer {
-        padding: 30px;
-        border-top: 1px solid #e3e5d4;
-        text-align: center;
-        color: #84907a;
-        font-size: 12px;
-    }
-
-    dialog {
-        width: 400px;
-        max-width: calc(100% - 40px);
-        padding: 35px;
-        border: none;
-        border-radius: 30px;
-        background: var(--paper);
-        color: var(--text);
-        box-shadow: 0 20px 80px #29433540;
-    }
-
-    dialog::backdrop {
-        background: #314b4266;
-    }
-
-    dialog h2 {
-        margin-top: 20px;
-    }
-
-    dialog p {
-        line-height: 2;
-    }
-
-    dialog .button {
-        background: #e1ead5;
-    }
-
-    :focus-visible {
-        outline: 3px solid #c18b60;
-        outline-offset: 5px;
-    }
-
-    @keyframes float {
-        50% {
-            transform: translate(15px, -7px);
-        }
-    }
-
-    @media (max-width: 650px) {
-        header {
-            padding: 20px;
-        }
-
-        .logo {
-            font-size: 20px;
-        }
-
-        nav {
-            gap: 15px;
-        }
-
-        .hero {
-            padding-top: 60px;
-            min-height: 650px;
-        }
-
-        .sun {
-            top: 25px;
-            right: 8%;
-            width: 45px;
-            height: 45px;
-        }
-
-        .cloud {
-            top: 185px;
-            left: -45px;
-            scale: 0.7;
-        }
-
-        .cloud.second {
-            right: -50px;
-        }
-
-        .house {
-            scale: 0.85;
-            transform-origin: bottom;
-        }
-
-        .tree {
-            left: 0;
-            scale: 0.75;
-            transform-origin: bottom;
-        }
-
-        .tree.second {
-            right: 0;
-            scale: 0.65;
-        }
-
-        .mailbox {
-            left: 70%;
-            font-size: 40px;
-        }
-
-        .flower {
-            left: 21%;
-        }
-
-        .season-bar {
-            align-items: flex-start;
-            flex-direction: column;
-        }
-
-        .cards {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        html {
-            scroll-behavior: auto;
-        }
-
-        *, *::before, *::after {
-            animation: none !important;
-            transition: none !important;
-        }
-    }
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;background:#b6d8e6;font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#655842}
+canvas{display:block;width:100%;height:100dvh}
+.top{position:fixed;top:28px;left:32px;pointer-events:none}
+.top small{font-size:11px;letter-spacing:4px;color:#fff;text-shadow:0 2px 5px #456653}
+.top h1{font-size:30px;color:#fffdf0;margin:8px 0;text-shadow:0 3px 0 #688264}
+.top p{color:#fff;font-size:13px;text-shadow:0 2px 5px #456653}
+.clock{position:fixed;top:28px;right:30px;background:#fff9e6ed;border:3px solid #fffdf2;border-radius:23px;padding:14px 22px;box-shadow:0 5px 0 #52674a20;font-weight:bold;font-size:20px}
+.clock small{display:block;font-size:11px;letter-spacing:1px;margin-top:5px;text-align:center}
+.bottom{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);width:max-content;max-width:95%;text-align:center}
+.caption{display:inline-block;padding:12px 25px;margin-bottom:15px;background:#fffbedee;border:3px solid #fff;border-radius:25px;font-size:14px;box-shadow:0 4px 0 #555a3d15}
+.seasons{display:flex;gap:8px;padding:9px;background:#fffbedeb;border:3px solid #fff;border-radius:40px;box-shadow:0 7px 0 #555a3d20}
+button{border:0;border-radius:25px;background:transparent;color:#796b50;font:inherit;font-weight:bold;padding:12px 22px;cursor:pointer;transition:background .2s,transform .2s}
+button:hover{transform:translateY(-3px)}
+button.active{background:#7da478;color:white;box-shadow:0 3px 0 #476c4e25}
+button:focus-visible{outline:3px solid #b47e51;outline-offset:3px}
+.hint{position:fixed;left:25px;bottom:25px;color:#fff;font-size:12px;text-shadow:0 1px 4px #466346}
+@media(max-width:600px){
+.top{top:22px;left:20px}.top h1{font-size:24px}.top p{font-size:11px}
+.clock{right:15px;top:20px;padding:10px 13px;font-size:17px}
+button{padding:12px 15px}.bottom{bottom:22px}.hint{display:none}
+.caption{font-size:12px;padding:10px 18px}
+}
 </style>
 </head>
-
 <body>
-<header>
-    <a class="logo" href="#">🌿 잎새마을</a>
-    <nav>
-        <a href="#village">마을 산책</a>
-        <a href="#board">게시판</a>
-    </nav>
-</header>
+<canvas id="world" aria-label="계절에 따라 변하는 입체적인 숲 풍경"></canvas>
 
-<main>
-    <section class="hero" id="village">
-        <div class="sun" aria-hidden="true"></div>
-        <div class="cloud" aria-hidden="true"></div>
-        <div class="cloud second" aria-hidden="true"></div>
+<div class="top">
+    <small>OUR LITTLE SEASONS</small>
+    <h1>우리의 사계절</h1>
+    <p>같은 자리에서 만나는, 네 번의 다른 풍경</p>
+</div>
 
-        <div class="eyebrow">WELCOME TO OUR LITTLE VILLAGE</div>
+<div class="clock">
+    <span id="time"></span>
+    <small id="date"></small>
+</div>
 
-        <h1>어서 와요,<br>느긋한 하루가 기다려요.</h1>
+<div class="bottom">
+    <div class="caption" id="caption" aria-live="polite">분홍빛 꽃잎이 내려앉는 봄날이에요.</div>
+    <div class="seasons" aria-label="계절 선택">
+        <button class="active" data-season="0" aria-pressed="true">🌸 봄</button>
+        <button data-season="1" aria-pressed="false">🌿 여름</button>
+        <button data-season="2" aria-pressed="false">🍁 가을</button>
+        <button data-season="3" aria-pressed="false">❄️ 겨울</button>
+    </div>
+</div>
 
-        <p class="description">
-            바람에 나뭇잎이 살랑, 마음에도 여유가 살짝.<br>
-            여기는 작은 행복이 자라는 잎새마을이에요.
-        </p>
-
-        <a class="button" href="#board">마을 산책하기 ↗</a>
-
-        <div class="village">
-            <div class="hill"></div>
-            <div class="path"></div>
-
-            <div class="tree" aria-hidden="true">
-                <div class="leaves"></div>
-                <div class="apple"></div>
-            </div>
-
-            <div class="tree second" aria-hidden="true">
-                <div class="leaves"></div>
-                <div class="apple"></div>
-            </div>
-
-            <div class="house" aria-hidden="true">
-                <div class="roof"></div>
-                <div class="window"></div>
-                <div class="window right"></div>
-                <div class="door"></div>
-            </div>
-
-            <button class="mailbox" aria-label="도착한 편지 열기">📬</button>
-            <div class="flower" aria-hidden="true">🌼</div>
-            <div class="flower second" aria-hidden="true">🌷</div>
-        </div>
-    </section>
-
-    <section class="content" id="board">
-        <div class="inner">
-            <div class="season-bar">
-                <div>
-                    <strong id="season-title">봄날의 잎새마을</strong>
-                    <div class="small">어떤 계절로 산책할까요?</div>
-                </div>
-
-                <div class="season-buttons" aria-label="계절 선택">
-                    <button class="active" aria-pressed="true" data-season="0">봄</button>
-                    <button aria-pressed="false" data-season="1">여름</button>
-                    <button aria-pressed="false" data-season="2">가을</button>
-                    <button aria-pressed="false" data-season="3">겨울</button>
-                </div>
-            </div>
-
-            <h2>오늘의 작은 소식</h2>
-            <p class="small">서두르지 않아도 괜찮아요. 당신의 속도로 즐겨봐요.</p>
-
-            <div class="cards">
-                <article class="card">
-                    <div class="tag">VILLAGE NOTICE</div>
-                    <h3>마을 게시판 📌</h3>
-
-                    <ul>
-                        <li id="season-notice">🌸 산책길에 봄꽃이 활짝 피었어요.</li>
-                        <li>✉️ 우체통에 당신을 위한 편지가 도착했어요.</li>
-                        <li>☕ 잠깐 쉬어가기 좋은 날이에요.</li>
-                    </ul>
-                </article>
-
-                <article class="card">
-                    <div class="tag">MY LITTLE DAY</div>
-                    <h3>오늘 하고 싶은 일 🌱</h3>
-
-                    <ul>
-                        <li>
-                            <label class="task">
-                                <input type="checkbox">
-                                <span>따뜻한 차 한 잔 마시기</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="task">
-                                <input type="checkbox">
-                                <span>좋아하는 노래 듣기</span>
-                            </label>
-                        </li>
-                        <li>
-                            <label class="task">
-                                <input type="checkbox">
-                                <span>하늘 한 번 올려다보기</span>
-                            </label>
-                        </li>
-                    </ul>
-
-                    <p class="small" id="progress" aria-live="polite">작은 행복 0 / 3</p>
-                </article>
-            </div>
-        </div>
-    </section>
-</main>
-
-<footer>잎새마을 · 마음이 쉬어가는 작은 곳</footer>
-
-<dialog id="letter">
-    <div class="tag">A LETTER FOR YOU</div>
-    <h2>당신에게 온 편지 💌</h2>
-
-    <p>
-        오늘 하루는 어땠나요?<br>
-        조금 느리게 걸어도 괜찮아요.<br>
-        작은 기쁨 하나를 발견했다면,<br>
-        그걸로 충분히 좋은 하루예요.
-    </p>
-
-    <p>— 잎새마을에서</p>
-    <button class="button" id="close-letter">편지 접어두기</button>
-</dialog>
+<div class="hint">나무를 누르면 작은 선물이 떨어져요.</div>
 
 <script>
-    const seasons = [
-        {
-            title: "봄날의 잎새마을",
-            sky: "#d5eee5",
-            grass: "#a8c98b",
-            green: "#527d61",
-            notice: "🌸 산책길에 봄꽃이 활짝 피었어요.",
-            flowers: ["🌼", "🌷"]
-        },
-        {
-            title: "여름날의 잎새마을",
-            sky: "#c1e9ef",
-            grass: "#86bd7e",
-            green: "#3e8565",
-            notice: "🌻 햇살 아래 해바라기가 고개를 들었어요.",
-            flowers: ["🌻", "🌻"]
-        },
-        {
-            title: "가을날의 잎새마을",
-            sky: "#f0dfc6",
-            grass: "#c9aa78",
-            green: "#9c7049",
-            notice: "🍂 바삭바삭, 산책길에 낙엽이 쌓였어요.",
-            flowers: ["🍂", "🍁"]
-        },
-        {
-            title: "겨울날의 잎새마을",
-            sky: "#dce7ef",
-            grass: "#edf1eb",
-            green: "#78978b",
-            notice: "❄️ 마을에 포근한 겨울이 찾아왔어요.",
-            flowers: ["❄️", "⛄"]
+const canvas = document.getElementById("world");
+const ctx = canvas.getContext("2d");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let width, height, ratio, season = 0, frame = 0;
+let hitTrees = [], gifts = [];
+
+const palettes = [
+    {
+        sky:["#94ccec","#e3f1e6"], ground:"#8fc661",
+        grass:["#6cac54","#a9d578","#cae28a"],
+        leaves:["#f6bdcf","#ffd9e0","#eea8bf","#ffe9e6"],
+        pine:["#549372","#397e65","#6da384"],
+        river:["#77cedb","#52b5cd"],
+        caption:"분홍빛 꽃잎이 내려앉는 봄날이에요."
+    },
+    {
+        sky:["#6eb8ee","#d1edf0"], ground:"#72b74d",
+        grass:["#4e9b42","#92ca61","#b8d679"],
+        leaves:["#479454","#72b464","#39824e","#92c67a"],
+        pine:["#327b5d","#25664f","#459267"],
+        river:["#55c9dd","#39aaca"],
+        caption:"초록 잎 사이로 여름 바람이 불어와요."
+    },
+    {
+        sky:["#adcfe2","#f9e6ba"], ground:"#cdb268",
+        grass:["#b2954f","#dec580","#e4b665"],
+        leaves:["#ce7640","#e59b4e","#c65b3a","#f0bd62"],
+        pine:["#71814e","#596c42","#88944f"],
+        river:["#83c9cd","#62afb9"],
+        caption:"바스락, 발끝마다 가을이 쌓여요."
+    },
+    {
+        sky:["#8daecb","#e1e8ef"], ground:"#e6eef0",
+        grass:["#c5d7df","#f8fcfc","#d5e3e9"],
+        leaves:["#ecf4f6","#ffffff","#d6e5ed","#f6fafb"],
+        pine:["#5c8b85","#45716d","#81a29a"],
+        river:["#9bcbdc","#7bb5cf"],
+        caption:"하얀 눈이 숲을 포근하게 덮었어요."
+    }
+];
+
+function random(seed){
+    let x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+    return x - Math.floor(x);
+}
+
+function resize(){
+    width = innerWidth;
+    height = innerHeight;
+    ratio = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+}
+addEventListener("resize",resize);
+resize();
+
+function ellipse(x,y,rx,ry,color){
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);
+    ctx.fill();
+}
+
+function rounded(x,y,w,h,r,color){
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.roundRect(x,y,w,h,r);
+    ctx.fill();
+}
+
+function project(x,z){
+    const depth = .22 + z * .78;
+    return {
+        x:width/2 + (x-.5)*width*(.62+z*.65),
+        y:height*.31 + z*height*.6,
+        s:Math.min(width/1100,height/750)*(.4+z*.95),
+        depth
+    };
+}
+
+const trees = [];
+for(let row=0;row<4;row++){
+    for(let col=0;col<8;col++){
+        const x = (col+.3+random(row*19+col)*.4)/8;
+        const z = .12+row*.21+random(row*12+col+82)*.09;
+        const riverCenter = .5+Math.sin(z*5)*.09;
+        if(Math.abs(x-riverCenter)<.13) continue;
+        if(row===3 && x>.35 && x<.8) continue;
+        trees.push({x,z,seed:row*70+col*13,pine:col%4===0});
+    }
+}
+trees.sort((a,b)=>a.z-b.z);
+
+function drawTree(tree){
+    const p=project(tree.x,tree.z);
+    const s=p.s;
+    const x=p.x,y=p.y;
+    const colors=palettes[season];
+    const sway=reduced?0:Math.sin(frame*.013+tree.seed)*2*s;
+    ellipse(x,y+3*s,48*s,13*s,"#345b3b25");
+
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.scale(s,s);
+
+    ctx.fillStyle="#a57c4b";
+    ctx.beginPath();
+    ctx.moveTo(-12,-85);ctx.lineTo(13,-85);
+    ctx.lineTo(16,-12);ctx.lineTo(29,0);
+    ctx.lineTo(12,-2);ctx.lineTo(4,3);
+    ctx.lineTo(-7,-3);ctx.lineTo(-28,1);
+    ctx.lineTo(-13,-15);ctx.closePath();ctx.fill();
+
+    ctx.fillStyle="#c49a60";
+    ctx.beginPath();
+    ctx.moveTo(-7,-85);ctx.lineTo(2,-85);
+    ctx.lineTo(6,-13);ctx.lineTo(13,-3);
+    ctx.lineTo(1,-8);ctx.lineTo(-6,-1);
+    ctx.closePath();ctx.fill();
+
+    ctx.strokeStyle="#89673e55";ctx.lineWidth=3;
+    ctx.beginPath();ctx.moveTo(9,-57);ctx.lineTo(10,-26);ctx.stroke();
+
+    if(tree.pine){
+        for(let j=0;j<4;j++){
+            const yy=-68-j*29;
+            const r=58-j*10;
+            ctx.fillStyle=colors.pine[j%3];
+            ctx.beginPath();
+            ctx.moveTo(sway,yy-65);
+            ctx.quadraticCurveTo(r*.5,yy-28,r,yy);
+            ctx.quadraticCurveTo(0,yy+18,-r,yy);
+            ctx.quadraticCurveTo(-r*.4,yy-30,sway,yy-65);
+            ctx.fill();
+            if(season===3){
+                ctx.fillStyle=j%2?"#f8fcfd":"#e6f0f4";
+                ctx.beginPath();
+                ctx.moveTo(sway,yy-65);
+                ctx.lineTo(r*.76,yy-12);
+                ctx.quadraticCurveTo(0,yy+2,-r*.76,yy-12);
+                ctx.closePath();ctx.fill();
+            }
         }
-    ];
-
-    const seasonButtons = document.querySelectorAll("[data-season]");
-    const flowers = document.querySelectorAll(".flower");
-
-    seasonButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            const season = seasons[Number(button.dataset.season)];
-
-            document.documentElement.style.setProperty("--sky", season.sky);
-            document.documentElement.style.setProperty("--grass", season.grass);
-            document.documentElement.style.setProperty("--green", season.green);
-
-            document.getElementById("season-title").textContent = season.title;
-            document.getElementById("season-notice").textContent = season.notice;
-
-            flowers.forEach((flower, index) => {
-                flower.textContent = season.flowers[index];
+    }else{
+        ellipse(sway,-112,65,59,colors.leaves[2]);
+        for(let j=0;j<100;j++){
+            const angle=random(tree.seed+j*3)*Math.PI*2;
+            const r=Math.sqrt(random(tree.seed+j*5+9));
+            const lx=Math.cos(angle)*59*r+sway;
+            const ly=-119+Math.sin(angle)*51*r;
+            const size=10+random(j+tree.seed+4)*9;
+            ellipse(lx,ly,size,size*.8,colors.leaves[j%4]);
+        }
+        if(season===1){
+            [[-32,-113],[28,-131],[8,-85]].forEach(([ax,ay])=>{
+                ctx.strokeStyle="#76633b";ctx.lineWidth=3;
+                ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax+2,ay-12);ctx.stroke();
+                ellipse(ax,ay,10,11,"#d94d39");
+                ellipse(ax-3,ay-4,3,4,"#f98b61");
+                ellipse(ax+6,ay-10,6,3,"#537b3c");
             });
+        }
+    }
+    ctx.restore();
+    hitTrees.push({x,y,r:65*s,top:y-150*s});
+}
 
-            seasonButtons.forEach((item) => {
-                const selected = item === button;
-                item.classList.toggle("active", selected);
-                item.setAttribute("aria-pressed", String(selected));
-            });
+function river(){
+    const p=palettes[season];
+    const gradient=ctx.createLinearGradient(0,height*.3,0,height);
+    gradient.addColorStop(0,p.river[0]);
+    gradient.addColorStop(1,p.river[1]);
+
+    const left=[],right=[];
+    for(let i=0;i<=60;i++){
+        const z=i/60;
+        const center=.5+Math.sin(z*5)*.09;
+        left.push(project(center-.065,z));
+        right.push(project(center+.065,z));
+    }
+    ctx.beginPath();
+    left.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+    right.reverse().forEach(p=>ctx.lineTo(p.x,p.y));
+    ctx.closePath();
+
+    ctx.strokeStyle=season===3?"#c4d9dd":"#d5bf80";
+    ctx.lineWidth=18;
+    ctx.lineJoin="round";
+    ctx.stroke();
+    ctx.fillStyle=gradient;ctx.fill();
+
+    for(let i=0;i<38;i++){
+        const z=random(i+70);
+        const center=.5+Math.sin(z*5)*.09;
+        const p=project(center+(random(i+15)-.5)*.09,z);
+        const movement=reduced?0:Math.sin(frame*.018+i)*5;
+        rounded(p.x+movement,p.y,12+p.s*20,2,1,"#ffffff55");
+    }
+}
+
+function bridge(){
+    const z=.58;
+    const center=.5+Math.sin(z*5)*.09;
+    const p=project(center,z),s=p.s;
+    ctx.save();ctx.translate(p.x,p.y);ctx.scale(s,s);
+    ellipse(0,17,110,20,"#244a3d25");
+    rounded(-105,-10,210,43,8,"#98774f");
+    for(let i=0;i<12;i++){
+        rounded(-100+i*17,-11,15,37,2,i%2?"#c2a173":"#b99869");
+    }
+    for(const yy of [-26,22]){
+        for(const xx of [-103,-52,0,52,103]){
+            rounded(xx-5,yy-35,10,42,3,"#957047");
+            ellipse(xx,yy-35,7,4,"#d7ba87");
+        }
+        ctx.strokeStyle="#d1b183";ctx.lineWidth=8;
+        ctx.beginPath();ctx.moveTo(-104,yy-22);
+        ctx.quadraticCurveTo(0,yy-48,104,yy-22);ctx.stroke();
+    }
+    ctx.restore();
+}
+
+function flower(x,z,seed){
+    const p=project(x,z),s=p.s;
+    if(season===3){
+        ellipse(p.x,p.y,7*s,3*s,"#ffffffb0");
+        return;
+    }
+    if(season===2){
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(seed);
+        ellipse(0,0,6*s,3*s,seed%2?"#b8773e":"#e9ca68");
+        ctx.restore();return;
+    }
+    ctx.strokeStyle="#568c42";ctx.lineWidth=2*s;
+    ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x,p.y-13*s);ctx.stroke();
+    ellipse(p.x-4*s,p.y-5*s,5*s,2*s,"#5d9849");
+    const color=["#fff5dc","#f4abbb","#f3d562","#ed825d"][seed%4];
+    for(let j=0;j<5;j++){
+        const a=j*Math.PI*2/5;
+        ellipse(p.x+Math.cos(a)*4*s,p.y-14*s+Math.sin(a)*4*s,4*s,4*s,color);
+    }
+    ellipse(p.x,p.y-14*s,2.5*s,2.5*s,"#e5b850");
+}
+
+function picnic(){
+    const p=project(.28,.84),s=p.s;
+    ctx.save();ctx.translate(p.x,p.y);ctx.scale(s,s);
+    ctx.transform(1,.06,-.35,.55,0,0);
+    rounded(-65,-40,130,90,3,season===3?"#8caaad":"#f4e1ca");
+    for(let x=0;x<7;x++)for(let y=0;y<5;y++){
+        if((x+y)%2===0)ctx.fillStyle=season===3?"#d6e6e7":"#ce8b7e";
+        else ctx.fillStyle=season===3?"#8caaad":"#f4e1ca";
+        ctx.fillRect(-63+x*18,-38+y*17,18,17);
+    }
+    ctx.restore();
+    ellipse(p.x,p.y-8*s,20*s,8*s,"#ad8050");
+    rounded(p.x-20*s,p.y-27*s,40*s,19*s,5*s,"#c69c62");
+    ctx.strokeStyle="#a87d4c";ctx.lineWidth=4*s;
+    ctx.beginPath();ctx.ellipse(p.x,p.y-26*s,12*s,13*s,0,Math.PI,Math.PI*2);ctx.stroke();
+    ellipse(p.x+35*s,p.y+4*s,12*s,5*s,"#fff9e9");
+    ellipse(p.x+35*s,p.y,6*s,7*s,"#d7b985");
+}
+
+const particles=Array.from({length:65},(_,i)=>({
+    x:random(i+17),y:random(i+170),s:2+random(i+390)*5,
+    speed:.0003+random(i+11)*.0007,phase:random(i+50)*6.28
+}));
+
+function draw(){
+    frame++;
+    hitTrees=[];
+    const p=palettes[season];
+    ctx.clearRect(0,0,width,height);
+
+    let sky=ctx.createLinearGradient(0,0,0,height*.5);
+    sky.addColorStop(0,p.sky[0]);sky.addColorStop(1,p.sky[1]);
+    ctx.fillStyle=sky;ctx.fillRect(0,0,width,height);
+
+    ellipse(width*.76,height*.15,35,35,season===3?"#f7f3dd":"#fff0b3");
+    for(let i=0;i<5;i++){
+        const cx=width*(.1+i*.23)+(reduced?0:Math.sin(frame*.001+i)*20);
+        const cy=height*(.15+(i%2)*.055);
+        ellipse(cx,cy,55,12,"#ffffffb0");
+        ellipse(cx-15,cy-9,27,18,"#ffffffb0");
+        ellipse(cx+17,cy-6,23,15,"#ffffffb0");
+    }
+
+    ctx.fillStyle=season===3?"#c4d9d8":"#91b998";
+    ctx.beginPath();ctx.moveTo(0,height*.37);
+    ctx.bezierCurveTo(width*.2,height*.18,width*.27,height*.35,width*.5,height*.29);
+    ctx.bezierCurveTo(width*.75,height*.18,width*.85,height*.3,width,height*.23);
+    ctx.lineTo(width,height);ctx.lineTo(0,height);ctx.fill();
+
+    ctx.fillStyle=p.ground;
+    ctx.beginPath();ctx.moveTo(0,height*.38);
+    ctx.quadraticCurveTo(width*.5,height*.28,width,height*.37);
+    ctx.lineTo(width,height);ctx.lineTo(0,height);ctx.fill();
+
+    for(let i=0;i<1900;i++){
+        const x=random(i*3+1),z=random(i*3+2);
+        const q=project(x,z);
+        ctx.fillStyle=p.grass[i%3];
+        ctx.beginPath();
+        ctx.moveTo(q.x,q.y);
+        ctx.lineTo(q.x-2*q.s,q.y-4*q.s);
+        ctx.lineTo(q.x+4*q.s,q.y-2*q.s);
+        ctx.closePath();ctx.fill();
+    }
+
+    river();
+
+    for(let i=0;i<155;i++){
+        const x=random(i+580),z=.14+random(i+780)*.83;
+        if(Math.abs(x-(.5+Math.sin(z*5)*.09))<.1)continue;
+        flower(x,z,i);
+    }
+
+    let bridgeDrawn=false,picnicDrawn=false;
+    for(const tree of trees){
+        if(tree.z>.58&&!bridgeDrawn){bridge();bridgeDrawn=true}
+        if(tree.z>.84&&!picnicDrawn){picnic();picnicDrawn=true}
+        drawTree(tree);
+    }
+    if(!bridgeDrawn)bridge();
+    if(!picnicDrawn)picnic();
+
+    for(const a of particles){
+        if(!reduced){
+            a.y+=a.speed;
+            if(a.y>1.05)a.y=-.05;
+        }
+        const x=a.x*width+Math.sin(frame*.012+a.phase)*25;
+        const y=a.y*height;
+        if(season===1){
+            ellipse(x,y,a.s*.4,a.s*.4,"#fff8c650");
+        }else{
+            ctx.save();ctx.translate(x,y);ctx.rotate(frame*.012+a.phase);
+            ellipse(0,0,a.s,season===3?a.s:a.s*.45,
+                season===0?"#ffe2ead9":season===2?"#da8d49cc":"#ffffffe0");
+            ctx.restore();
+        }
+    }
+
+    gifts=gifts.filter(g=>g.life>0);
+    for(const g of gifts){
+        if(!reduced){g.y+=g.vy;g.vy+=.12}
+        g.life--;
+        ctx.globalAlpha=Math.min(1,g.life/25);
+        ctx.font="25px sans-serif";
+        ctx.textAlign="center";
+        ctx.fillText(g.icon,g.x,g.y);
+        ctx.globalAlpha=1;
+    }
+
+    requestAnimationFrame(draw);
+}
+draw();
+
+document.querySelectorAll("[data-season]").forEach(button=>{
+    button.addEventListener("click",()=>{
+        season=Number(button.dataset.season);
+        document.querySelectorAll("[data-season]").forEach(b=>{
+            const active=b===button;
+            b.classList.toggle("active",active);
+            b.setAttribute("aria-pressed",String(active));
         });
+        document.getElementById("caption").textContent=palettes[season].caption;
     });
+});
 
-    const letter = document.getElementById("letter");
-
-    document.querySelector(".mailbox").addEventListener("click", () => {
-        letter.showModal();
-    });
-
-    document.getElementById("close-letter").addEventListener("click", () => {
-        letter.close();
-    });
-
-    const tasks = document.querySelectorAll(".task input");
-
-    tasks.forEach((task) => {
-        task.addEventListener("change", () => {
-            const count = [...tasks].filter((item) => item.checked).length;
-            document.getElementById("progress").textContent =
-                `작은 행복 ${count} / ${tasks.length}`;
+canvas.addEventListener("pointerdown",event=>{
+    const tree=[...hitTrees].reverse().find(t=>
+        Math.abs(event.clientX-t.x)<t.r &&
+        event.clientY>t.top-t.r*.5 &&
+        event.clientY<t.y
+    );
+    if(!tree)return;
+    for(let i=0;i<3;i++){
+        gifts.push({
+            x:tree.x+(i-1)*20,y:tree.top,
+            vy:-2-i*.4,life:100,
+            icon:["🌸","🍎","🍂","❄️"][season]
         });
-    });
+    }
+});
+
+function updateClock(){
+    const now=new Date();
+    document.getElementById("time").textContent=
+        now.toLocaleTimeString("ko-KR",{hour:"2-digit",minute:"2-digit",hour12:false});
+    document.getElementById("date").textContent=
+        now.toLocaleDateString("ko-KR",{month:"long",day:"numeric",weekday:"short"});
+}
+updateClock();
+setInterval(updateClock,10000);
 </script>
 </body>
 </html>
