@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>잎새마을</title>
+
+<style>
+    :root {
+        --sky: #d5eee5;
+        --grass: #a8c98b;
+        --green: #527d61;
+        --paper: #fffbed;
+        --text: #465e4c;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        color: var(--text);
+        background: var(--paper);
+        font-family: "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    }
+
+    button, a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+        font: inherit;
+        cursor: pointer;
+    }
+
+    header {
+        max-width: 1100px;
+        margin: auto;
+        padding: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        color: var(--green);
+        font-size: 23px;
+        font-weight: 900;
+        text-decoration: none;
+    }
+
+    nav {
+        display: flex;
+        gap: 22px;
+    }
+
+    nav a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 680px;
+        padding: 75px 20px 0;
+        text-align: center;
+        background: var(--sky);
+        transition: background 0.8s;
+    }
+
+    .eyebrow {
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 4px;
+    }
+
+    h1 {
+        position: relative;
+        z-index: 2;
+        margin: 24px 0;
+        font-size: clamp(38px, 6vw, 68px);
+        line-height: 1.3;
+        letter-spacing: -2px;
+    }
+
+    .description {
+        position: relative;
+        z-index: 2;
+        font-size: 15px;
+        line-height: 1.9;
+    }
+
+    .button {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        margin-top: 16px;
+        padding: 15px 28px;
+        border: none;
+        border-radius: 40px;
+        background: var(--paper);
+        color: var(--green);
+        box-shadow: 0 5px 0 #45644820;
+        text-decoration: none;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+
+    .button:hover {
+        transform: translateY(-3px);
+    }
+
+    .sun {
+        position: absolute;
+        top: 55px;
+        right: 15%;
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        background: #f7d883;
+        box-shadow: 0 0 0 15px #f7d88330;
+    }
+
+    .cloud {
+        position: absolute;
+        top: 110px;
+        left: 8%;
+        width: 125px;
+        height: 35px;
+        border-radius: 50px;
+        background: #ffffffc9;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+        content: "";
+        position: absolute;
+        bottom: 8px;
+        border-radius: 50%;
+        background: #fff;
+    }
+
+    .cloud::before {
+        left: 20px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .cloud::after {
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .cloud.second {
+        top: 230px;
+        left: auto;
+        right: 5%;
+        scale: 0.7;
+        animation-delay: -3s;
+    }
+
+    .village {
+        position: relative;
+        max-width: 900px;
+        height: 280px;
+        margin: 30px auto 0;
+    }
+
+    .hill {
+        position: absolute;
+        left: -50%;
+        bottom: -140px;
+        width: 200%;
+        height: 340px;
+        border-radius: 50% 50% 0 0;
+        background: var(--grass);
+        transition: background 0.8s;
+    }
+
+    .path {
+        position: absolute;
+        bottom: -25px;
+        left: calc(50% - 50px);
+        width: 120px;
+        height: 150px;
+        border-radius: 50% 50% 0 0;
+        background: #e9d5a6;
+        transform: rotate(-10deg);
+    }
+
+    .house {
+        position: absolute;
+        bottom: 50px;
+        left: calc(50% - 75px);
+        width: 150px;
+        height: 115px;
+        border-radius: 8px;
+        background: #fff2cd;
+    }
+
+    .roof {
+        position: absolute;
+        top: -65px;
+        left: -20px;
+        width: 190px;
+        height: 75px;
+        background: #bc8167;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+
+    .door {
+        position: absolute;
+        bottom: 0;
+        left: 58px;
+        width: 35px;
+        height: 65px;
+        border-radius: 20px 20px 0 0;
+        background: #927253;
+    }
+
+    .door::after {
+        content: "";
+        position: absolute;
+        top: 38px;
+        right: 6px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #f9dfa0;
+    }
+
+    .window {
+        position: absolute;
+        top: 28px;
+        left: 15px;
+        width: 30px;
+        height: 30px;
+        border: 5px solid #fffdf0;
+        border-radius: 8px;
+        background: #aed5cc;
+    }
+
+    .window.right {
+        left: auto;
+        right: 15px;
+    }
+
+    .tree {
+        position: absolute;
+        bottom: 35px;
+        left: 15%;
+        width: 90px;
+        height: 150px;
+    }
+
+    .tree::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 37px;
+        width: 18px;
+        height: 75px;
+        background: #9b7b55;
+    }
+
+    .leaves {
+        position: absolute;
+        width: 95px;
+        height: 110px;
+        border-radius: 48% 48% 40% 40%;
+        background: var(--green);
+        transition: background 0.8s;
+    }
+
+    .tree.second {
+        left: auto;
+        right: 13%;
+        scale: 0.8;
+    }
+
+    .apple {
+        position: absolute;
+        z-index: 1;
+        top: 30px;
+        left: 18px;
+        width: 17px;
+        height: 17px;
+        border-radius: 50%;
+        background: #eda58d;
+        box-shadow: 42px 12px #eda58d, 18px 39px #eda58d;
+    }
+
+    .mailbox {
+        position: absolute;
+        bottom: 35px;
+        left: 65%;
+        padding: 5px;
+        border: 0;
+        background: transparent;
+        font-size: 48px;
+        transition: transform 0.2s;
+    }
+
+    .mailbox:hover {
+        transform: rotate(-12deg);
+    }
+
+    .flower {
+        position: absolute;
+        bottom: 20px;
+        left: 30%;
+        font-size: 30px;
+    }
+
+    .flower.second {
+        left: auto;
+        right: 22%;
+        bottom: 5px;
+    }
+
+    .content {
+        position: relative;
+        padding: 40px 24px 70px;
+        background: var(--paper);
+    }
+
+    .inner {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .season-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 28px;
+        border-bottom: 2px dashed #dbe0ca;
+    }
+
+    .season-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .season-buttons button {
+        padding: 10px 18px;
+        border: 1px solid #d6ddc7;
+        border-radius: 30px;
+        color: var(--text);
+        background: transparent;
+    }
+
+    .season-buttons button.active {
+        border-color: var(--green);
+        background: var(--green);
+        color: white;
+    }
+
+    h2 {
+        margin: 40px 0 10px;
+        font-size: 28px;
+    }
+
+    .small {
+        color: #788370;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-top: 25px;
+    }
+
+    .card {
+        padding: 28px;
+        border-radius: 10px 35px 10px 35px;
+        background: #efeedb;
+    }
+
+    .card:nth-child(2) {
+        background: #e6eddd;
+    }
+
+    .tag {
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .card h3 {
+        margin: 15px 0;
+        font-size: 21px;
+    }
+
+    .card ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .card li {
+        padding: 14px 0;
+        border-bottom: 1px dashed #cbd3bc;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .card li:last-child {
+        border-bottom: 0;
+    }
+
+    .task {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .task input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--green);
+    }
+
+    .task input:checked + span {
+        text-decoration: line-through;
+        opacity: 0.5;
+    }
+
+    footer {
+        padding: 30px;
+        border-top: 1px solid #e3e5d4;
+        text-align: center;
+        color: #84907a;
+        font-size: 12px;
+    }
+
+    dialog {
+        width: 400px;
+        max-width: calc(100% - 40px);
+        padding: 35px;
+        border: none;
+        border-radius: 30px;
+        background: var(--paper);
+        color: var(--text);
+        box-shadow: 0 20px 80px #29433540;
+    }
+
+    dialog::backdrop {
+        background: #314b4266;
+    }
+
+    dialog h2 {
+        margin-top: 20px;
+    }
+
+    dialog p {
+        line-height: 2;
+    }
+
+    dialog .button {
+        background: #e1ead5;
+    }
+
+    :focus-visible {
+        outline: 3px solid #c18b60;
+        outline-offset: 5px;
+    }
+
+    @keyframes float {
+        50% {
+            transform: translate(15px, -7px);
+        }
+    }
+
+    @media (max-width: 650px) {
+        header {
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+        }
+
+        nav {
+            gap: 15px;
+        }
+
+        .hero {
+            padding-top: 60px;
+            min-height: 650px;
+        }
+
+        .sun {
+            top: 25px;
+            right: 8%;
+            width: 45px;
+            height: 45px;
+        }
+
+        .cloud {
+            top: 185px;
+            left: -45px;
+            scale: 0.7;
+        }
+
+        .cloud.second {
+            right: -50px;
+        }
+
+        .house {
+            scale: 0.85;
+            transform-origin: bottom;
+        }
+
+        .tree {
+            left: 0;
+            scale: 0.75;
+            transform-origin: bottom;
+        }
+
+        .tree.second {
+            right: 0;
+            scale: 0.65;
+        }
+
+        .mailbox {
+            left: 70%;
+            font-size: 40px;
+        }
+
+        .flower {
+            left: 21%;
+        }
+
+        .season-bar {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *, *::before, *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+</head>
+
+<body>
+<header>
+    <a class="logo" href="#">🌿 잎새마을</a>
+    <nav>
+        <a href="#village">마을 산책</a>
+        <a href="#board">게시판</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero" id="village">
+        <div class="sun" aria-hidden="true"></div>
+        <div class="cloud" aria-hidden="true"></div>
+        <div class="cloud second" aria-hidden="true"></div>
+
+        <div class="eyebrow">WELCOME TO OUR LITTLE VILLAGE</div>
+
+        <h1>어서 와요,<br>느긋한 하루가 기다려요.</h1>
+
+        <p class="description">
+            바람에 나뭇잎이 살랑, 마음에도 여유가 살짝.<br>
+            여기는 작은 행복이 자라는 잎새마을이에요.
+        </p>
+
+        <a class="button" href="#board">마을 산책하기 ↗</a>
+
+        <div class="village">
+            <div class="hill"></div>
+            <div class="path"></div>
+
+            <div class="tree" aria-hidden="true">
+                <div class="leaves"></div>
+                <div class="apple"></div>
+            </div>
+
+            <div class="tree second" aria-hidden="true">
+                <div class="leaves"></div>
+                <div class="apple"></div>
+            </div>
+
+            <div class="house" aria-hidden="true">
+                <div class="roof"></div>
+                <div class="window"></div>
+                <div class="window right"></div>
+                <div class="door"></div>
+            </div>
+
+            <button class="mailbox" aria-label="도착한 편지 열기">📬</button>
+            <div class="flower" aria-hidden="true">🌼</div>
+            <div class="flower second" aria-hidden="true">🌷</div>
+        </div>
+    </section>
+
+    <section class="content" id="board">
+        <div class="inner">
+            <div class="season-bar">
+                <div>
+                    <strong id="season-title">봄날의 잎새마을</strong>
+                    <div class="small">어떤 계절로 산책할까요?</div>
+                </div>
+
+                <div class="season-buttons" aria-label="계절 선택">
+                    <button class="active" aria-pressed="true" data-season="0">봄</button>
+                    <button aria-pressed="false" data-season="1">여름</button>
+                    <button aria-pressed="false" data-season="2">가을</button>
+                    <button aria-pressed="false" data-season="3">겨울</button>
+                </div>
+            </div>
+
+            <h2>오늘의 작은 소식</h2>
+            <p class="small">서두르지 않아도 괜찮아요. 당신의 속도로 즐겨봐요.</p>
+
+            <div class="cards">
+                <article class="card">
+                    <div class="tag">VILLAGE NOTICE</div>
+                    <h3>마을 게시판 📌</h3>
+
+                    <ul>
+                        <li id="season-notice">🌸 산책길에 봄꽃이 활짝 피었어요.</li>
+                        <li>✉️ 우체통에 당신을 위한 편지가 도착했어요.</li>
+                        <li>☕ 잠깐 쉬어가기 좋은 날이에요.</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <div class="tag">MY LITTLE DAY</div>
+                    <h3>오늘 하고 싶은 일 🌱</h3>
+
+                    <ul>
+                        <li>
+                            <label class="task">
+                                <input type="checkbox">
+                                <span>따뜻한 차 한 잔 마시기</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="task">
+                                <input type="checkbox">
+                                <span>좋아하는 노래 듣기</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="task">
+                                <input type="checkbox">
+                                <span>하늘 한 번 올려다보기</span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <p class="small" id="progress" aria-live="polite">작은 행복 0 / 3</p>
+                </article>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>잎새마을 · 마음이 쉬어가는 작은 곳</footer>
+
+<dialog id="letter">
+    <div class="tag">A LETTER FOR YOU</div>
+    <h2>당신에게 온 편지 💌</h2>
+
+    <p>
+        오늘 하루는 어땠나요?<br>
+        조금 느리게 걸어도 괜찮아요.<br>
+        작은 기쁨 하나를 발견했다면,<br>
+        그걸로 충분히 좋은 하루예요.
+    </p>
+
+    <p>— 잎새마을에서</p>
+    <button class="button" id="close-letter">편지 접어두기</button>
+</dialog>
+
+<script>
+    const seasons = [
+        {
+            title: "봄날의 잎새마을",
+            sky: "#d5eee5",
+            grass: "#a8c98b",
+            green: "#527d61",
+            notice: "🌸 산책길에 봄꽃이 활짝 피었어요.",
+            flowers: ["🌼", "🌷"]
+        },
+        {
+            title: "여름날의 잎새마을",
+            sky: "#c1e9ef",
+            grass: "#86bd7e",
+            green: "#3e8565",
+            notice: "🌻 햇살 아래 해바라기가 고개를 들었어요.",
+            flowers: ["🌻", "🌻"]
+        },
+        {
+            title: "가을날의 잎새마을",
+            sky: "#f0dfc6",
+            grass: "#c9aa78",
+            green: "#9c7049",
+            notice: "🍂 바삭바삭, 산책길에 낙엽이 쌓였어요.",
+            flowers: ["🍂", "🍁"]
+        },
+        {
+            title: "겨울날의 잎새마을",
+            sky: "#dce7ef",
+            grass: "#edf1eb",
+            green: "#78978b",
+            notice: "❄️ 마을에 포근한 겨울이 찾아왔어요.",
+            flowers: ["❄️", "⛄"]
+        }
+    ];
+
+    const seasonButtons = document.querySelectorAll("[data-season]");
+    const flowers = document.querySelectorAll(".flower");
+
+    seasonButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            const season = seasons[Number(button.dataset.season)];
+
+            document.documentElement.style.setProperty("--sky", season.sky);
+            document.documentElement.style.setProperty("--grass", season.grass);
+            document.documentElement.style.setProperty("--green", season.green);
+
+            document.getElementById("season-title").textContent = season.title;
+            document.getElementById("season-notice").textContent = season.notice;
+
+            flowers.forEach((flower, index) => {
+                flower.textContent = season.flowers[index];
+            });
+
+            seasonButtons.forEach((item) => {
+                const selected = item === button;
+                item.classList.toggle("active", selected);
+                item.setAttribute("aria-pressed", String(selected));
+            });
+        });
+    });
+
+    const letter = document.getElementById("letter");
+
+    document.querySelector(".mailbox").addEventListener("click", () => {
+        letter.showModal();
+    });
+
+    document.getElementById("close-letter").addEventListener("click", () => {
+        letter.close();
+    });
+
+    const tasks = document.querySelectorAll(".task input");
+
+    tasks.forEach((task) => {
+        task.addEventListener("change", () => {
+            const count = [...tasks].filter((item) => item.checked).length;
+            document.getElementById("progress").textContent =
+                `작은 행복 ${count} / ${tasks.length}`;
+        });
+    });
+</script>
+</body>
+</html>
