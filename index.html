@@ -1,51 +1,1163 @@
-<script>
-/* 투명 배경 kk.png 전체 사용 */
-DOG_CROP.x = 0;
-DOG_CROP.y = 0;
-DOG_CROP.w = 1;
-DOG_CROP.h = 1;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>지구방송6 | 다시 만난 계절</title>
 
-dog.src = "./kk.png";
-
-/* 메뉴와 게임 제목 */
-document.getElementById("game-open").textContent =
-    "KK와 함께 음표 찾기";
-
-document.getElementById("game-title").textContent =
-    "KK와 함께 음표 찾기";
-
-document.querySelector("#game-dialog .dialog-head .small").textContent =
-    "KK가 연주할 음표를 함께 찾아주세요.";
-
-/* 숲에 표시되는 캐릭터 이름표 */
-const originalLabel = label;
-
-label = function(text, x, y) {
-    if (text === "기타 강아지 · 게임") {
-        text = "KK와 함께 음표 찾기";
+<style>
+*{box-sizing:border-box}
+body{
+    margin:0;overflow:hidden;background:#c5dce6;color:#625b49;
+    font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+button,select{font:inherit}
+button{cursor:pointer}
+canvas{
+    display:block;width:100%;height:100dvh;
+    touch-action:manipulation;
+}
+.title{
+    position:fixed;left:30px;top:25px;pointer-events:none;
+    color:#fffbed;text-shadow:0 3px 12px #193e4c70;
+}
+.title h1{
+    font-size:clamp(43px,6vw,78px);
+    letter-spacing:-3px;margin:0;line-height:1.15;
+}
+.title p{
+    font-size:clamp(18px,2vw,26px);
+    margin:10px 0;letter-spacing:2px;
+}
+.weather{
+    position:fixed;right:25px;top:25px;width:210px;
+    border:2px solid #fffdf3;border-radius:23px;
+    padding:15px;background:#fffbedee;
+}
+.weather-top{
+    display:flex;align-items:center;
+    justify-content:space-between;gap:5px;
+}
+select{
+    max-width:120px;border:0;background:transparent;
+    color:#625b49;font-weight:bold;font-size:13px;
+}
+#time{font-size:17px;font-weight:bold}
+#weather-text{
+    font-size:14px;font-weight:bold;margin-top:12px;
+}
+#weather-source{
+    font-size:10px;line-height:1.7;
+    color:#858574;margin-top:7px;
+}
+#weather-source a{color:inherit}
+.bottom{
+    position:fixed;left:50%;bottom:23px;
+    transform:translateX(-50%);
+    width:max-content;max-width:94%;text-align:center;
+}
+.caption{
+    display:inline-block;max-width:90vw;
+    padding:11px 22px;margin-bottom:12px;
+    border-radius:25px;border:2px solid white;
+    background:#fffbedee;font-size:13px;line-height:1.7;
+}
+.seasons{
+    display:flex;justify-content:center;gap:5px;padding:8px;
+    background:#fffbedee;border:2px solid white;border-radius:40px;
+}
+.seasons button{
+    border:0;border-radius:25px;padding:12px 22px;
+    background:transparent;color:#796e54;
+    font-weight:bold;font-size:14px;
+}
+.seasons button.active{background:#7c9c77;color:white}
+.seasons button:hover{background:#dde5cd;color:#52694f}
+#auto{font-size:12px}
+.menu{
+    position:fixed;left:22px;bottom:25px;
+    display:flex;flex-direction:column;gap:7px;
+}
+.menu button{
+    border:1px solid #fffbed;border-radius:19px;
+    padding:9px 14px;background:#fffbedeb;
+    color:#657052;text-align:left;font-size:12px;
+}
+dialog{
+    width:470px;max-width:calc(100% - 28px);
+    max-height:90dvh;overflow:auto;padding:0;
+    border:3px solid #fffbed;border-radius:27px;
+    background:#fff9e8;color:#625b49;
+    box-shadow:0 25px 90px #15304755;
+}
+dialog::backdrop{
+    background:#19374880;backdrop-filter:blur(5px);
+}
+.dialog-head{
+    position:relative;padding:28px 25px 20px;
+    background:linear-gradient(135deg,#dce8cf,#edf1df);
+}
+.dialog-head h2{
+    margin:10px 35px 0 0;font-size:28px;
+}
+.eyebrow{
+    font-size:10px;letter-spacing:3px;color:#859172;
+}
+.close{
+    position:absolute;top:12px;right:12px;
+    width:33px;height:33px;border:0;border-radius:50%;
+    background:#fffbedee;color:#625b49;font-size:23px;
+}
+.body{padding:24px}
+.body p{
+    font-size:14px;line-height:1.9;white-space:pre-line;
+}
+.section{
+    border-top:1px dashed #d4d7bd;
+    padding:15px 0;font-size:14px;line-height:1.9;
+}
+.section b{
+    font-size:11px;display:block;
+    color:#899273;margin-bottom:8px;
+}
+.song{
+    display:flex;gap:12px;
+    padding:10px 0;border-bottom:1px solid #e8e7d4;
+}
+.song:last-child{border-bottom:0}
+.song-number{
+    flex:0 0 22px;color:#94a180;
+    font-size:11px;padding-top:2px;
+}
+.song-title{font-weight:bold;line-height:1.6}
+.song-artist{font-size:12px;color:#96927e;line-height:1.6}
+.primary{
+    border:0;border-radius:24px;padding:13px 22px;
+    background:#7d9e76;color:white;font-weight:bold;
+}
+.secondary{
+    border:1px solid #c9d2b8;border-radius:24px;
+    padding:12px 18px;background:transparent;color:#667657;
+}
+.wide{width:100%;margin-top:15px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{
+    padding:10px 16px;background:#e3ead6;color:#597251;
+    text-decoration:none;border-radius:23px;font-size:12px;
+}
+.artist-cover{
+    position:relative;height:180px;
+    display:grid;place-items:center;overflow:hidden;
+    background:linear-gradient(140deg,#d2e1bd,#9bb99d);
+}
+.artist-cover img{
+    height:100%;width:100%;object-fit:cover;
+}
+.monogram{
+    font-size:42px;color:#fffbed;font-weight:bold;
+    text-align:center;padding:20px;
+}
+.small{
+    font-size:12px!important;color:#8a8e79;line-height:1.8;
+}
+.info-grid{
+    display:grid;grid-template-columns:85px 1fr;
+    gap:15px 12px;font-size:14px;line-height:1.8;
+}
+.info-grid dt{
+    color:#899273;font-size:11px;letter-spacing:1px;
+}
+.info-grid dd{margin:0}
+#game-dialog{width:640px}
+.game-stats{display:flex;gap:10px;margin-bottom:14px}
+.stat{
+    flex:1;padding:12px 16px;background:#eeedda;
+    border-radius:16px;font-size:12px;
+}
+.stat strong{
+    display:block;font-size:23px;margin-top:3px;
+}
+#game-field{
+    position:relative;height:290px;overflow:hidden;
+    border-radius:20px;display:grid;
+    grid-template-columns:repeat(5,1fr);
+    grid-template-rows:repeat(4,1fr);
+    gap:7px;padding:14px;
+    background:linear-gradient(#dce9d1,#a6c88d);
+}
+.slot{display:grid;place-items:center;min-width:0}
+.note{
+    width:47px;height:47px;border:2px solid #fff;
+    border-radius:50%;background:#fff9df;
+    color:#6d9568;font-size:29px;
+}
+.note:hover{background:white}
+.overlay{
+    position:absolute;inset:0;padding:22px;
+    text-align:center;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    background:#e4edd9f2;z-index:1;
+}
+.overlay h3{font-size:24px;margin:0 0 10px}
+.overlay p{
+    font-size:14px;line-height:1.8;margin:0 0 15px;
+}
+.game-actions{display:flex;gap:9px;margin-top:12px}
+.game-actions button{flex:1}
+#form-button{margin-top:10px}
+#form-help{margin:12px 0 0}
+.error{
+    position:fixed;left:50%;top:40%;
+    transform:translate(-50%,-50%);max-width:85vw;
+    background:#fffbedf5;padding:15px 20px;
+    border-radius:17px;font-size:12px;
+    line-height:1.8;text-align:center;
+}
+[hidden]{display:none!important}
+:focus-visible{
+    outline:3px solid #bd8855;outline-offset:4px;
+}
+@media(max-width:650px){
+    .title{left:20px;top:22px}
+    .title h1{font-size:44px;letter-spacing:-2px}
+    .title p{font-size:18px;letter-spacing:1px}
+    .weather{
+        top:132px;right:14px;width:175px;padding:12px;
     }
+    .bottom{bottom:18px}
+    .caption{font-size:11px;padding:10px 14px}
+    .seasons button{font-size:13px;padding:11px 13px}
+    #auto{font-size:11px}
+    .menu{left:14px;bottom:155px;gap:6px}
+    .menu button{font-size:10px;padding:8px 11px}
+    .body{padding:18px}
+    .dialog-head{padding:25px 20px 18px}
+    .dialog-head h2{font-size:24px}
+    #game-field{height:265px;padding:9px;gap:5px}
+    .note{width:40px;height:40px;font-size:25px}
+    .artist-cover{height:150px}
+    .monogram{font-size:32px}
+}
+</style>
+</head>
 
-    return originalLabel(text, x, y);
+<body>
+
+<canvas
+    id="world"
+    aria-label="계절의 숲. 공연 정보, 아티스트 소개와 게임은 왼쪽 버튼으로도 열 수 있습니다."
+></canvas>
+
+<header class="title">
+    <h1>지구방송6</h1>
+    <p>다시 만난 계절</p>
+</header>
+
+<aside class="weather" aria-label="지역 날씨">
+    <div class="weather-top">
+        <select id="city" aria-label="날씨 지역 선택">
+            <option value="seoul">서울</option>
+            <option value="anseong">안성 · 동아방송예술대</option>
+            <option value="incheon">인천</option>
+            <option value="daejeon">대전</option>
+            <option value="gwangju">광주</option>
+            <option value="daegu">대구</option>
+            <option value="busan">부산</option>
+            <option value="gangneung">강릉</option>
+            <option value="jeju">제주</option>
+        </select>
+        <span id="time"></span>
+    </div>
+    <div id="weather-text" role="status">날씨 불러오는 중…</div>
+    <div id="weather-source"></div>
+</aside>
+
+<nav class="menu" aria-label="공연 메뉴">
+    <button id="concert-open">공연 정보</button>
+    <button id="current-artist">이번 계절 아티스트</button>
+    <button id="game-open">KK와 함께 음표 찾기</button>
+</nav>
+
+<div class="bottom">
+    <div class="caption" id="caption" aria-live="polite"></div>
+    <div class="seasons" aria-label="계절 선택">
+        <button data-season="0" aria-pressed="false">봄</button>
+        <button data-season="1" aria-pressed="false">여름</button>
+        <button data-season="2" aria-pressed="false">가을</button>
+        <button data-season="3" aria-pressed="false">겨울</button>
+        <button id="auto">오늘</button>
+    </div>
+</div>
+
+<div id="asset-error" class="error" hidden role="status"></div>
+
+<dialog id="artist-dialog" aria-labelledby="artist-name">
+    <div class="artist-cover">
+        <div class="monogram" id="artist-monogram"></div>
+        <img id="artist-photo" alt="" hidden>
+        <button class="close" data-close="artist-dialog" aria-label="소개 닫기">×</button>
+    </div>
+
+    <div class="body">
+        <div class="eyebrow" id="artist-season"></div>
+        <h2 id="artist-name"></h2>
+        <p id="artist-description"></p>
+
+        <div class="section">
+            <b>PROFILE</b>
+            <div id="artist-profile"></div>
+        </div>
+
+        <div class="section">
+            <b>SET LIST</b>
+            <div id="artist-songs"></div>
+        </div>
+
+        <div class="links" id="artist-links"></div>
+        <button class="primary wide" data-close="artist-dialog">
+            숲으로 돌아가기
+        </button>
+    </div>
+</dialog>
+
+<dialog id="concert-dialog" aria-labelledby="concert-title">
+    <div class="dialog-head">
+        <div class="eyebrow">CONCERT INFORMATION</div>
+        <h2 id="concert-title">지구방송6 · 다시 만난 계절</h2>
+        <button class="close" data-close="concert-dialog" aria-label="공연 정보 닫기">×</button>
+    </div>
+
+    <div class="body">
+        <dl class="info-grid">
+            <dt>DATE</dt><dd id="concert-date"></dd>
+            <dt>TIME</dt><dd id="concert-time"></dd>
+            <dt>LOCATION</dt><dd id="concert-location"></dd>
+            <dt>ARTIST</dt><dd id="concert-artists"></dd>
+        </dl>
+
+        <p class="small">아티스트를 누르면 소개와 셋리스트를 확인할 수 있어요.</p>
+        <div class="links" id="concert-artist-links"></div>
+
+        <button class="primary wide" data-close="concert-dialog">
+            숲으로 돌아가기
+        </button>
+    </div>
+</dialog>
+
+<dialog id="game-dialog" aria-labelledby="game-title">
+    <div class="dialog-head">
+        <div class="eyebrow">EARTH BROADCASTING 6 · MINI GAME</div>
+        <h2 id="game-title">KK와 함께 음표 찾기</h2>
+        <p class="small">KK가 연주할 음표를 함께 찾아주세요.</p>
+        <button class="close" data-close="game-dialog" aria-label="게임 닫기">×</button>
+    </div>
+
+    <div class="body">
+        <div class="game-stats">
+            <div class="stat">남은 시간<strong id="game-time">30초</strong></div>
+            <div class="stat">모은 음표<strong id="game-score">0 / 15</strong></div>
+        </div>
+
+        <div id="game-field" aria-label="나타나는 음표를 눌러주세요">
+            <div class="overlay" id="game-overlay">
+                <h3 id="result-title">KK와 함께 음표 찾기</h3>
+                <p id="result-text">30초 동안 음표 15개를 모으면 성공이에요.</p>
+                <button class="primary" id="game-start">게임 시작</button>
+                <button class="secondary" id="form-button" hidden>
+                    이벤트 참여 폼 작성
+                </button>
+                <p class="small" id="form-help" role="status" hidden></p>
+            </div>
+        </div>
+
+        <div class="game-actions">
+            <button class="secondary" id="game-retry">처음부터</button>
+            <button class="secondary" data-close="game-dialog">숲으로 돌아가기</button>
+        </div>
+
+        <p class="small" id="game-status" role="status">
+            음표를 클릭하거나 키보드로 선택한 뒤 Enter를 눌러주세요.
+        </p>
+    </div>
+</dialog>
+
+<script>
+/* ====================================================
+   공연 정보 / 폼 주소 / 아티스트 정보
+==================================================== */
+
+/* 구글폼 주소를 나중에 넣으세요. */
+const FORM_URL = "";
+
+const CONCERT = {
+    date: "2026년 11월 12일 목요일",
+    time: "추후 안내",
+    location: "엔터관 대극장"
 };
 
-/* 게임 시작 전 안내 */
-const originalPrepareGame = prepareGame;
+/*
+   photo 예시: "images/heesung.jpg"
+   instagram, youtube에 전체 주소를 넣으면 버튼이 생깁니다.
 
-prepareGame = function() {
-    originalPrepareGame();
+   현재 characters.png는 3명 이미지이므로
+   겨울은 첫 번째 캐릭터를 다시 사용합니다.
+*/
+const ARTISTS = [
+    {
+        name: "희성(HEESUNG)",
+        season: "봄",
+        description: "희성(HEESUNG)의 무대와 함께 봄의 계절을 만나보세요.",
+        profile: "아티스트 상세 프로필 추후 공개",
+        songs: [
+            {title:"봄봄봄", artist:"로이킴"},
+            {title:"벚꽃엔딩", artist:"버스커버스커"},
+            {title:"사랑인가봐", artist:"멜로망스"},
+            {title:"사랑은 은하수 다방에서", artist:"10cm"}
+        ],
+        photo: "",
+        instagram: "",
+        youtube: "",
+        sprite: 0
+    },
+    {
+        name: "아가맛토맛토",
+        season: "여름",
+        description: "아가맛토맛토의 무대와 함께 여름의 계절을 만나보세요.",
+        profile: "아티스트 상세 프로필 추후 공개",
+        songs: [
+            {title:"Hiraeth", artist:"자작곡"},
+            {title:"대혐오의 시대", artist:"자작곡"},
+            {title:"So Do I", artist:"Halestorm"},
+            {title:"Picture Perfect", artist:"Cassyette"}
+        ],
+        photo: "",
+        instagram: "",
+        youtube: "",
+        sprite: 1
+    },
+    {
+        name: "호랑이동운",
+        season: "가을",
+        description: "호랑이동운의 무대와 함께 가을의 계절을 만나보세요.",
+        profile: "아티스트 상세 프로필 추후 공개",
+        songs: [],
+        photo: "",
+        instagram: "",
+        youtube: "",
+        sprite: 2
+    },
+    {
+        name: "디마레인저",
+        season: "겨울",
+        description: "디마레인저의 무대와 함께 겨울의 계절을 만나보세요.",
+        profile: "아티스트 상세 프로필 추후 공개",
+        songs: [],
+        photo: "",
+        instagram: "",
+        youtube: "",
+        sprite: 0
+    }
+];
+
+const PEOPLE_IMAGE = "./characters.png";
+const DOG_IMAGE = "./kk.png";
+
+/* KK 투명 PNG 전체를 사용합니다. */
+const DOG_CROP = {x:0,y:0,w:1,h:1};
+
+/* ====================================================
+   화면 상태
+==================================================== */
+
+const canvas = document.getElementById("world");
+const ctx = canvas.getContext("2d");
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let W, H, DPR;
+let season = 0;
+let manual = false;
+let tick = 0;
+let last = 0;
+let hits = [];
+
+let night = false;
+let kind = "clear";
+let cloud = 0;
+let weatherReady = false;
+let weatherState = "loading";
+let weatherRequest = 0;
+let weatherController;
+
+const assetFailures = new Set();
+
+function assetError(name, failed) {
+    if (failed) assetFailures.add(name);
+    else assetFailures.delete(name);
+
+    const el = document.getElementById("asset-error");
+    el.hidden = assetFailures.size === 0;
+    el.textContent = "이미지를 확인해 주세요: " +
+        [...assetFailures].join(", ");
+}
+
+const people = new Image();
+const dog = new Image();
+
+let peopleReady = false;
+let dogReady = false;
+
+people.onload = () => {
+    peopleReady = true;
+    assetError("characters.png", false);
+};
+
+people.onerror = () => assetError("characters.png", true);
+
+dog.onload = () => {
+    dogReady = true;
+    assetError("kk.png", false);
+};
+
+dog.onerror = () => assetError("kk.png", true);
+
+people.src = PEOPLE_IMAGE;
+dog.src = DOG_IMAGE;
+
+const CITIES = {
+    seoul:[37.5665,126.978],
+    anseong:[37.058,127.445],
+    incheon:[37.4563,126.7052],
+    daejeon:[36.3504,127.3845],
+    gwangju:[35.1595,126.8526],
+    daegu:[35.8714,128.6014],
+    busan:[35.1796,129.0756],
+    gangneung:[37.7519,128.8761],
+    jeju:[33.4996,126.5312]
+};
+
+const THEMES = [
+    {
+        sky:["#93c9e8","#e4f0df"],
+        ground:"#91c169",
+        grass:["#77ac55","#b7d680","#98c46c"],
+        leaves:["#f5c1d1","#ffdfe5","#eba6be","#ffece8"],
+        pine:["#568b70","#39775e","#73a086"]
+    },
+    {
+        sky:["#75b9e9","#d5eeeb"],
+        ground:"#75b24f",
+        grass:["#5b9e43","#9ac765","#82b94f"],
+        leaves:["#5a9e54","#85bd69","#43854a","#a0ce7d"],
+        pine:["#3e805e","#2e6b51","#60966d"]
+    },
+    {
+        sky:["#b4ccdc","#f5dfb6"],
+        ground:"#c9ac65",
+        grass:["#b99b50","#e3c985","#c9a957"],
+        leaves:["#d27a43","#eaa553","#b95f3e","#edbd69"],
+        pine:["#73814f","#596b45","#939b61"]
+    },
+    {
+        sky:["#a4bed2","#e7edf0"],
+        ground:"#e5eef0",
+        grass:["#d0dfe5","#f9fcfc","#dce7eb"],
+        leaves:["#e8f1f3","#ffffff","#d0e2e9","#f7fafb"],
+        pine:["#668e87","#4c736e","#8ca9a1"]
+    }
+];
+
+/* ====================================================
+   기본 그리기
+==================================================== */
+
+function rnd(n) {
+    const value = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+    return value - Math.floor(value);
+}
+
+function resize() {
+    W = innerWidth;
+    H = innerHeight;
+    DPR = Math.min(devicePixelRatio || 1, 2);
+
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+}
+
+addEventListener("resize", resize);
+resize();
+
+function oval(x, y, rx, ry, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function box(x, y, width, height, radius, color) {
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.roundRect(x, y, width, height, radius);
+    ctx.fill();
+}
+
+function line(x1, y1, x2, y2, color, width) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+}
+
+function point(x, z) {
+    return {
+        x: W / 2 + (x - 0.5) * W * (0.7 + z * 0.55),
+        y: H * 0.32 + z * H * 0.59,
+        s: Math.min(W / 1000, H / 740) * (0.48 + z * 0.9)
+    };
+}
+
+function label(text, x, y) {
+    ctx.save();
+    ctx.font = "bold 11px sans-serif";
+    ctx.textAlign = "center";
+
+    const width = Math.max(75, ctx.measureText(text).width + 24);
+
+    box(x - width / 2, y, width, 25, 13, "#fffbedee");
+    ctx.fillStyle = "#657153";
+    ctx.fillText(text, x, y + 17);
+
+    ctx.restore();
+    return width;
+}
+
+function safeURL(value) {
+    if (!value) return "";
+
+    try {
+        const url = new URL(value, location.href);
+        return ["https:", "http:"].includes(url.protocol)
+            ? url.href
+            : "";
+    } catch {
+        return "";
+    }
+}
+
+/* ====================================================
+   한국 시간과 날씨
+==================================================== */
+
+function koreanParts() {
+    return Object.fromEntries(
+        new Intl.DateTimeFormat("en-US", {
+            timeZone:"Asia/Seoul",
+            month:"numeric",
+            hour:"numeric",
+            hourCycle:"h23"
+        }).formatToParts(new Date()).map(part => [
+            part.type,
+            part.value
+        ])
+    );
+}
+
+function actualSeason() {
+    const month = Number(koreanParts().month);
+
+    if (month >= 3 && month <= 5) return 0;
+    if (month >= 6 && month <= 8) return 1;
+    if (month >= 9 && month <= 11) return 2;
+
+    return 3;
+}
+
+function updateCaption() {
+    const el = document.getElementById("caption");
+    const names = ["봄","여름","가을","겨울"];
+
+    if (!weatherReady) {
+        el.textContent = names[season] + (
+            weatherState === "error"
+                ? " 풍경을 산책해요. 날씨 연결을 기다리고 있어요."
+                : " 풍경을 산책해요. 현재 날씨를 확인하고 있어요."
+        );
+        return;
+    }
+
+    const details = {
+        clear:[
+            "따뜻한 봄볕을 함께 느껴봐요.",
+            "초록 잎 사이로 햇살이 반짝여요.",
+            "가을 햇살 아래 천천히 걸어봐요.",
+            "겨울 하늘이 투명하게 빛나요."
+        ],
+        cloudy:[
+            "봄 하늘에 구름이 쉬어가요.",
+            "초록 숲에 그늘이 드리워요.",
+            "가을 숲이 차분해졌어요.",
+            "겨울 하늘을 구름이 덮었어요."
+        ],
+        rain:[
+            "봄꽃이 촉촉해지고 있어요.",
+            "초록 잎에 빗방울이 맺혀요.",
+            "낙엽 위로 빗소리가 들려요.",
+            "따뜻하게 입고 산책해요."
+        ],
+        snow:[
+            "봄 풍경 위로 눈이 내려요.",
+            "여름 풍경 위로 눈이 내려요.",
+            "가을빛 위로 눈이 내려요.",
+            "숲이 하얗게 물들고 있어요."
+        ],
+        fog:[
+            "봄 숲이 몽글몽글해요.",
+            "초록 숲이 신비로워요.",
+            "가을빛이 은은하게 번져요.",
+            "겨울 숲이 고요해졌어요."
+        ],
+        storm:[
+            "봄 산책은 잠시 쉬어가요.",
+            "여름 산책은 잠시 쉬어가요.",
+            "가을 산책은 잠시 쉬어가요.",
+            "겨울 산책은 잠시 쉬어가요."
+        ]
+    };
+
+    let intro = {
+        clear:"오늘은 맑은 날이에요.",
+        cloudy:"오늘은 구름 많은 날이에요.",
+        rain:"오늘은 비 오는 날이에요.",
+        snow:"오늘은 눈 오는 날이에요.",
+        fog:"오늘은 안개 낀 날이에요.",
+        storm:"오늘은 천둥과 비 소식이 있어요."
+    }[kind];
+
+    let detail = details[kind][season];
+
+    if (night && ["clear","cloudy"].includes(kind)) {
+        intro = kind === "clear"
+            ? "오늘은 맑은 밤이에요."
+            : "오늘은 구름 많은 밤이에요.";
+
+        detail = names[season] + "밤의 숲에서 잠시 쉬어갈까요?";
+    }
+
+    const cityName =
+        document.getElementById("city").selectedOptions[0].textContent;
+
+    el.textContent = cityName + " · " + intro + " " + detail;
+}
+
+function updateSeason() {
+    document.querySelectorAll("[data-season]").forEach(button => {
+        const active = Number(button.dataset.season) === season;
+
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+    });
+
+    document.getElementById("auto").textContent =
+        manual ? "오늘" : "오늘 기준";
+
+    document.getElementById("current-artist").textContent =
+        ARTISTS[season].season + " · " + ARTISTS[season].name;
+
+    updateCaption();
+}
+
+function weatherKind(code) {
+    if ([71,73,75,77,85,86].includes(code)) return "snow";
+    if ([95,96,99].includes(code)) return "storm";
+
+    if (
+        [51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)
+    ) return "rain";
+
+    if ([45,48].includes(code)) return "fog";
+    if ([2,3].includes(code)) return "cloudy";
+
+    return "clear";
+}
+
+async function loadWeather() {
+    const id = ++weatherRequest;
+
+    if (weatherController) weatherController.abort();
+
+    const controller = new AbortController();
+    weatherController = controller;
+
+    weatherReady = false;
+    weatherState = "loading";
+    kind = "clear";
+    cloud = 0;
+
+    const hour = Number(koreanParts().hour);
+    night = hour < 6 || hour >= 18;
+
+    updateCaption();
+
+    document.getElementById("weather-text").textContent =
+        "날씨 불러오는 중…";
+
+    document.getElementById("weather-source").textContent =
+        "선택한 지역의 날씨를 확인해요.";
+
+    const cityKey = document.getElementById("city").value;
+    const [latitude, longitude] = CITIES[cityKey];
+
+    const params = new URLSearchParams({
+        latitude,
+        longitude,
+        current:"temperature_2m,weather_code,is_day,cloud_cover",
+        timezone:"Asia/Seoul"
+    });
+
+    const timeout = setTimeout(() => controller.abort(), 12000);
+
+    try {
+        const response = await fetch(
+            "https://api.open-meteo.com/v1/forecast?" + params,
+            {signal:controller.signal}
+        );
+
+        if (!response.ok) throw new Error("weather");
+
+        const data = await response.json();
+        if (id !== weatherRequest) return;
+
+        const current = data.current;
+
+        if (
+            !current ||
+            !Number.isFinite(current.temperature_2m) ||
+            !Number.isFinite(current.weather_code) ||
+            ![0,1].includes(current.is_day) ||
+            typeof current.time !== "string"
+        ) throw new Error("invalid weather");
+
+        weatherReady = true;
+        weatherState = "ready";
+        kind = weatherKind(current.weather_code);
+        cloud = Number(current.cloud_cover) || 0;
+        night = current.is_day === 0;
+
+        const description = current.weather_code === 1
+            ? "구름 조금"
+            : {
+                clear:"맑음",
+                cloudy:"구름 많음",
+                rain:"비",
+                snow:"눈",
+                fog:"안개",
+                storm:"뇌우"
+            }[kind];
+
+        document.getElementById("weather-text").textContent =
+            `${Math.round(current.temperature_2m)}°C · ` +
+            `${description} · ${night ? "밤" : "낮"}`;
+
+        const source = document.getElementById("weather-source");
+        source.replaceChildren();
+
+        source.append(document.createTextNode(
+            `자료 시각 ${current.time.slice(11,16)} · 한국시간`
+        ));
+        source.append(document.createElement("br"));
+
+        const link = document.createElement("a");
+        link.href = "https://open-meteo.com/";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = "Weather data by Open-Meteo";
+
+        source.append(link, document.createTextNode(" · 모델 기반"));
+        updateCaption();
+
+    } catch {
+        if (id !== weatherRequest) return;
+
+        weatherState = "error";
+
+        document.getElementById("weather-text").textContent =
+            "날씨 연결을 확인해 주세요";
+
+        document.getElementById("weather-source").textContent =
+            "지역을 다시 선택하면 재시도해요.";
+
+        updateCaption();
+
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+function updateClock() {
+    document.getElementById("time").textContent =
+        new Date().toLocaleTimeString("ko-KR", {
+            timeZone:"Asia/Seoul",
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:false
+        });
+
+    if (!manual && season !== actualSeason()) {
+        season = actualSeason();
+        updateSeason();
+    }
+
+    if (!weatherReady) {
+        const hour = Number(koreanParts().hour);
+        night = hour < 6 || hour >= 18;
+    }
+}
+
+document.querySelectorAll("[data-season]").forEach(button => {
+    button.onclick = () => {
+        manual = true;
+        season = Number(button.dataset.season);
+        updateSeason();
+    };
+});
+
+document.getElementById("auto").onclick = () => {
+    manual = false;
+    season = actualSeason();
+    updateSeason();
+};
+
+document.getElementById("city").onchange = loadWeather;
+
+/* ====================================================
+   공연 정보와 아티스트 소개
+==================================================== */
+
+const artistDialog = document.getElementById("artist-dialog");
+const concertDialog = document.getElementById("concert-dialog");
+
+let photoId = 0;
+
+function openArtist(index) {
+    const artist = ARTISTS[index];
+    const id = ++photoId;
+
+    document.getElementById("artist-name").textContent = artist.name;
+    document.getElementById("artist-season").textContent =
+        artist.season + " · EARTH BROADCASTING 6";
+
+    document.getElementById("artist-description").textContent =
+        artist.description;
+
+    document.getElementById("artist-profile").textContent =
+        artist.profile;
+
+    const image = document.getElementById("artist-photo");
+    const monogram = document.getElementById("artist-monogram");
+
+    image.hidden = true;
+    image.removeAttribute("src");
+
+    monogram.hidden = false;
+    monogram.textContent = artist.name;
+
+    const url = safeURL(artist.photo);
+
+    if (url) {
+        const preload = new Image();
+
+        preload.onload = () => {
+            if (id !== photoId) return;
+
+            image.src = url;
+            image.alt = artist.name + " 사진";
+            image.hidden = false;
+            monogram.hidden = true;
+        };
+
+        preload.src = url;
+    }
+
+    const songs = document.getElementById("artist-songs");
+    songs.replaceChildren();
+
+    if (artist.songs.length) {
+        artist.songs.forEach((song, index) => {
+            const row = document.createElement("div");
+            row.className = "song";
+
+            const number = document.createElement("div");
+            number.className = "song-number";
+            number.textContent = String(index + 1).padStart(2, "0");
+
+            const information = document.createElement("div");
+
+            const title = document.createElement("div");
+            title.className = "song-title";
+            title.textContent = song.title;
+
+            const originalArtist = document.createElement("div");
+            originalArtist.className = "song-artist";
+            originalArtist.textContent = song.artist;
+
+            information.append(title, originalArtist);
+            row.append(number, information);
+            songs.append(row);
+        });
+    } else {
+        songs.textContent = "공연곡 추후 공개";
+    }
+
+    const links = document.getElementById("artist-links");
+    links.replaceChildren();
+
+    [
+        ["Instagram", artist.instagram],
+        ["YouTube", artist.youtube]
+    ].forEach(([text, value]) => {
+        const href = safeURL(value);
+        if (!href) return;
+
+        const link = document.createElement("a");
+        link.href = href;
+        link.textContent = text;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+
+        links.append(link);
+    });
+
+    if (!artistDialog.open) artistDialog.showModal();
+}
+
+document.getElementById("current-artist").onclick =
+    () => openArtist(season);
+
+document.getElementById("concert-open").onclick =
+    () => concertDialog.showModal();
+
+document.getElementById("concert-date").textContent = CONCERT.date;
+document.getElementById("concert-time").textContent = CONCERT.time;
+document.getElementById("concert-location").textContent = CONCERT.location;
+
+document.getElementById("concert-artists").textContent =
+    ARTISTS.map(artist => artist.name).join(" / ");
+
+ARTISTS.forEach((artist, index) => {
+    const button = document.createElement("button");
+    button.className = "secondary";
+    button.textContent = artist.season + " · " + artist.name;
+
+    button.onclick = () => {
+        concertDialog.close();
+        manual = true;
+        season = index;
+        updateSeason();
+        openArtist(index);
+    };
+
+    document.getElementById("concert-artist-links").append(button);
+});
+
+document.querySelectorAll("[data-close]").forEach(button => {
+    button.onclick = () => {
+        document.getElementById(button.dataset.close).close();
+    };
+});
+
+/* ====================================================
+   KK와 함께 음표 찾기
+==================================================== */
+
+const gameDialog = document.getElementById("game-dialog");
+const field = document.getElementById("game-field");
+const overlay = document.getElementById("game-overlay");
+const formButton = document.getElementById("form-button");
+const formHelp = document.getElementById("form-help");
+
+const slots = [];
+const notes = new Map();
+
+const TARGET = 15;
+const DURATION = 30000;
+
+let playing = false;
+let score = 0;
+let deadline = 0;
+let timer = null;
+let nextSpawn = 0;
+let gameSeason = 0;
+
+for (let i = 0; i < 20; i++) {
+    const slot = document.createElement("div");
+    slot.className = "slot";
+    field.insertBefore(slot, overlay);
+    slots.push(slot);
+}
+
+function updateGameStats(milliseconds) {
+    document.getElementById("game-time").textContent =
+        Math.ceil(Math.max(0, milliseconds) / 1000) + "초";
+
+    document.getElementById("game-score").textContent =
+        score + " / " + TARGET;
+}
+
+function stopGame() {
+    playing = false;
+    clearInterval(timer);
+    timer = null;
+    notes.clear();
+    slots.forEach(slot => slot.replaceChildren());
+}
+
+function prepareGame() {
+    stopGame();
+    score = 0;
+    gameSeason = season;
+
+    updateGameStats(DURATION);
+
+    overlay.hidden = false;
+    formButton.hidden = true;
+    formHelp.hidden = true;
 
     document.getElementById("result-title").textContent =
         "KK와 함께 음표 찾기";
 
     document.getElementById("result-text").textContent =
         "KK가 연주할 음표를 찾아주세요. 30초 동안 15개를 모으면 성공이에요.";
-};
 
-/* 게임 종료 안내 */
-const originalFinishGame = finishGame;
+    document.getElementById("game-start").textContent = "게임 시작";
 
-finishGame = function(success) {
-    originalFinishGame(success);
+    document.getElementById("game-status").textContent =
+        "음표를 클릭하거나 키보드로 선택한 뒤 Enter를 눌러주세요.";
+
+    field.style.background = [
+        "linear-gradient(#f4dfeb,#bed49e)",
+        "linear-gradient(#c5e9dc,#8fbd77)",
+        "linear-gradient(#f1dfbc,#caa369)",
+        "linear-gradient(#e4eff4,#b9d2da)"
+    ][gameSeason];
+}
+
+function openGame() {
+    prepareGame();
+    if (!gameDialog.open) gameDialog.showModal();
+}
+
+function finishGame(success) {
+    stopGame();
+
+    overlay.hidden = false;
+    formButton.hidden = false;
 
     document.getElementById("result-title").textContent =
         success
@@ -56,5 +1168,773 @@ finishGame = function(success) {
         success
             ? "음표를 모두 찾았어요! KK와 함께 계절의 멜로디를 완성했어요. 아래에서 이벤트 참여 폼도 확인해 주세요."
             : `음표 ${score}개를 찾았어요. 다시 도전하거나 아래에서 이벤트 참여 폼을 확인해 주세요.`;
+
+    document.getElementById("game-start").textContent = "다시 도전";
+
+    document.getElementById("game-status").textContent =
+        success
+            ? "성공! 음표 15개를 찾았어요."
+            : `게임 종료. 음표 ${score}개를 찾았어요.`;
+
+    if (!safeURL(FORM_URL)) {
+        formHelp.hidden = false;
+        formHelp.textContent =
+            "참여 폼은 준비 중이에요. 주소가 등록되면 이 버튼으로 열 수 있어요.";
+    }
+
+    document.getElementById("game-start").focus();
+}
+
+function spawnNote(now) {
+    const empty = slots
+        .map((_, index) => index)
+        .filter(index => !notes.has(index));
+
+    if (!empty.length) return;
+
+    const index = empty[Math.floor(Math.random() * empty.length)];
+    const button = document.createElement("button");
+
+    button.className = "note";
+    button.textContent = Math.random() > 0.5 ? "♪" : "♫";
+    button.setAttribute("aria-label", "음표 모으기");
+
+    button.style.color = [
+        "#b77994",
+        "#638b63",
+        "#b3834c",
+        "#6b94ab"
+    ][gameSeason];
+
+    notes.set(index, {
+        button,
+        expires: now + 2700
+    });
+
+    slots[index].append(button);
+
+    button.onclick = () => {
+        if (!playing || notes.get(index)?.button !== button) return;
+
+        const now = performance.now();
+
+        if (now >= deadline) {
+            finishGame(false);
+            return;
+        }
+
+        notes.delete(index);
+        button.remove();
+        score++;
+
+        updateGameStats(deadline - now);
+
+        if (score >= TARGET) finishGame(true);
+    };
+}
+
+function stepGame() {
+    if (!playing) return;
+
+    const now = performance.now();
+    const remaining = deadline - now;
+
+    updateGameStats(remaining);
+
+    if (remaining <= 0) {
+        finishGame(false);
+        return;
+    }
+
+    for (const [index, note] of notes) {
+        if (now >= note.expires) {
+            note.button.remove();
+            notes.delete(index);
+        }
+    }
+
+    if (now >= nextSpawn && notes.size < 5) {
+        spawnNote(now);
+        nextSpawn = now + 520;
+    }
+}
+
+function startGame() {
+    stopGame();
+
+    score = 0;
+    overlay.hidden = true;
+    formButton.hidden = true;
+    formHelp.hidden = true;
+
+    playing = true;
+    deadline = performance.now() + DURATION;
+
+    updateGameStats(DURATION);
+    spawnNote(performance.now());
+
+    nextSpawn = performance.now() + 520;
+    timer = setInterval(stepGame, 100);
+
+    document.getElementById("game-status").textContent =
+        "KK가 기다리고 있어요! 나타나는 음표를 찾아주세요.";
+
+    field.querySelector(".note")?.focus();
+}
+
+document.getElementById("game-open").onclick = openGame;
+document.getElementById("game-start").onclick = startGame;
+
+document.getElementById("game-retry").onclick = () => {
+    prepareGame();
+    startGame();
 };
+
+gameDialog.addEventListener("close", stopGame);
+gameDialog.addEventListener("cancel", stopGame);
+
+formButton.onclick = () => {
+    const url = safeURL(FORM_URL);
+
+    if (!url) {
+        formHelp.hidden = false;
+        formHelp.textContent =
+            "이벤트 참여 폼은 준비 중이에요. 폼 주소를 등록한 뒤 이용할 수 있어요.";
+        return;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
+};
+
+/* ====================================================
+   숲 구성
+==================================================== */
+
+const TREES = [];
+
+for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 9; col++) {
+        const x = (col + 0.25 + rnd(row * 20 + col) * 0.45) / 9;
+        const z = 0.12 + row * 0.215 + rnd(row * 15 + col + 88) * 0.07;
+
+        if (Math.abs(x - (0.52 + Math.sin(z * 5) * 0.08)) < 0.145) continue;
+        if (z > 0.60 && x > 0.2 && x < 0.85) continue;
+
+        TREES.push({
+            x,
+            z,
+            seed: row * 83 + col * 17,
+            pine: col % 4 === 0
+        });
+    }
+}
+
+const GRASS = Array.from({length:950}, (_, i) => ({
+    x:rnd(i * 3 + 1),
+    z:rnd(i * 3 + 2),
+    color:i % 3
+}));
+
+const FLOWERS = Array.from({length:100}, (_, i) => ({
+    x:rnd(i + 800),
+    z:0.14 + rnd(i + 1000) * 0.8,
+    id:i
+})).filter(flower => {
+    const center = 0.52 + Math.sin(flower.z * 5) * 0.08;
+    return Math.abs(flower.x - center) > 0.1;
+});
+
+const PARTICLES = Array.from({length:120}, (_, i) => ({
+    x:rnd(i + 100),
+    y:rnd(i + 300),
+    size:2 + rnd(i + 500) * 4,
+    speed:0.0004 + rnd(i + 700) * 0.0008,
+    phase:rnd(i + 900) * 6.28
+}));
+
+function drawTree(tree) {
+    const p = point(tree.x, tree.z);
+    const theme = THEMES[season];
+
+    oval(p.x, p.y, 47 * p.s, 12 * p.s, "#294c3624");
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.scale(p.s, p.s);
+
+    ctx.fillStyle = "#a67f51";
+    ctx.beginPath();
+    ctx.moveTo(-12, -90);
+    ctx.lineTo(12, -90);
+    ctx.lineTo(15, -15);
+    ctx.lineTo(27, 0);
+    ctx.lineTo(10, -3);
+    ctx.lineTo(3, 3);
+    ctx.lineTo(-8, -3);
+    ctx.lineTo(-25, 0);
+    ctx.lineTo(-12, -16);
+    ctx.closePath();
+    ctx.fill();
+
+    line(-3, -76, -1, -14, "#c5a06b", 7);
+
+    const sway = reduced
+        ? 0
+        : Math.sin(tick * 0.012 + tree.seed) * 1.7;
+
+    if (tree.pine) {
+        for (let j = 0; j < 4; j++) {
+            const y = -65 - j * 27;
+            const radius = 57 - j * 10;
+
+            ctx.fillStyle = theme.pine[j % 3];
+            ctx.beginPath();
+            ctx.moveTo(sway, y - 62);
+            ctx.quadraticCurveTo(radius * 0.5, y - 25, radius, y);
+            ctx.quadraticCurveTo(0, y + 18, -radius, y);
+            ctx.quadraticCurveTo(-radius * 0.5, y - 25, sway, y - 62);
+            ctx.fill();
+
+            if (season === 3 || kind === "snow") {
+                ctx.fillStyle = j % 2 ? "#fcfefe" : "#e6eff2";
+                ctx.beginPath();
+                ctx.moveTo(sway, y - 62);
+                ctx.lineTo(radius * 0.78, y - 12);
+                ctx.quadraticCurveTo(0, y + 3, -radius * 0.78, y - 12);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+    } else {
+        oval(sway, -116, 63, 56, theme.leaves[2]);
+
+        for (let j = 0; j < 65; j++) {
+            const angle = rnd(tree.seed + j * 3) * Math.PI * 2;
+            const radius = Math.sqrt(rnd(tree.seed + j * 5 + 9));
+            const size = 10 + rnd(tree.seed + j + 2) * 8;
+
+            oval(
+                Math.cos(angle) * 57 * radius + sway,
+                -121 + Math.sin(angle) * 49 * radius,
+                size,
+                size * 0.85,
+                theme.leaves[j % 4]
+            );
+        }
+
+        if (kind === "snow" && season !== 3) {
+            oval(0, -160, 40, 13, "#eef7f9");
+        }
+
+        if (season === 1) {
+            [[-30,-118],[29,-132],[7,-88]].forEach(([x,y]) => {
+                line(x, y, x + 2, y - 13, "#6c5d35", 3);
+                oval(x, y, 10, 11, "#d94f3b");
+                oval(x - 3, y - 4, 3, 4, "#ff9c72");
+                oval(x + 6, y - 10, 6, 3, "#427c42");
+            });
+        }
+    }
+
+    ctx.restore();
+}
+
+function drawRiver() {
+    const left = [];
+    const right = [];
+
+    for (let i = 0; i <= 60; i++) {
+        const z = i / 60;
+        const center = 0.52 + Math.sin(z * 5) * 0.08;
+
+        left.push(point(center - 0.065, z));
+        right.push(point(center + 0.065, z));
+    }
+
+    ctx.beginPath();
+
+    left.forEach((p, i) => {
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+    });
+
+    right.reverse().forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.closePath();
+
+    ctx.strokeStyle = season === 3 ? "#bfd7df" : "#d7bd7c";
+    ctx.lineWidth = 16;
+    ctx.lineJoin = "round";
+    ctx.stroke();
+
+    const gradient = ctx.createLinearGradient(0, H * 0.3, 0, H);
+    gradient.addColorStop(0, season === 3 ? "#b5dbe4" : "#81d0d8");
+    gradient.addColorStop(1, season === 3 ? "#83b7cd" : "#4aafc5");
+
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    for (let i = 0; i < 30; i++) {
+        const z = rnd(i + 100);
+
+        const p = point(
+            0.52 + Math.sin(z * 5) * 0.08 + (rnd(i + 34) - 0.5) * 0.09,
+            z
+        );
+
+        box(
+            p.x + Math.sin(tick * 0.015 + i) * 5,
+            p.y,
+            12 + p.s * 15,
+            2,
+            1,
+            "#ffffff65"
+        );
+    }
+}
+
+function drawBridge() {
+    const z = 0.54;
+    const p = point(0.52 + Math.sin(z * 5) * 0.08, z);
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.scale(p.s, p.s);
+
+    box(-103, -10, 206, 39, 6, "#92734e");
+
+    for (let i = 0; i < 12; i++) {
+        box(
+            -100 + i * 17,
+            -12,
+            15,
+            36,
+            2,
+            i % 2 ? "#c8a777" : "#b99969"
+        );
+    }
+
+    for (const y of [-25,20]) {
+        for (const x of [-102,-51,0,51,102]) {
+            box(x - 4, y - 33, 8, 40, 3, "#96724a");
+            oval(x, y - 33, 6, 4, "#d7b98a");
+        }
+
+        ctx.strokeStyle = "#c9ab7e";
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.moveTo(-102, y - 21);
+        ctx.quadraticCurveTo(0, y - 44, 102, y - 21);
+        ctx.stroke();
+    }
+
+    ctx.restore();
+}
+
+function drawFlower(flower) {
+    const p = point(flower.x, flower.z);
+    const size = p.s;
+
+    if (season === 3 || kind === "snow") {
+        oval(p.x, p.y, 6 * size, 2 * size, "#ffffffa0");
+        return;
+    }
+
+    if (season === 2) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(flower.id);
+
+        oval(
+            0, 0,
+            6 * size,
+            3 * size,
+            flower.id % 2 ? "#b67a3e" : "#e8c978"
+        );
+
+        ctx.restore();
+        return;
+    }
+
+    line(
+        p.x, p.y,
+        p.x, p.y - 13 * size,
+        "#568746", 2 * size
+    );
+
+    const color = [
+        "#fff4dc",
+        "#f2a8bc",
+        "#efda73",
+        "#ec8966"
+    ][flower.id % 4];
+
+    for (let j = 0; j < 5; j++) {
+        const angle = j * Math.PI * 2 / 5;
+
+        oval(
+            p.x + Math.cos(angle) * 4 * size,
+            p.y - 15 * size + Math.sin(angle) * 4 * size,
+            4 * size,
+            4 * size,
+            color
+        );
+    }
+
+    oval(p.x, p.y - 15 * size, 2.5 * size, 2.5 * size, "#c9a34d");
+}
+
+/* 계절별 아티스트 한 명 */
+function drawArtist() {
+    const artist = ARTISTS[season];
+    const p = point(0.30, 0.75);
+    const size = Math.max(W < 600 ? 0.78 : 0.95, p.s);
+
+    const height = 190 * size;
+    const cellWidth = peopleReady ? people.naturalWidth / 3 : 1;
+
+    const width = peopleReady
+        ? height * cellWidth / people.naturalHeight
+        : height * 0.5;
+
+    const x = p.x - width / 2;
+    const y = p.y - height + 13 * size +
+        (reduced ? 0 : Math.sin(tick * 0.025) * 2);
+
+    oval(p.x, p.y + 1, 27 * size, 7 * size, "#314c392b");
+
+    if (peopleReady) {
+        ctx.drawImage(
+            people,
+            artist.sprite * cellWidth,
+            0,
+            cellWidth,
+            people.naturalHeight,
+            x,
+            y,
+            width,
+            height
+        );
+
+        hits.push({x, y, w:width, h:height, type:"artist"});
+    }
+
+    const labelWidth = label(artist.name, p.x, p.y + 12);
+
+    hits.push({
+        x:p.x - labelWidth / 2,
+        y:p.y + 12,
+        w:labelWidth,
+        h:25,
+        type:"artist"
+    });
+}
+
+/* 모든 계절에 등장하는 KK */
+function drawKK() {
+    const p = point(0.75, 0.78);
+    const size = Math.max(W < 600 ? 0.72 : 0.9, p.s);
+    const height = 170 * size;
+
+    let width = 120 * size;
+
+    oval(p.x, p.y + 1, 30 * size, 8 * size, "#314c3925");
+
+    if (dogReady) {
+        const sourceX = dog.naturalWidth * DOG_CROP.x;
+        const sourceY = dog.naturalHeight * DOG_CROP.y;
+        const sourceWidth = dog.naturalWidth * DOG_CROP.w;
+        const sourceHeight = dog.naturalHeight * DOG_CROP.h;
+
+        width = height * sourceWidth / sourceHeight;
+
+        ctx.drawImage(
+            dog,
+            sourceX,
+            sourceY,
+            sourceWidth,
+            sourceHeight,
+            p.x - width / 2,
+            p.y - height,
+            width,
+            height
+        );
+    } else {
+        box(
+            p.x - width / 2,
+            p.y - height,
+            width,
+            height,
+            18,
+            "#fffbed"
+        );
+
+        ctx.save();
+        ctx.font = "bold 18px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#7f8b70";
+        ctx.fillText("KK", p.x, p.y - height / 2);
+        ctx.restore();
+    }
+
+    const labelWidth = label("KK와 함께 음표 찾기", p.x, p.y + 12);
+
+    hits.push({
+        x:p.x - width / 2,
+        y:p.y - height,
+        w:width,
+        h:height,
+        type:"game"
+    });
+
+    hits.push({
+        x:p.x - labelWidth / 2,
+        y:p.y + 12,
+        w:labelWidth,
+        h:25,
+        type:"game"
+    });
+}
+
+/* ====================================================
+   하늘과 날씨 효과
+==================================================== */
+
+function drawSky() {
+    const cloudy =
+        ["rain","storm"].includes(kind) || cloud > 75;
+
+    const colors = night
+        ? ["#192e49","#647c91"]
+        : cloudy
+        ? ["#8eabb9","#d1dce0"]
+        : THEMES[season].sky;
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+    gradient.addColorStop(0, colors[0]);
+    gradient.addColorStop(1, colors[1]);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, W, H);
+
+    if (night && cloud < 65) {
+        for (let i = 0; i < 45; i++) {
+            oval(
+                rnd(i + 9) * W,
+                rnd(i + 28) * H * 0.32,
+                1.2,
+                1.2,
+                "#fff9d9a0"
+            );
+        }
+    }
+
+    if (!cloudy) {
+        oval(
+            W * 0.7,
+            H * 0.13,
+            27,
+            27,
+            night ? "#fff4cc" : "#fff0b5"
+        );
+
+        if (night) {
+            oval(W * 0.7 + 10, H * 0.13 - 7, 25, 25, colors[0]);
+        }
+    }
+
+    for (let i = 0; i < 6; i++) {
+        const x = W * (i * 0.21 - 0.04) +
+            Math.sin(tick * 0.001 + i) * 20;
+
+        const y = H * (0.16 + (i % 3) * 0.045);
+
+        const color = night
+            ? "#9fb1c13b"
+            : cloudy
+            ? "#e3ebedb0"
+            : "#ffffffab";
+
+        oval(x, y, 55, 13, color);
+        oval(x - 16, y - 8, 26, 18, color);
+        oval(x + 19, y - 7, 24, 15, color);
+    }
+}
+
+function drawAtmosphere(dt) {
+    const rain = ["rain","storm"].includes(kind);
+    const snow = kind === "snow";
+
+    const count = rain
+        ? 110
+        : snow
+        ? 90
+        : season === 1
+        ? 18
+        : 45;
+
+    for (let i = 0; i < count; i++) {
+        const particle = PARTICLES[i];
+
+        if (!reduced) {
+            particle.y += particle.speed * dt * (rain ? 6 : 1);
+            if (particle.y > 1.05) particle.y = -0.05;
+        }
+
+        const x = particle.x * W +
+            Math.sin(tick * 0.01 + particle.phase) * (rain ? 4 : 25);
+
+        const y = particle.y * H;
+
+        if (rain) {
+            line(x, y, x - 4, y + 13, "#d8ecf077", 1);
+        } else if (snow) {
+            oval(
+                x, y,
+                particle.size * 0.65,
+                particle.size * 0.65,
+                "#ffffffd9"
+            );
+        } else if (season === 1) {
+            if (night) oval(x, y, 2, 2, "#f5ee9d9c");
+        } else {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(tick * 0.009 + particle.phase);
+
+            oval(
+                0, 0,
+                particle.size,
+                particle.size * (season === 3 ? 1 : 0.45),
+                season === 0
+                    ? "#ffe4edcc"
+                    : season === 2
+                    ? "#d79756cc"
+                    : "#ffffff9c"
+            );
+
+            ctx.restore();
+        }
+    }
+
+    if (kind === "fog") {
+        ctx.fillStyle = "#e9eff166";
+        ctx.fillRect(0, H * 0.25, W, H * 0.75);
+    }
+}
+
+/* ====================================================
+   렌더링과 클릭
+==================================================== */
+
+const OBJECTS = [
+    ...TREES.map(tree => ({
+        z:tree.z,
+        draw:() => drawTree(tree)
+    })),
+    {z:0.54, draw:drawBridge},
+    {z:0.75, draw:drawArtist},
+    {z:0.78, draw:drawKK}
+].sort((a,b) => a.z - b.z);
+
+function render(time) {
+    const dt = Math.min((time - last) / 16.67 || 1, 2);
+    last = time;
+
+    if (!reduced) tick += dt;
+    hits = [];
+
+    const theme = THEMES[season];
+    drawSky();
+
+    ctx.fillStyle = season === 3 ? "#c9dce0" : "#91b79a";
+    ctx.beginPath();
+    ctx.moveTo(0, H * 0.38);
+
+    ctx.bezierCurveTo(
+        W * 0.2, H * 0.2,
+        W * 0.3, H * 0.37,
+        W * 0.5, H * 0.29
+    );
+
+    ctx.bezierCurveTo(
+        W * 0.7, H * 0.19,
+        W * 0.85, H * 0.32,
+        W, H * 0.25
+    );
+
+    ctx.lineTo(W, H);
+    ctx.lineTo(0, H);
+    ctx.fill();
+
+    ctx.fillStyle = theme.ground;
+    ctx.beginPath();
+    ctx.moveTo(0, H * 0.39);
+    ctx.quadraticCurveTo(W * 0.5, H * 0.27, W, H * 0.38);
+    ctx.lineTo(W, H);
+    ctx.lineTo(0, H);
+    ctx.fill();
+
+    GRASS.forEach(grass => {
+        const p = point(grass.x, grass.z);
+
+        ctx.fillStyle = theme.grass[grass.color];
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - 2 * p.s, p.y - 4 * p.s);
+        ctx.lineTo(p.x + 4 * p.s, p.y - 2 * p.s);
+        ctx.closePath();
+        ctx.fill();
+    });
+
+    drawRiver();
+    FLOWERS.forEach(drawFlower);
+    OBJECTS.forEach(object => object.draw());
+
+    if (night) {
+        ctx.fillStyle = "#17355e55";
+        ctx.fillRect(0, H * 0.3, W, H * 0.7);
+    } else if (["rain","storm"].includes(kind)) {
+        ctx.fillStyle = "#415b711f";
+        ctx.fillRect(0, H * 0.3, W, H * 0.7);
+    }
+
+    drawAtmosphere(dt);
+    requestAnimationFrame(render);
+}
+
+function hitAt(x, y) {
+    return [...hits].reverse().find(hit =>
+        x >= hit.x &&
+        x <= hit.x + hit.w &&
+        y >= hit.y &&
+        y <= hit.y + hit.h
+    );
+}
+
+canvas.addEventListener("pointerdown", event => {
+    const hit = hitAt(event.clientX, event.clientY);
+    if (!hit) return;
+
+    if (hit.type === "game") openGame();
+    else openArtist(season);
+});
+
+canvas.addEventListener("pointermove", event => {
+    canvas.style.cursor =
+        hitAt(event.clientX, event.clientY) ? "pointer" : "default";
+});
+
+/* 시작 */
+season = actualSeason();
+
+updateSeason();
+updateClock();
+loadWeather();
+
+setInterval(updateClock, 10000);
+setInterval(loadWeather, 15 * 60 * 1000);
+
+requestAnimationFrame(render);
 </script>
+</body>
+</html>
