@@ -8,161 +8,319 @@
 <style>
 *{box-sizing:border-box}
 body{
-    margin:0;overflow:hidden;background:#b9d5df;
+    margin:0;
+    overflow:hidden;
+    background:#b9d5df;
     font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
     color:#625b49;
 }
 button,select{font:inherit}
 button{cursor:pointer}
-canvas{display:block;width:100%;height:100dvh;touch-action:manipulation}
+canvas{
+    display:block;
+    width:100%;
+    height:100dvh;
+    touch-action:manipulation;
+}
 .title{
-    position:fixed;top:28px;left:34px;
-    color:#fffbed;pointer-events:none;
+    position:fixed;
+    top:28px;
+    left:34px;
+    color:#fffbed;
+    pointer-events:none;
     text-shadow:0 3px 12px #16394c70;
 }
-.title small{font-size:14px;letter-spacing:5px}
+.title small{
+    font-size:14px;
+    letter-spacing:5px;
+}
 .title h1{
     font-size:clamp(28px,4vw,52px);
-    margin:10px 0;letter-spacing:-2px;
+    margin:10px 0;
+    letter-spacing:-2px;
 }
 .weather{
-    position:fixed;top:26px;right:28px;width:210px;
-    padding:16px 18px;background:#fffbeded;
-    border:2px solid #fffdf4;border-radius:24px;
-    box-shadow:0 6px 0 #34483918;backdrop-filter:blur(12px);
+    position:fixed;
+    top:26px;
+    right:28px;
+    width:210px;
+    padding:16px 18px;
+    background:#fffbeded;
+    border:2px solid #fffdf4;
+    border-radius:24px;
+    box-shadow:0 6px 0 #34483918;
+    backdrop-filter:blur(12px);
 }
 .weather-top{
-    display:flex;justify-content:space-between;
-    align-items:center;gap:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
 }
 select{
-    max-width:115px;border:0;background:transparent;
-    color:#625b49;font-size:14px;font-weight:bold;
+    max-width:115px;
+    border:0;
+    background:transparent;
+    color:#625b49;
+    font-size:14px;
+    font-weight:bold;
 }
-#time{font-size:17px;font-weight:bold}
-#weather-text{margin-top:12px;font-size:14px;font-weight:bold}
+#time{
+    font-size:17px;
+    font-weight:bold;
+}
+#weather-text{
+    margin-top:12px;
+    font-size:14px;
+    font-weight:bold;
+}
 #weather-status{
-    margin-top:7px;font-size:10px;
-    line-height:1.7;color:#858574;
+    margin-top:7px;
+    font-size:10px;
+    line-height:1.7;
+    color:#858574;
 }
 #weather-status a{color:inherit}
 .controls{
-    position:fixed;bottom:26px;left:50%;
+    position:fixed;
+    bottom:26px;
+    left:50%;
     transform:translateX(-50%);
-    width:max-content;max-width:94%;text-align:center;
+    width:max-content;
+    max-width:94%;
+    text-align:center;
 }
 .caption{
-    display:inline-block;max-width:90vw;
-    padding:12px 24px;margin-bottom:13px;
-    border:2px solid white;border-radius:26px;
-    background:#fffbedee;font-size:13px;line-height:1.7;
+    display:inline-block;
+    max-width:90vw;
+    padding:12px 24px;
+    margin-bottom:13px;
+    border:2px solid white;
+    border-radius:26px;
+    background:#fffbedee;
+    font-size:13px;
+    line-height:1.7;
     box-shadow:0 4px 0 #334d3715;
 }
 .seasons{
-    display:flex;justify-content:center;gap:5px;padding:8px;
-    background:#fffbedee;border:2px solid white;
-    border-radius:40px;box-shadow:0 6px 0 #334d371b;
+    display:flex;
+    justify-content:center;
+    gap:5px;
+    padding:8px;
+    background:#fffbedee;
+    border:2px solid white;
+    border-radius:40px;
+    box-shadow:0 6px 0 #334d371b;
 }
 .seasons button{
-    border:0;border-radius:25px;padding:12px 23px;
-    color:#796e54;background:transparent;
-    font-size:14px;font-weight:bold;
+    border:0;
+    border-radius:25px;
+    padding:12px 23px;
+    color:#796e54;
+    background:transparent;
+    font-size:14px;
+    font-weight:bold;
 }
 .seasons button:hover{background:#e6ebd9}
-.seasons button.active{background:#7c9c77;color:white}
-#auto{font-size:12px;padding:12px 15px}
+.seasons button.active{
+    background:#7c9c77;
+    color:white;
+}
+#auto{
+    font-size:12px;
+    padding:12px 15px;
+}
 .artist-menu{
-    position:fixed;bottom:28px;left:24px;
-    display:flex;flex-direction:column;gap:7px;
+    position:fixed;
+    bottom:28px;
+    left:24px;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
 }
 .artist-menu small{
-    color:#fffbed;font-size:11px;
+    color:#fffbed;
+    font-size:11px;
     text-shadow:0 2px 5px #254739;
 }
 .artist-menu button{
-    border:1px solid #fff9e9;border-radius:18px;
-    background:#fffbeddf;color:#655f4a;
-    padding:8px 13px;text-align:left;font-size:12px;
+    border:1px solid #fff9e9;
+    border-radius:18px;
+    background:#fffbeddf;
+    color:#655f4a;
+    padding:8px 13px;
+    text-align:left;
+    font-size:12px;
 }
 .asset-error{
-    position:fixed;left:50%;top:40%;
+    position:fixed;
+    left:50%;
+    top:40%;
     transform:translate(-50%,-50%);
-    max-width:90vw;padding:15px 20px;
-    border-radius:18px;background:#fffbedf5;
-    color:#785746;text-align:center;
-    font-size:13px;line-height:1.8;
+    max-width:90vw;
+    padding:15px 20px;
+    border-radius:18px;
+    background:#fffbedf5;
+    color:#785746;
+    text-align:center;
+    font-size:13px;
+    line-height:1.8;
 }
 dialog{
-    width:450px;max-width:calc(100% - 32px);
-    max-height:85dvh;padding:0;overflow:auto;
-    border:3px solid #fffbed;border-radius:28px;
-    color:#625b49;background:#fff9e8;
+    width:450px;
+    max-width:calc(100% - 32px);
+    max-height:85dvh;
+    padding:0;
+    overflow:auto;
+    border:3px solid #fffbed;
+    border-radius:28px;
+    color:#625b49;
+    background:#fff9e8;
     box-shadow:0 25px 100px #142f4e55;
 }
 dialog::backdrop{
-    background:#18344470;backdrop-filter:blur(5px);
+    background:#18344470;
+    backdrop-filter:blur(5px);
 }
 .artist-cover{
-    position:relative;height:190px;
+    position:relative;
+    height:190px;
     background:linear-gradient(145deg,#d5e2bf,#9cbaa0);
-    display:grid;place-items:center;overflow:hidden;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
 }
-.artist-cover img{width:100%;height:100%;object-fit:cover}
+.artist-cover img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 .artist-monogram{
-    font-size:60px;color:#fffbed;
-    font-weight:bold;letter-spacing:-3px;
+    font-size:60px;
+    color:#fffbed;
+    font-weight:bold;
+    letter-spacing:-3px;
 }
 .artist-cover .close{
-    position:absolute;top:12px;right:12px;
-    width:34px;height:34px;border:0;border-radius:50%;
-    background:#fffbedee;color:#625b49;font-size:23px;
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:34px;
+    height:34px;
+    border:0;
+    border-radius:50%;
+    background:#fffbedee;
+    color:#625b49;
+    font-size:23px;
 }
 .artist-body{padding:26px}
-.artist-label{font-size:10px;letter-spacing:3px;color:#899173}
-.artist-body h2{
-    font-size:29px;margin:10px 0 6px;overflow-wrap:anywhere;
+.artist-label{
+    font-size:10px;
+    letter-spacing:3px;
+    color:#899173;
 }
-.artist-subtitle{font-size:13px;color:#8b8c74}
+.artist-body h2{
+    font-size:29px;
+    margin:10px 0 6px;
+    overflow-wrap:anywhere;
+}
+.artist-subtitle{
+    font-size:13px;
+    color:#8b8c74;
+}
 .artist-description{
-    font-size:14px;line-height:1.9;
-    white-space:pre-line;margin:20px 0;
+    font-size:14px;
+    line-height:1.9;
+    white-space:pre-line;
+    margin:20px 0;
 }
 .artist-section{
-    padding:16px 0;border-top:1px dashed #d8d9c0;
-    font-size:13px;line-height:1.9;
+    padding:16px 0;
+    border-top:1px dashed #d8d9c0;
+    font-size:13px;
+    line-height:1.9;
 }
 .artist-section b{
-    display:block;font-size:11px;
-    color:#8b9274;margin-bottom:5px;
+    display:block;
+    font-size:11px;
+    color:#8b9274;
+    margin-bottom:5px;
 }
-.artist-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.artist-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:15px;
+}
 .artist-links a{
-    display:inline-block;padding:10px 17px;border-radius:22px;
-    text-decoration:none;background:#e2e9d3;
-    color:#52684d;font-size:12px;
+    display:inline-block;
+    padding:10px 17px;
+    border-radius:22px;
+    text-decoration:none;
+    background:#e2e9d3;
+    color:#52684d;
+    font-size:12px;
 }
 .close-bottom{
-    width:100%;margin-top:22px;padding:13px;
-    border:0;border-radius:22px;background:#7e9e77;
-    color:white;font-weight:bold;
+    width:100%;
+    margin-top:22px;
+    padding:13px;
+    border:0;
+    border-radius:22px;
+    background:#7e9e77;
+    color:white;
+    font-weight:bold;
 }
 [hidden]{display:none!important}
-:focus-visible{outline:3px solid #c28c56;outline-offset:4px}
+:focus-visible{
+    outline:3px solid #c28c56;
+    outline-offset:4px;
+}
 @media(max-width:650px){
-    .title{top:22px;left:20px}
-    .title small{font-size:11px;letter-spacing:3px}
-    .title h1{font-size:29px;letter-spacing:-1px}
+    .title{
+        top:22px;
+        left:20px;
+    }
+    .title small{
+        font-size:11px;
+        letter-spacing:3px;
+    }
+    .title h1{
+        font-size:29px;
+        letter-spacing:-1px;
+    }
     .weather{
-        top:120px;right:15px;width:175px;padding:12px 14px;
+        top:120px;
+        right:15px;
+        width:175px;
+        padding:12px 14px;
     }
     .controls{bottom:20px}
-    .seasons button{padding:11px 14px;font-size:13px}
-    #auto{padding:11px 10px;font-size:11px}
-    .caption{padding:10px 15px;font-size:11px}
-    .artist-menu{left:15px;bottom:158px;gap:5px}
-    .artist-menu button{padding:7px 10px;font-size:10px}
+    .seasons button{
+        padding:11px 14px;
+        font-size:13px;
+    }
+    #auto{
+        padding:11px 10px;
+        font-size:11px;
+    }
+    .caption{
+        padding:10px 15px;
+        font-size:11px;
+    }
+    .artist-menu{
+        left:15px;
+        bottom:158px;
+        gap:5px;
+    }
+    .artist-menu button{
+        padding:7px 10px;
+        font-size:10px;
+    }
     .artist-menu small{
-        font-size:10px;max-width:135px;line-height:1.6;
+        font-size:10px;
+        max-width:135px;
+        line-height:1.6;
     }
     .artist-cover{height:160px}
     .artist-body{padding:22px}
@@ -196,6 +354,7 @@ dialog::backdrop{
         </select>
         <span id="time"></span>
     </div>
+
     <div id="weather-text" role="status">날씨 불러오는 중…</div>
     <div id="weather-status"></div>
 </aside>
@@ -206,6 +365,7 @@ dialog::backdrop{
 
 <div class="controls">
     <div class="caption" id="caption" aria-live="polite"></div>
+
     <div class="seasons" aria-label="풍경의 계절 선택">
         <button data-season="0" aria-pressed="false">봄</button>
         <button data-season="1" aria-pressed="false">여름</button>
@@ -224,7 +384,12 @@ dialog::backdrop{
     <div class="artist-cover">
         <div class="artist-monogram" id="artist-monogram"></div>
         <img id="artist-photo" alt="" hidden>
-        <button class="close" id="close-top" aria-label="소개 닫기">×</button>
+
+        <button
+            class="close"
+            id="close-top"
+            aria-label="소개 닫기"
+        >×</button>
     </div>
 
     <div class="artist-body">
@@ -244,14 +409,16 @@ dialog::backdrop{
         </div>
 
         <div class="artist-links" id="artist-links"></div>
-        <button class="close-bottom" id="close-bottom">숲으로 돌아가기</button>
+
+        <button class="close-bottom" id="close-bottom">
+            숲으로 돌아가기
+        </button>
     </div>
 </dialog>
 
 <script>
 /* ======================================================
-   아티스트 정보
-   아래 이름·소개·사진·링크를 실제 정보로 변경하세요.
+   아티스트 정보 수정 영역
 
    photo: "images/artist1.jpg"
    songs: ["곡 제목 1", "곡 제목 2"]
@@ -260,6 +427,8 @@ dialog::backdrop{
    0 = 청록색 원피스
    1 = 크림색 셔츠
    2 = 초록색 카디건
+
+   실제 이름과 소개가 정해지면 아래 내용을 변경하세요.
 ====================================================== */
 
 const ARTISTS = [
@@ -272,9 +441,7 @@ const ARTISTS = [
         photo: "",
         instagram: "",
         youtube: "",
-        sprite: 0,
-        x: 0.28,
-        z: 0.77
+        sprite: 0
     },
     {
         name: "아티스트 2",
@@ -285,9 +452,7 @@ const ARTISTS = [
         photo: "",
         instagram: "",
         youtube: "",
-        sprite: 1,
-        x: 0.71,
-        z: 0.71
+        sprite: 1
     },
     {
         name: "아티스트 3",
@@ -298,13 +463,11 @@ const ARTISTS = [
         photo: "",
         instagram: "",
         youtube: "",
-        sprite: 2,
-        x: 0.84,
-        z: 0.88
+        sprite: 2
     }
 ];
 
-/* 캐릭터 3명이 나란히 있는 이미지 */
+/* index.html과 같은 위치에 올린 이미지 */
 const CHARACTER_IMAGE = "./characters.png";
 
 const canvas = document.getElementById("world");
@@ -422,7 +585,44 @@ const MESSAGES = {
     ]
 };
 
-/* 기본 그리기 */
+/* ======================================================
+   계절마다 캐릭터 한 명 랜덤 배정
+   한 번 배정되면 새로고침 전까지 유지됩니다.
+   캐릭터가 3명이므로 네 계절 중 한 번은 재등장합니다.
+====================================================== */
+
+function shuffleCharacters() {
+    const order = ARTISTS.map((_, index) => index);
+
+    for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+    }
+
+    return order;
+}
+
+const SEASON_CHARACTERS = [];
+
+while (SEASON_CHARACTERS.length < 4 && ARTISTS.length) {
+    const order = shuffleCharacters();
+
+    if (
+        order.length > 1 &&
+        order[0] === SEASON_CHARACTERS[SEASON_CHARACTERS.length - 1]
+    ) {
+        [order[0], order[1]] = [order[1], order[0]];
+    }
+
+    SEASON_CHARACTERS.push(...order);
+}
+
+SEASON_CHARACTERS.length = Math.min(SEASON_CHARACTERS.length, 4);
+
+/* ======================================================
+   기본 그리기
+====================================================== */
+
 function rnd(n) {
     const value = Math.sin(n * 127.1 + 311.7) * 43758.5453;
     return value - Math.floor(value);
@@ -432,8 +632,10 @@ function resize() {
     W = innerWidth;
     H = innerHeight;
     DPR = Math.min(devicePixelRatio || 1, 2);
+
     canvas.width = W * DPR;
     canvas.height = H * DPR;
+
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
@@ -474,7 +676,10 @@ function point(x, z) {
     };
 }
 
-/* 한국 날짜와 계절 */
+/* ======================================================
+   한국 날짜와 계절
+====================================================== */
+
 function koreanParts() {
     const parts = new Intl.DateTimeFormat("en-US", {
         timeZone: "Asia/Seoul",
@@ -483,14 +688,16 @@ function koreanParts() {
         hourCycle: "h23"
     }).formatToParts(new Date());
 
-    return Object.fromEntries(parts.map(p => [p.type, p.value]));
+    return Object.fromEntries(parts.map(part => [part.type, part.value]));
 }
 
 function actualSeason() {
     const month = Number(koreanParts().month);
+
     if (month >= 3 && month <= 5) return 0;
     if (month >= 6 && month <= 8) return 1;
     if (month >= 9 && month <= 11) return 2;
+
     return 3;
 }
 
@@ -530,6 +737,7 @@ function updateCaption() {
 function updateSeasonUI() {
     document.querySelectorAll("[data-season]").forEach(button => {
         const selected = Number(button.dataset.season) === season;
+
         button.classList.toggle("active", selected);
         button.setAttribute("aria-pressed", String(selected));
     });
@@ -540,15 +748,24 @@ function updateSeasonUI() {
     updateCaption();
 }
 
-/* 실제 날씨 */
+/* ======================================================
+   실제 날씨
+====================================================== */
+
 function kindFromCode(code) {
     if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
     if ([95, 96, 99].includes(code)) return "storm";
-    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(code)) {
+
+    if (
+        [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82]
+        .includes(code)
+    ) {
         return "rain";
     }
+
     if ([45, 48].includes(code)) return "fog";
     if ([2, 3].includes(code)) return "cloudy";
+
     return "clear";
 }
 
@@ -569,7 +786,10 @@ function weatherDescription(code) {
 
 async function loadWeather() {
     const id = ++requestId;
-    if (activeController) activeController.abort();
+
+    if (activeController) {
+        activeController.abort();
+    }
 
     const controller = new AbortController();
     activeController = controller;
@@ -583,7 +803,10 @@ async function loadWeather() {
     night = hour < 6 || hour >= 18;
 
     updateCaption();
-    document.getElementById("weather-text").textContent = "날씨 불러오는 중…";
+
+    document.getElementById("weather-text").textContent =
+        "날씨 불러오는 중…";
+
     document.getElementById("weather-status").textContent =
         "선택한 지역의 날씨를 확인해요.";
 
@@ -605,9 +828,12 @@ async function loadWeather() {
             { signal: controller.signal }
         );
 
-        if (!response.ok) throw new Error("weather");
+        if (!response.ok) {
+            throw new Error("weather");
+        }
 
         const data = await response.json();
+
         if (id !== requestId) return;
 
         const current = data.current;
@@ -618,7 +844,9 @@ async function loadWeather() {
             !Number.isFinite(current.weather_code) ||
             ![0, 1].includes(current.is_day) ||
             typeof current.time !== "string"
-        ) throw new Error("invalid weather");
+        ) {
+            throw new Error("invalid weather");
+        }
 
         weatherReady = true;
         weatherState = "ready";
@@ -628,13 +856,16 @@ async function loadWeather() {
 
         document.getElementById("weather-text").textContent =
             `${Math.round(current.temperature_2m)}°C · ` +
-            `${weatherDescription(current.weather_code)} · ${night ? "밤" : "낮"}`;
+            `${weatherDescription(current.weather_code)} · ` +
+            `${night ? "밤" : "낮"}`;
 
         const status = document.getElementById("weather-status");
         status.replaceChildren();
+
         status.append(document.createTextNode(
             `자료 시각 ${current.time.slice(11, 16)} · 한국시간`
         ));
+
         status.append(document.createElement("br"));
 
         const source = document.createElement("a");
@@ -651,10 +882,13 @@ async function loadWeather() {
         if (id !== requestId) return;
 
         weatherState = "error";
+
         document.getElementById("weather-text").textContent =
             "날씨 연결을 확인해 주세요";
+
         document.getElementById("weather-status").textContent =
             "기본 풍경 표시 중 · 지역을 다시 선택하면 재시도해요.";
+
         updateCaption();
     } finally {
         clearTimeout(timeout);
@@ -698,9 +932,13 @@ function updateClock() {
     }
 }
 
-/* 아티스트 정보창 */
+/* ======================================================
+   아티스트 소개창
+====================================================== */
+
 const artistDialog = document.getElementById("artist-dialog");
 const artistPhoto = document.getElementById("artist-photo");
+
 let photoRequestId = 0;
 
 function safeURL(value) {
@@ -708,7 +946,10 @@ function safeURL(value) {
 
     try {
         const url = new URL(value, location.href);
-        return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+
+        return ["https:", "http:"].includes(url.protocol)
+            ? url.href
+            : "";
     } catch {
         return "";
     }
@@ -716,6 +957,7 @@ function safeURL(value) {
 
 function openArtist(index) {
     const artist = ARTISTS[index];
+
     if (!artist) return;
 
     const photoId = ++photoRequestId;
@@ -723,12 +965,14 @@ function openArtist(index) {
     document.getElementById("artist-name").textContent = artist.name;
     document.getElementById("artist-subtitle").textContent = artist.subtitle;
     document.getElementById("artist-description").textContent = artist.description;
+
     document.getElementById("artist-profile").textContent =
         artist.profile || "프로필 준비 중";
 
     const monogram = document.getElementById("artist-monogram");
     monogram.textContent = artist.name.slice(0, 2);
     monogram.hidden = false;
+
     artistPhoto.hidden = true;
     artistPhoto.removeAttribute("src");
 
@@ -739,10 +983,18 @@ function openArtist(index) {
 
         preload.onload = () => {
             if (photoId !== photoRequestId) return;
+
             artistPhoto.src = photoURL;
             artistPhoto.alt = `${artist.name} 사진`;
             artistPhoto.hidden = false;
             monogram.hidden = true;
+        };
+
+        preload.onerror = () => {
+            if (photoId !== photoRequestId) return;
+
+            artistPhoto.hidden = true;
+            monogram.hidden = false;
         };
 
         preload.src = photoURL;
@@ -754,7 +1006,10 @@ function openArtist(index) {
     if (Array.isArray(artist.songs) && artist.songs.length) {
         artist.songs.forEach((song, i) => {
             const row = document.createElement("div");
-            row.textContent = `${String(i + 1).padStart(2, "0")}  ${song}`;
+
+            row.textContent =
+                `${String(i + 1).padStart(2, "0")}  ${song}`;
+
             songs.append(row);
         });
     } else {
@@ -769,6 +1024,7 @@ function openArtist(index) {
         ["YouTube", artist.youtube]
     ].forEach(([label, value]) => {
         const href = safeURL(value);
+
         if (!href) return;
 
         const link = document.createElement("a");
@@ -776,40 +1032,58 @@ function openArtist(index) {
         link.textContent = label;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
+
         links.append(link);
     });
 
-    if (!artistDialog.open) artistDialog.showModal();
+    if (!artistDialog.open) {
+        artistDialog.showModal();
+    }
 }
 
 ARTISTS.forEach((artist, index) => {
     const button = document.createElement("button");
     button.textContent = artist.name;
-    button.addEventListener("click", () => openArtist(index));
+
+    button.addEventListener("click", () => {
+        openArtist(index);
+    });
+
     document.getElementById("artist-menu").append(button);
 });
 
 document.getElementById("close-top").addEventListener(
-    "click", () => artistDialog.close()
-);
-document.getElementById("close-bottom").addEventListener(
-    "click", () => artistDialog.close()
+    "click",
+    () => artistDialog.close()
 );
 
-/* 숲 구성 */
+document.getElementById("close-bottom").addEventListener(
+    "click",
+    () => artistDialog.close()
+);
+
+/* ======================================================
+   숲 구성
+====================================================== */
+
 const TREES = [];
 
 for (let row = 0; row < 4; row++) {
     for (let col = 0; col < 9; col++) {
-        const x = (col + 0.25 + rnd(row * 20 + col) * 0.45) / 9;
-        const z = 0.12 + row * 0.215 + rnd(row * 15 + col + 88) * 0.07;
+        const x =
+            (col + 0.25 + rnd(row * 20 + col) * 0.45) / 9;
+
+        const z =
+            0.12 + row * 0.215 + rnd(row * 15 + col + 88) * 0.07;
+
         const center = 0.52 + Math.sin(z * 5) * 0.08;
 
         if (Math.abs(x - center) < 0.145) continue;
         if (z > 0.65 && x > 0.2 && x < 0.8) continue;
 
         TREES.push({
-            x, z,
+            x,
+            z,
             seed: row * 83 + col * 17,
             pine: col % 4 === 0
         });
@@ -826,8 +1100,11 @@ const FLOWERS = Array.from({ length: 100 }, (_, i) => ({
     x: rnd(i + 800),
     z: 0.14 + rnd(i + 1000) * 0.8,
     id: i
-})).filter(f => {
-    return Math.abs(f.x - (0.52 + Math.sin(f.z * 5) * 0.08)) > 0.1;
+})).filter(flower => {
+    const center =
+        0.52 + Math.sin(flower.z * 5) * 0.08;
+
+    return Math.abs(flower.x - center) > 0.1;
 });
 
 const PARTICLES = Array.from({ length: 120 }, (_, i) => ({
@@ -842,7 +1119,13 @@ function drawTree(tree) {
     const p = point(tree.x, tree.z);
     const theme = THEMES[season];
 
-    oval(p.x, p.y + 2 * p.s, 47 * p.s, 12 * p.s, "#294c3624");
+    oval(
+        p.x,
+        p.y + 2 * p.s,
+        47 * p.s,
+        12 * p.s,
+        "#294c3624"
+    );
 
     ctx.save();
     ctx.translate(p.x, p.y);
@@ -865,7 +1148,9 @@ function drawTree(tree) {
     line(-3, -76, -1, -14, "#c5a06b", 7);
     line(9, -52, 10, -25, "#88683f70", 3);
 
-    const sway = reduced ? 0 : Math.sin(tick * 0.012 + tree.seed) * 1.7;
+    const sway = reduced
+        ? 0
+        : Math.sin(tick * 0.012 + tree.seed) * 1.7;
 
     if (tree.pine) {
         for (let j = 0; j < 4; j++) {
@@ -882,6 +1167,7 @@ function drawTree(tree) {
 
             if (season === 3 || weatherKind === "snow") {
                 ctx.fillStyle = j % 2 ? "#fcfefe" : "#e6eff2";
+
                 ctx.beginPath();
                 ctx.moveTo(sway, y - 62);
                 ctx.lineTo(r * 0.78, y - 12);
@@ -894,14 +1180,21 @@ function drawTree(tree) {
         oval(sway, -116, 63, 56, theme.leaves[2]);
 
         for (let j = 0; j < 65; j++) {
-            const angle = rnd(tree.seed + j * 3) * Math.PI * 2;
-            const radius = Math.sqrt(rnd(tree.seed + j * 5 + 9));
-            const size = 10 + rnd(tree.seed + j + 2) * 8;
+            const angle =
+                rnd(tree.seed + j * 3) * Math.PI * 2;
+
+            const radius =
+                Math.sqrt(rnd(tree.seed + j * 5 + 9));
+
+            const size =
+                10 + rnd(tree.seed + j + 2) * 8;
 
             oval(
                 Math.cos(angle) * 57 * radius + sway,
                 -121 + Math.sin(angle) * 49 * radius,
-                size, size * 0.85, theme.leaves[j % 4]
+                size,
+                size * 0.85,
+                theme.leaves[j % 4]
             );
         }
 
@@ -910,7 +1203,11 @@ function drawTree(tree) {
         }
 
         if (season === 1) {
-            [[-30, -118], [29, -132], [7, -88]].forEach(([x, y]) => {
+            [
+                [-30, -118],
+                [29, -132],
+                [7, -88]
+            ].forEach(([x, y]) => {
                 line(x, y, x + 2, y - 13, "#6c5d35", 3);
                 oval(x, y, 10, 11, "#d94f3b");
                 oval(x - 3, y - 4, 3, 4, "#ff9c72");
@@ -923,46 +1220,83 @@ function drawTree(tree) {
 }
 
 function drawRiver() {
-    const left = [], right = [];
+    const left = [];
+    const right = [];
 
     for (let i = 0; i <= 60; i++) {
         const z = i / 60;
         const center = 0.52 + Math.sin(z * 5) * 0.08;
+
         left.push(point(center - 0.065, z));
         right.push(point(center + 0.065, z));
     }
 
     ctx.beginPath();
-    left.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
-    right.reverse().forEach(p => ctx.lineTo(p.x, p.y));
+
+    left.forEach((p, i) => {
+        if (i) ctx.lineTo(p.x, p.y);
+        else ctx.moveTo(p.x, p.y);
+    });
+
+    right.reverse().forEach(p => {
+        ctx.lineTo(p.x, p.y);
+    });
+
     ctx.closePath();
 
-    ctx.strokeStyle = season === 3 ? "#bfd7df" : "#d7bd7c";
+    ctx.strokeStyle =
+        season === 3 ? "#bfd7df" : "#d7bd7c";
+
     ctx.lineWidth = 16;
     ctx.lineJoin = "round";
     ctx.stroke();
 
-    const gradient = ctx.createLinearGradient(0, H * 0.3, 0, H);
-    gradient.addColorStop(0, season === 3 ? "#b5dbe4" : "#81d0d8");
-    gradient.addColorStop(1, season === 3 ? "#83b7cd" : "#4aafc5");
+    const gradient = ctx.createLinearGradient(
+        0,
+        H * 0.3,
+        0,
+        H
+    );
+
+    gradient.addColorStop(
+        0,
+        season === 3 ? "#b5dbe4" : "#81d0d8"
+    );
+
+    gradient.addColorStop(
+        1,
+        season === 3 ? "#83b7cd" : "#4aafc5"
+    );
+
     ctx.fillStyle = gradient;
     ctx.fill();
 
     for (let i = 0; i < 35; i++) {
         const z = rnd(i + 100);
         const center = 0.52 + Math.sin(z * 5) * 0.08;
-        const p = point(center + (rnd(i + 34) - 0.5) * 0.09, z);
+
+        const p = point(
+            center + (rnd(i + 34) - 0.5) * 0.09,
+            z
+        );
 
         box(
             p.x + Math.sin(tick * 0.015 + i) * 5,
-            p.y, 12 + p.s * 15, 2, 1, "#ffffff65"
+            p.y,
+            12 + p.s * 15,
+            2,
+            1,
+            "#ffffff65"
         );
     }
 }
 
 function drawBridge() {
     const z = 0.54;
-    const p = point(0.52 + Math.sin(z * 5) * 0.08, z);
+    const p = point(
+        0.52 + Math.sin(z * 5) * 0.08,
+        z
+    );
 
     ctx.save();
     ctx.translate(p.x, p.y);
@@ -972,7 +1306,14 @@ function drawBridge() {
     box(-103, -10, 206, 39, 6, "#92734e");
 
     for (let i = 0; i < 12; i++) {
-        box(-100 + i * 17, -12, 15, 36, 2, i % 2 ? "#c8a777" : "#b99969");
+        box(
+            -100 + i * 17,
+            -12,
+            15,
+            36,
+            2,
+            i % 2 ? "#c8a777" : "#b99969"
+        );
     }
 
     for (const y of [-25, 20]) {
@@ -1006,7 +1347,15 @@ function drawFlower(flower) {
         ctx.save();
         ctx.translate(p.x, p.y);
         ctx.rotate(id);
-        oval(0, 0, 6 * s, 3 * s, id % 2 ? "#b67a3e" : "#e8c978");
+
+        oval(
+            0,
+            0,
+            6 * s,
+            3 * s,
+            id % 2 ? "#b67a3e" : "#e8c978"
+        );
+
         ctx.restore();
         return;
     }
@@ -1014,27 +1363,37 @@ function drawFlower(flower) {
     line(p.x, p.y, p.x, p.y - 13 * s, "#568746", 2 * s);
     oval(p.x - 3 * s, p.y - 5 * s, 5 * s, 2 * s, "#568746");
 
-    const color = ["#fff4dc", "#f2a8bc", "#efda73", "#ec8966"][id % 4];
+    const color = [
+        "#fff4dc",
+        "#f2a8bc",
+        "#efda73",
+        "#ec8966"
+    ][id % 4];
 
     for (let j = 0; j < 5; j++) {
         const angle = j * Math.PI * 2 / 5;
+
         oval(
             p.x + Math.cos(angle) * 4 * s,
             p.y - 15 * s + Math.sin(angle) * 4 * s,
-            4 * s, 4 * s, color
+            4 * s,
+            4 * s,
+            color
         );
     }
 
     oval(p.x, p.y - 15 * s, 2.5 * s, 2.5 * s, "#c9a34d");
 }
 
-/* 업로드한 이미지에서 캐릭터를 한 명씩 잘라 그립니다. */
-function drawResident(artist, index) {
-    const p = point(artist.x, artist.z);
+/* ======================================================
+   업로드한 이미지에서 캐릭터 한 명 그리기
+====================================================== */
 
-    // 모바일에서도 캐릭터가 너무 작아지지 않게 조절합니다.
+function drawResident(artist, index) {
+    const p = point(0.31, 0.78);
+
     const size = Math.max(
-        W < 600 ? 0.68 : 0.8,
+        W < 600 ? 0.78 : 0.95,
         p.s
     );
 
@@ -1042,7 +1401,8 @@ function drawResident(artist, index) {
         ? 0
         : Math.sin(tick * 0.025 + index * 2) * 2;
 
-    const drawHeight = 178 * size;
+    const drawHeight = 195 * size;
+
     const cellWidth = charactersReady
         ? characterSheet.naturalWidth / 3
         : 1;
@@ -1053,9 +1413,17 @@ function drawResident(artist, index) {
 
     const drawWidth = drawHeight * aspect;
     const drawX = p.x - drawWidth / 2;
-    const drawY = p.y - drawHeight + 13 * size + bounce;
 
-    oval(p.x, p.y + 1, 25 * size, 7 * size, "#314c392b");
+    const drawY =
+        p.y - drawHeight + 13 * size + bounce;
+
+    oval(
+        p.x,
+        p.y + 1,
+        27 * size,
+        7 * size,
+        "#314c392b"
+    );
 
     if (charactersReady) {
         ctx.drawImage(
@@ -1105,6 +1473,14 @@ function drawResident(artist, index) {
     });
 }
 
+function drawSeasonCharacter() {
+    const index = SEASON_CHARACTERS[season];
+
+    if (index === undefined) return;
+
+    drawResident(ARTISTS[index], index);
+}
+
 function drawDecorations() {
     const p = point(0.18, 0.91);
     const s = p.s;
@@ -1119,16 +1495,37 @@ function drawDecorations() {
     for (let x = 0; x < 6; x++) {
         for (let y = 0; y < 4; y++) {
             if ((x + y) % 2 === 0) {
-                ctx.fillStyle = season === 3 ? "#91afb6" : "#bb8374";
-                ctx.fillRect(-50 + x * 17, -28 + y * 17, 17, 17);
+                ctx.fillStyle =
+                    season === 3 ? "#91afb6" : "#bb8374";
+
+                ctx.fillRect(
+                    -50 + x * 17,
+                    -28 + y * 17,
+                    17,
+                    17
+                );
             }
         }
     }
 
     ctx.restore();
 
-    oval(p.x, p.y - 7 * s, 18 * s, 7 * s, "#9b7446");
-    box(p.x - 18 * s, p.y - 22 * s, 36 * s, 16 * s, 4 * s, "#be955e");
+    oval(
+        p.x,
+        p.y - 7 * s,
+        18 * s,
+        7 * s,
+        "#9b7446"
+    );
+
+    box(
+        p.x - 18 * s,
+        p.y - 22 * s,
+        36 * s,
+        16 * s,
+        4 * s,
+        "#be955e"
+    );
 
     for (let i = 0; i < 6; i++) {
         const m = point(
@@ -1136,18 +1533,41 @@ function drawDecorations() {
             0.5 + rnd(i + 500) * 0.45
         );
 
-        box(m.x - 3 * m.s, m.y - 14 * m.s, 6 * m.s, 15 * m.s, 2 * m.s, "#efdfbf");
+        box(
+            m.x - 3 * m.s,
+            m.y - 14 * m.s,
+            6 * m.s,
+            15 * m.s,
+            2 * m.s,
+            "#efdfbf"
+        );
+
         oval(
-            m.x, m.y - 15 * m.s, 11 * m.s, 7 * m.s,
+            m.x,
+            m.y - 15 * m.s,
+            11 * m.s,
+            7 * m.s,
             season === 2 ? "#bd6951" : "#b9966b"
         );
-        oval(m.x - 3 * m.s, m.y - 17 * m.s, 2 * m.s, 2 * m.s, "#fff0d2");
+
+        oval(
+            m.x - 3 * m.s,
+            m.y - 17 * m.s,
+            2 * m.s,
+            2 * m.s,
+            "#fff0d2"
+        );
     }
 }
 
-/* 하늘 */
+/* ======================================================
+   하늘과 날씨 효과
+====================================================== */
+
 function drawSky() {
-    const cloudy = ["rain", "storm"].includes(weatherKind) || cloudCover > 75;
+    const cloudy =
+        ["rain", "storm"].includes(weatherKind) ||
+        cloudCover > 75;
 
     const colors = night
         ? ["#192e49", "#647c91"]
@@ -1155,7 +1575,13 @@ function drawSky() {
         ? ["#8eabb9", "#d1dce0"]
         : THEMES[season].sky;
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, H * 0.55);
+    const gradient = ctx.createLinearGradient(
+        0,
+        0,
+        0,
+        H * 0.55
+    );
+
     gradient.addColorStop(0, colors[0]);
     gradient.addColorStop(1, colors[1]);
 
@@ -1164,26 +1590,52 @@ function drawSky() {
 
     if (night && cloudCover < 65) {
         for (let i = 0; i < 45; i++) {
-            const alpha = 0.4 + Math.sin(tick * 0.02 + i) * 0.15;
+            const alpha =
+                0.4 + Math.sin(tick * 0.02 + i) * 0.15;
 
             oval(
                 rnd(i + 9) * W,
                 rnd(i + 28) * H * 0.32,
-                1.2, 1.2,
+                1.2,
+                1.2,
                 `rgba(255,250,218,${alpha})`
             );
         }
     }
 
     if (!cloudy) {
-        oval(W * 0.7, H * 0.13, 27, 27, night ? "#fff4cc" : "#fff0b5");
-        if (night) oval(W * 0.7 + 10, H * 0.13 - 7, 25, 25, colors[0]);
+        oval(
+            W * 0.7,
+            H * 0.13,
+            27,
+            27,
+            night ? "#fff4cc" : "#fff0b5"
+        );
+
+        if (night) {
+            oval(
+                W * 0.7 + 10,
+                H * 0.13 - 7,
+                25,
+                25,
+                colors[0]
+            );
+        }
     }
 
     for (let i = 0; i < 6; i++) {
-        const x = W * (i * 0.21 - 0.04) + Math.sin(tick * 0.001 + i) * 20;
-        const y = H * (0.16 + (i % 3) * 0.045);
-        const color = night ? "#9fb1c13b" : cloudy ? "#e3ebedb0" : "#ffffffab";
+        const x =
+            W * (i * 0.21 - 0.04) +
+            Math.sin(tick * 0.001 + i) * 20;
+
+        const y =
+            H * (0.16 + (i % 3) * 0.045);
+
+        const color = night
+            ? "#9fb1c13b"
+            : cloudy
+            ? "#e3ebedb0"
+            : "#ffffffab";
 
         oval(x, y, 55, 13, color);
         oval(x - 16, y - 8, 26, 18, color);
@@ -1191,40 +1643,73 @@ function drawSky() {
     }
 }
 
-/* 비·눈·꽃잎·낙엽 */
 function drawAtmosphere(dt) {
     const rain = ["rain", "storm"].includes(weatherKind);
     const snow = weatherKind === "snow";
-    const count = rain ? 110 : snow ? 90 : season === 1 ? 18 : 45;
+
+    const count = rain
+        ? 110
+        : snow
+        ? 90
+        : season === 1
+        ? 18
+        : 45;
 
     for (let i = 0; i < count; i++) {
-        const p = PARTICLES[i];
+        const particle = PARTICLES[i];
 
         if (!reduced) {
-            p.y += p.speed * dt * (rain ? 6 : 1);
-            if (p.y > 1.05) p.y = -0.05;
+            particle.y +=
+                particle.speed * dt * (rain ? 6 : 1);
+
+            if (particle.y > 1.05) {
+                particle.y = -0.05;
+            }
         }
 
-        const x = p.x * W + Math.sin(tick * 0.01 + p.phase) * (rain ? 4 : 25);
-        const y = p.y * H;
+        const x =
+            particle.x * W +
+            Math.sin(tick * 0.01 + particle.phase) *
+            (rain ? 4 : 25);
+
+        const y = particle.y * H;
 
         if (rain) {
-            line(x, y, x - 4, y + 13, "#d8ecf077", 1);
+            line(
+                x,
+                y,
+                x - 4,
+                y + 13,
+                "#d8ecf077",
+                1
+            );
         } else if (snow) {
-            oval(x, y, p.size * 0.65, p.size * 0.65, "#ffffffd9");
+            oval(
+                x,
+                y,
+                particle.size * 0.65,
+                particle.size * 0.65,
+                "#ffffffd9"
+            );
         } else if (season === 1) {
-            if (night) oval(x, y, 2, 2, "#f5ee9d9c");
+            if (night) {
+                oval(x, y, 2, 2, "#f5ee9d9c");
+            }
         } else {
             ctx.save();
             ctx.translate(x, y);
-            ctx.rotate(tick * 0.009 + p.phase);
+            ctx.rotate(tick * 0.009 + particle.phase);
 
             oval(
-                0, 0,
-                p.size,
-                p.size * (season === 3 ? 1 : 0.45),
-                season === 0 ? "#ffe4edcc" :
-                season === 2 ? "#d79756cc" : "#ffffff9c"
+                0,
+                0,
+                particle.size,
+                particle.size * (season === 3 ? 1 : 0.45),
+                season === 0
+                    ? "#ffe4edcc"
+                    : season === 2
+                    ? "#d79756cc"
+                    : "#ffffff9c"
             );
 
             ctx.restore();
@@ -1237,49 +1722,93 @@ function drawAtmosphere(dt) {
     }
 }
 
-/* 앞뒤 순서 */
+/* ======================================================
+   앞뒤 배치
+====================================================== */
+
 const SCENE_OBJECTS = [
     ...TREES.map(tree => ({
         z: tree.z,
         draw: () => drawTree(tree)
     })),
-    { z: 0.54, draw: drawBridge },
-    { z: 0.89, draw: drawDecorations },
-    ...ARTISTS.map((artist, index) => ({
-        z: artist.z,
-        draw: () => drawResident(artist, index)
-    }))
+    {
+        z: 0.54,
+        draw: drawBridge
+    },
+    {
+        z: 0.78,
+        draw: drawSeasonCharacter
+    },
+    {
+        z: 0.89,
+        draw: drawDecorations
+    }
 ].sort((a, b) => a.z - b.z);
 
 function render(time) {
-    const dt = Math.min((time - previousTime) / 16.67 || 1, 2);
+    const dt = Math.min(
+        (time - previousTime) / 16.67 || 1,
+        2
+    );
+
     previousTime = time;
 
-    if (!reduced) tick += dt;
+    if (!reduced) {
+        tick += dt;
+    }
+
     residentHits = [];
 
     const theme = THEMES[season];
+
     drawSky();
 
-    ctx.fillStyle = season === 3 ? "#c9dce0" : "#91b79a";
+    ctx.fillStyle =
+        season === 3 ? "#c9dce0" : "#91b79a";
+
     ctx.beginPath();
     ctx.moveTo(0, H * 0.38);
-    ctx.bezierCurveTo(W * 0.2, H * 0.2, W * 0.3, H * 0.37, W * 0.5, H * 0.29);
-    ctx.bezierCurveTo(W * 0.7, H * 0.19, W * 0.85, H * 0.32, W, H * 0.25);
+
+    ctx.bezierCurveTo(
+        W * 0.2,
+        H * 0.2,
+        W * 0.3,
+        H * 0.37,
+        W * 0.5,
+        H * 0.29
+    );
+
+    ctx.bezierCurveTo(
+        W * 0.7,
+        H * 0.19,
+        W * 0.85,
+        H * 0.32,
+        W,
+        H * 0.25
+    );
+
     ctx.lineTo(W, H);
     ctx.lineTo(0, H);
     ctx.fill();
 
     ctx.fillStyle = theme.ground;
+
     ctx.beginPath();
     ctx.moveTo(0, H * 0.39);
-    ctx.quadraticCurveTo(W * 0.5, H * 0.27, W, H * 0.38);
+    ctx.quadraticCurveTo(
+        W * 0.5,
+        H * 0.27,
+        W,
+        H * 0.38
+    );
+
     ctx.lineTo(W, H);
     ctx.lineTo(0, H);
     ctx.fill();
 
     GRASS.forEach(grass => {
         const p = point(grass.x, grass.z);
+
         ctx.fillStyle = theme.grass[grass.color];
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
@@ -1291,21 +1820,30 @@ function render(time) {
 
     drawRiver();
     FLOWERS.forEach(drawFlower);
-    SCENE_OBJECTS.forEach(object => object.draw());
+
+    SCENE_OBJECTS.forEach(object => {
+        object.draw();
+    });
 
     if (night) {
         ctx.fillStyle = "#17355e55";
         ctx.fillRect(0, H * 0.3, W, H * 0.7);
-    } else if (["rain", "storm"].includes(weatherKind)) {
+    } else if (
+        ["rain", "storm"].includes(weatherKind)
+    ) {
         ctx.fillStyle = "#415b711f";
         ctx.fillRect(0, H * 0.3, W, H * 0.7);
     }
 
     drawAtmosphere(dt);
+
     requestAnimationFrame(render);
 }
 
-/* 캐릭터와 이름표 클릭 */
+/* ======================================================
+   캐릭터 및 이름표 클릭
+====================================================== */
+
 function hitResident(x, y) {
     return [...residentHits].reverse().find(hit => {
         const body =
@@ -1325,22 +1863,36 @@ function hitResident(x, y) {
 }
 
 canvas.addEventListener("pointerdown", event => {
-    const hit = hitResident(event.clientX, event.clientY);
-    if (hit) openArtist(hit.index);
+    const hit = hitResident(
+        event.clientX,
+        event.clientY
+    );
+
+    if (hit) {
+        openArtist(hit.index);
+    }
 });
 
 canvas.addEventListener("pointermove", event => {
-    canvas.style.cursor = hitResident(event.clientX, event.clientY)
-        ? "pointer"
-        : "default";
+    const hit = hitResident(
+        event.clientX,
+        event.clientY
+    );
+
+    canvas.style.cursor = hit ? "pointer" : "default";
 });
 
 /* 시작 */
+
 season = actualSeason();
+
 updateSeasonUI();
 updateClock();
+
 setInterval(updateClock, 10000);
+
 loadWeather();
+
 requestAnimationFrame(render);
 </script>
 </body>
