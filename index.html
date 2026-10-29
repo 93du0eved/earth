@@ -2,346 +2,200 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>지구방송6 | 다시 만난 계절</title>
 
 <style>
 *{box-sizing:border-box}
 body{
-    margin:0;
-    overflow:hidden;
-    background:#b9d5df;
+    margin:0;overflow:hidden;background:#b9d5df;
     font-family:"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
     color:#625b49;
 }
 button,select{font:inherit}
 button{cursor:pointer}
-canvas{
-    display:block;
-    width:100%;
-    height:100dvh;
-    touch-action:manipulation;
-}
+canvas{display:block;width:100%;height:100dvh;touch-action:manipulation}
 .title{
-    position:fixed;
-    top:28px;
-    left:34px;
-    color:#fffbed;
-    pointer-events:none;
+    position:fixed;top:28px;left:34px;
+    color:#fffbed;pointer-events:none;
     text-shadow:0 3px 12px #16394c70;
 }
-.title small{
-    font-size:14px;
-    letter-spacing:5px;
-}
 .title h1{
-    font-size:clamp(28px,4vw,52px);
-    margin:10px 0;
-    letter-spacing:-2px;
+    font-size:clamp(42px,6vw,78px);
+    margin:0;letter-spacing:-3px;line-height:1.15;
+}
+.title p{
+    font-size:clamp(17px,2vw,26px);
+    margin:12px 0 0;letter-spacing:2px;font-weight:500;
 }
 .weather{
-    position:fixed;
-    top:26px;
-    right:28px;
-    width:210px;
-    padding:16px 18px;
-    background:#fffbeded;
-    border:2px solid #fffdf4;
-    border-radius:24px;
-    box-shadow:0 6px 0 #34483918;
-    backdrop-filter:blur(12px);
+    position:fixed;top:26px;right:28px;width:210px;
+    padding:16px 18px;background:#fffbeded;
+    border:2px solid #fffdf4;border-radius:24px;
+    box-shadow:0 6px 0 #34483918;backdrop-filter:blur(12px);
 }
-.weather-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-}
+.weather-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
 select{
-    max-width:115px;
-    border:0;
-    background:transparent;
-    color:#625b49;
-    font-size:14px;
-    font-weight:bold;
+    max-width:115px;border:0;background:transparent;
+    color:#625b49;font-size:14px;font-weight:bold;
 }
-#time{
-    font-size:17px;
-    font-weight:bold;
-}
-#weather-text{
-    margin-top:12px;
-    font-size:14px;
-    font-weight:bold;
-}
-#weather-status{
-    margin-top:7px;
-    font-size:10px;
-    line-height:1.7;
-    color:#858574;
-}
+#time{font-size:17px;font-weight:bold}
+#weather-text{margin-top:12px;font-size:14px;font-weight:bold}
+#weather-status{margin-top:7px;font-size:10px;line-height:1.7;color:#858574}
 #weather-status a{color:inherit}
 .controls{
-    position:fixed;
-    bottom:26px;
-    left:50%;
-    transform:translateX(-50%);
-    width:max-content;
-    max-width:94%;
-    text-align:center;
+    position:fixed;bottom:25px;left:50%;transform:translateX(-50%);
+    width:max-content;max-width:94%;text-align:center;
 }
 .caption{
-    display:inline-block;
-    max-width:90vw;
-    padding:12px 24px;
-    margin-bottom:13px;
-    border:2px solid white;
-    border-radius:26px;
-    background:#fffbedee;
-    font-size:13px;
-    line-height:1.7;
-    box-shadow:0 4px 0 #334d3715;
+    display:inline-block;max-width:90vw;padding:12px 24px;
+    margin-bottom:13px;border:2px solid white;border-radius:26px;
+    background:#fffbedee;font-size:13px;line-height:1.7;
 }
 .seasons{
-    display:flex;
-    justify-content:center;
-    gap:5px;
-    padding:8px;
-    background:#fffbedee;
-    border:2px solid white;
-    border-radius:40px;
-    box-shadow:0 6px 0 #334d371b;
+    display:flex;justify-content:center;gap:5px;padding:8px;
+    background:#fffbedee;border:2px solid white;
+    border-radius:40px;box-shadow:0 6px 0 #334d371b;
 }
 .seasons button{
-    border:0;
-    border-radius:25px;
-    padding:12px 23px;
-    color:#796e54;
-    background:transparent;
-    font-size:14px;
-    font-weight:bold;
+    border:0;border-radius:25px;padding:12px 23px;
+    color:#796e54;background:transparent;font-size:14px;font-weight:bold;
 }
 .seasons button:hover{background:#e6ebd9}
-.seasons button.active{
-    background:#7c9c77;
-    color:white;
+.seasons button.active{background:#7c9c77;color:white}
+#auto{font-size:12px;padding:12px 15px}
+.side-menu{
+    position:fixed;bottom:27px;left:24px;
+    display:flex;flex-direction:column;gap:7px;
 }
-#auto{
-    font-size:12px;
-    padding:12px 15px;
-}
-.artist-menu{
-    position:fixed;
-    bottom:28px;
-    left:24px;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-}
-.artist-menu small{
-    color:#fffbed;
-    font-size:11px;
-    text-shadow:0 2px 5px #254739;
-}
-.artist-menu button{
-    border:1px solid #fff9e9;
-    border-radius:18px;
-    background:#fffbeddf;
-    color:#655f4a;
-    padding:8px 13px;
-    text-align:left;
-    font-size:12px;
+.side-menu small{color:#fffbed;font-size:11px;text-shadow:0 2px 5px #254739}
+.side-menu button{
+    border:1px solid #fff9e9;border-radius:18px;
+    background:#fffbeddf;color:#655f4a;
+    padding:9px 14px;text-align:left;font-size:12px;
 }
 .asset-error{
-    position:fixed;
-    left:50%;
-    top:40%;
-    transform:translate(-50%,-50%);
-    max-width:90vw;
-    padding:15px 20px;
-    border-radius:18px;
-    background:#fffbedf5;
-    color:#785746;
-    text-align:center;
-    font-size:13px;
-    line-height:1.8;
+    position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
+    padding:15px 20px;border-radius:18px;background:#fffbedf5;
+    max-width:90vw;text-align:center;font-size:13px;line-height:1.8;
 }
 dialog{
-    width:450px;
-    max-width:calc(100% - 32px);
-    max-height:85dvh;
-    padding:0;
-    overflow:auto;
-    border:3px solid #fffbed;
-    border-radius:28px;
-    color:#625b49;
-    background:#fff9e8;
+    width:450px;max-width:calc(100% - 28px);max-height:90dvh;
+    padding:0;overflow:auto;border:3px solid #fffbed;
+    border-radius:28px;color:#625b49;background:#fff9e8;
     box-shadow:0 25px 100px #142f4e55;
 }
-dialog::backdrop{
-    background:#18344470;
-    backdrop-filter:blur(5px);
+dialog::backdrop{background:#18344480;backdrop-filter:blur(5px)}
+.cover{
+    position:relative;height:180px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#d5e2bf,#9cbaa0);overflow:hidden;
 }
-.artist-cover{
-    position:relative;
-    height:190px;
-    background:linear-gradient(145deg,#d5e2bf,#9cbaa0);
-    display:grid;
-    place-items:center;
-    overflow:hidden;
+.cover img{width:100%;height:100%;object-fit:cover}
+.monogram{font-size:60px;color:#fffbed;font-weight:bold}
+.close{
+    position:absolute;right:12px;top:12px;
+    width:34px;height:34px;border:0;border-radius:50%;
+    background:#fffbedee;color:#625b49;font-size:23px;z-index:2;
 }
-.artist-cover img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.dialog-body{padding:25px}
+.eyebrow{font-size:10px;letter-spacing:3px;color:#899173}
+.dialog-body h2{font-size:28px;margin:12px 0 7px}
+.subtitle{font-size:13px;color:#8b8c74}
+.description{font-size:14px;line-height:1.9;white-space:pre-line;margin:20px 0}
+.section{padding:15px 0;border-top:1px dashed #d8d9c0;font-size:13px;line-height:1.9}
+.section b{display:block;font-size:11px;color:#8b9274;margin-bottom:5px}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a{
+    padding:10px 16px;border-radius:22px;text-decoration:none;
+    background:#e2e9d3;color:#52684d;font-size:12px;
 }
-.artist-monogram{
-    font-size:60px;
-    color:#fffbed;
-    font-weight:bold;
-    letter-spacing:-3px;
+.primary{
+    border:0;border-radius:24px;padding:13px 24px;
+    background:#7e9e77;color:white;font-weight:bold;
 }
-.artist-cover .close{
-    position:absolute;
-    top:12px;
-    right:12px;
-    width:34px;
-    height:34px;
-    border:0;
-    border-radius:50%;
-    background:#fffbedee;
-    color:#625b49;
-    font-size:23px;
+.wide{width:100%;margin-top:20px}
+#game-dialog{width:650px;position:fixed}
+.game-header{
+    position:relative;padding:25px 28px 20px;
+    background:linear-gradient(135deg,#dce8cf,#eaf0dd);
 }
-.artist-body{padding:26px}
-.artist-label{
-    font-size:10px;
-    letter-spacing:3px;
-    color:#899173;
+.game-header h2{font-size:27px;margin:10px 0}
+.game-header p{font-size:13px;margin:0;line-height:1.8}
+.game-content{padding:20px}
+.game-stats{display:flex;justify-content:space-between;gap:10px;margin-bottom:14px}
+.stat{
+    background:#eeedda;border-radius:16px;padding:11px 16px;
+    flex:1;font-size:12px;
 }
-.artist-body h2{
-    font-size:29px;
-    margin:10px 0 6px;
-    overflow-wrap:anywhere;
+.stat strong{font-size:22px;display:block;margin-top:3px}
+#game-field{
+    position:relative;height:300px;overflow:hidden;border-radius:22px;
+    background:linear-gradient(#d6e9d0,#a8c890);
+    display:grid;grid-template-columns:repeat(5,1fr);
+    grid-template-rows:repeat(4,1fr);gap:8px;padding:15px;
 }
-.artist-subtitle{
-    font-size:13px;
-    color:#8b8c74;
+.game-slot{display:grid;place-items:center;min-width:0}
+.note{
+    width:48px;height:48px;border:2px solid #fff9df;
+    border-radius:50%;background:#fff8dc;color:#688b65;
+    font-size:29px;box-shadow:0 5px 0 #5b7f5126;
+    animation:appear .18s ease-out;
 }
-.artist-description{
-    font-size:14px;
-    line-height:1.9;
-    white-space:pre-line;
-    margin:20px 0;
+.note:hover{background:#fff;transform:scale(1.08)}
+.game-overlay{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;
+    padding:25px;text-align:center;
+    background:#e3edd8ed;z-index:1;
 }
-.artist-section{
-    padding:16px 0;
-    border-top:1px dashed #d8d9c0;
-    font-size:13px;
-    line-height:1.9;
+.game-overlay h3{font-size:24px;margin:0 0 12px}
+.game-overlay p{font-size:14px;line-height:1.9;margin:0 0 20px}
+.game-footer{display:flex;gap:10px;margin-top:14px}
+.game-footer button{flex:1}
+.secondary{
+    border:1px solid #cbd4ba;border-radius:24px;
+    padding:12px;background:transparent;color:#657259;
 }
-.artist-section b{
-    display:block;
-    font-size:11px;
-    color:#8b9274;
-    margin-bottom:5px;
-}
-.artist-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:15px;
-}
-.artist-links a{
-    display:inline-block;
-    padding:10px 17px;
-    border-radius:22px;
-    text-decoration:none;
-    background:#e2e9d3;
-    color:#52684d;
-    font-size:12px;
-}
-.close-bottom{
-    width:100%;
-    margin-top:22px;
-    padding:13px;
-    border:0;
-    border-radius:22px;
-    background:#7e9e77;
-    color:white;
-    font-weight:bold;
-}
+@keyframes appear{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
 [hidden]{display:none!important}
-:focus-visible{
-    outline:3px solid #c28c56;
-    outline-offset:4px;
-}
+:focus-visible{outline:3px solid #c28c56;outline-offset:4px}
 @media(max-width:650px){
-    .title{
-        top:22px;
-        left:20px;
-    }
-    .title small{
-        font-size:11px;
-        letter-spacing:3px;
-    }
-    .title h1{
-        font-size:29px;
-        letter-spacing:-1px;
-    }
-    .weather{
-        top:120px;
-        right:15px;
-        width:175px;
-        padding:12px 14px;
-    }
+    .title{top:22px;left:20px}
+    .title h1{font-size:45px;letter-spacing:-2px}
+    .title p{font-size:18px;margin-top:8px;letter-spacing:1px}
+    .weather{top:135px;right:15px;width:175px;padding:12px 14px}
     .controls{bottom:20px}
-    .seasons button{
-        padding:11px 14px;
-        font-size:13px;
-    }
-    #auto{
-        padding:11px 10px;
-        font-size:11px;
-    }
-    .caption{
-        padding:10px 15px;
-        font-size:11px;
-    }
-    .artist-menu{
-        left:15px;
-        bottom:158px;
-        gap:5px;
-    }
-    .artist-menu button{
-        padding:7px 10px;
-        font-size:10px;
-    }
-    .artist-menu small{
-        font-size:10px;
-        max-width:135px;
-        line-height:1.6;
-    }
-    .artist-cover{height:160px}
-    .artist-body{padding:22px}
+    .seasons button{padding:11px 14px;font-size:13px}
+    #auto{padding:11px 10px;font-size:11px}
+    .caption{padding:10px 15px;font-size:11px}
+    .side-menu{left:15px;bottom:158px}
+    .side-menu button{font-size:11px;padding:8px 11px}
+    .side-menu small{font-size:10px;max-width:125px;line-height:1.6}
+    .dialog-body{padding:22px}
+    .cover{height:155px}
+    .game-header{padding:24px 20px 16px}
+    .game-header h2{font-size:23px}
+    .game-content{padding:14px}
+    #game-field{height:270px;padding:10px;gap:5px}
+    .note{width:42px;height:42px;font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
 }
 </style>
 </head>
 
 <body>
-<canvas
-    id="world"
-    aria-label="날씨와 계절이 바뀌는 숲. 아티스트 정보는 출연진 버튼으로도 열 수 있습니다."
-></canvas>
+<canvas id="world" aria-label="계절의 숲. 출연진 소개와 게임은 왼쪽 버튼으로도 열 수 있습니다."></canvas>
 
 <header class="title">
-    <small>지구방송6</small>
-    <h1>다시 만난 계절</h1>
+    <h1>지구방송6</h1>
+    <p>다시 만난 계절</p>
 </header>
 
-<aside class="weather" aria-label="현재 지역 날씨">
+<aside class="weather" aria-label="지역 날씨">
     <div class="weather-top">
-        <select id="city" aria-label="날씨 지역">
+        <select id="city" aria-label="날씨 지역 선택">
             <option value="seoul">서울</option>
             <option value="anseong">안성 · 동아방송예술대</option>
             <option value="incheon">인천</option>
@@ -354,19 +208,18 @@ dialog::backdrop{
         </select>
         <span id="time"></span>
     </div>
-
     <div id="weather-text" role="status">날씨 불러오는 중…</div>
     <div id="weather-status"></div>
 </aside>
 
-<nav class="artist-menu" id="artist-menu" aria-label="아티스트 소개">
-    <small>캐릭터를 누르면 아티스트 소개가 열려요</small>
+<nav class="side-menu" id="artist-menu" aria-label="소개와 게임">
+    <small>캐릭터를 눌러 이야기를 만나보세요</small>
+    <button id="open-game">기타 강아지 · 게임하기</button>
 </nav>
 
 <div class="controls">
     <div class="caption" id="caption" aria-live="polite"></div>
-
-    <div class="seasons" aria-label="풍경의 계절 선택">
+    <div class="seasons" aria-label="계절 선택">
         <button data-season="0" aria-pressed="false">봄</button>
         <button data-season="1" aria-pressed="false">여름</button>
         <button data-season="2" aria-pressed="false">가을</button>
@@ -376,208 +229,189 @@ dialog::backdrop{
 </div>
 
 <div class="asset-error" id="asset-error" role="status" hidden>
-    캐릭터 이미지를 불러오지 못했어요.<br>
-    index.html과 같은 위치에 characters.png가 있는지 확인해 주세요.
+    사람 캐릭터 이미지를 불러오지 못했어요.<br>
+    index.html과 같은 위치에 characters.png를 올려주세요.
 </div>
 
 <dialog id="artist-dialog" aria-labelledby="artist-name">
-    <div class="artist-cover">
-        <div class="artist-monogram" id="artist-monogram"></div>
+    <div class="cover">
+        <div class="monogram" id="artist-monogram"></div>
         <img id="artist-photo" alt="" hidden>
-
-        <button
-            class="close"
-            id="close-top"
-            aria-label="소개 닫기"
-        >×</button>
+        <button class="close" id="artist-close" aria-label="소개 닫기">×</button>
     </div>
-
-    <div class="artist-body">
-        <div class="artist-label">EARTH BROADCASTING 6 · ARTIST</div>
+    <div class="dialog-body">
+        <div class="eyebrow">EARTH BROADCASTING 6 · ARTIST</div>
         <h2 id="artist-name"></h2>
-        <div class="artist-subtitle" id="artist-subtitle"></div>
-        <p class="artist-description" id="artist-description"></p>
-
-        <div class="artist-section">
+        <div class="subtitle" id="artist-subtitle"></div>
+        <p class="description" id="artist-description"></p>
+        <div class="section">
             <b>ARTIST PROFILE</b>
             <div id="artist-profile"></div>
         </div>
-
-        <div class="artist-section">
+        <div class="section">
             <b>SET LIST</b>
             <div id="artist-songs"></div>
         </div>
+        <div class="links" id="artist-links"></div>
+        <button class="primary wide" id="artist-back">숲으로 돌아가기</button>
+    </div>
+</dialog>
 
-        <div class="artist-links" id="artist-links"></div>
+<dialog id="game-dialog" aria-labelledby="game-title">
+    <div class="game-header">
+        <div class="eyebrow">EARTH BROADCASTING 6 · MINI GAME</div>
+        <h2 id="game-title">잃어버린 계절의 멜로디</h2>
+        <p>기타 강아지가 연주할 음표를 함께 모아주세요.</p>
+        <button class="close" id="game-close" aria-label="게임 닫기">×</button>
+    </div>
+    <div class="game-content">
+        <div class="game-stats">
+            <div class="stat">남은 시간<strong id="game-time">30초</strong></div>
+            <div class="stat">모은 음표<strong id="game-score">0 / 15</strong></div>
+        </div>
 
-        <button class="close-bottom" id="close-bottom">
-            숲으로 돌아가기
-        </button>
+        <div id="game-field" aria-label="음표를 클릭하는 게임">
+            <div class="game-overlay" id="game-overlay">
+                <h3 id="game-result-title">계절의 멜로디를 찾아요</h3>
+                <p id="game-result-text">
+                    30초 동안 나타나는 음표를 눌러<br>15개를 모으면 성공이에요.
+                </p>
+                <button class="primary" id="game-start">게임 시작</button>
+            </div>
+        </div>
+
+        <div class="game-footer">
+            <button class="secondary" id="game-retry">처음부터</button>
+            <button class="secondary" id="game-back">숲으로 돌아가기</button>
+        </div>
+        <div id="game-announcement" role="status" class="subtitle" style="margin-top:12px">
+            음표는 클릭하거나 키보드로 선택한 뒤 Enter를 눌러 모을 수 있어요.
+        </div>
     </div>
 </dialog>
 
 <script>
-/* ======================================================
-   아티스트 정보 수정 영역
+/* ==================================================
+   아티스트 정보: 실제 정보로 수정하세요.
+   photo 예시: "images/artist1.jpg"
+   songs 예시: ["곡 제목 1", "곡 제목 2"]
+   sprite: 0 청록 원피스 / 1 크림 셔츠 / 2 초록 카디건
+================================================== */
 
-   photo: "images/artist1.jpg"
-   songs: ["곡 제목 1", "곡 제목 2"]
-
-   sprite:
-   0 = 청록색 원피스
-   1 = 크림색 셔츠
-   2 = 초록색 카디건
-
-   실제 이름과 소개가 정해지면 아래 내용을 변경하세요.
-====================================================== */
-
-const ARTISTS = [
+const ARTISTS=[
     {
-        name: "아티스트 1",
-        subtitle: "한 줄 소개를 입력해 주세요.",
-        description: "첫 번째 아티스트의 소개글을 입력해 주세요.",
-        profile: "프로필 준비 중",
-        songs: [],
-        photo: "",
-        instagram: "",
-        youtube: "",
-        sprite: 0
+        name:"아티스트 1",
+        subtitle:"한 줄 소개를 입력해 주세요.",
+        description:"첫 번째 아티스트의 소개글을 입력해 주세요.",
+        profile:"프로필 준비 중",songs:[],photo:"",
+        instagram:"",youtube:"",sprite:0
     },
     {
-        name: "아티스트 2",
-        subtitle: "한 줄 소개를 입력해 주세요.",
-        description: "두 번째 아티스트의 소개글을 입력해 주세요.",
-        profile: "프로필 준비 중",
-        songs: [],
-        photo: "",
-        instagram: "",
-        youtube: "",
-        sprite: 1
+        name:"아티스트 2",
+        subtitle:"한 줄 소개를 입력해 주세요.",
+        description:"두 번째 아티스트의 소개글을 입력해 주세요.",
+        profile:"프로필 준비 중",songs:[],photo:"",
+        instagram:"",youtube:"",sprite:1
     },
     {
-        name: "아티스트 3",
-        subtitle: "한 줄 소개를 입력해 주세요.",
-        description: "세 번째 아티스트의 소개글을 입력해 주세요.",
-        profile: "프로필 준비 중",
-        songs: [],
-        photo: "",
-        instagram: "",
-        youtube: "",
-        sprite: 2
+        name:"아티스트 3",
+        subtitle:"한 줄 소개를 입력해 주세요.",
+        description:"세 번째 아티스트의 소개글을 입력해 주세요.",
+        profile:"프로필 준비 중",songs:[],photo:"",
+        instagram:"",youtube:"",sprite:2
     }
 ];
 
-/* index.html과 같은 위치에 올린 이미지 */
-const CHARACTER_IMAGE = "./characters.png";
+const CHARACTER_IMAGE="./characters.png";
+const canvas=document.getElementById("world");
+const ctx=canvas.getContext("2d");
+const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const canvas = document.getElementById("world");
-const ctx = canvas.getContext("2d");
-const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let W,H,DPR,season=0,manualSeason=false;
+let night=false,weatherKind="clear",weatherReady=false;
+let weatherState="loading",cloudCover=0;
+let tick=0,previousTime=0,hits=[];
+let requestId=0,activeController;
 
-let W, H, DPR;
-let season = 0;
-let manualSeason = false;
-let night = false;
-let weatherKind = "clear";
-let weatherReady = false;
-let weatherState = "loading";
-let cloudCover = 0;
-let tick = 0;
-let previousTime = 0;
-let residentHits = [];
-let requestId = 0;
-let activeController;
+const characterSheet=new Image();
+let charactersReady=false;
+characterSheet.onload=()=>{
+    charactersReady=true;
+    document.getElementById("asset-error").hidden=true;
+};
+characterSheet.onerror=()=>{
+    charactersReady=false;
+    document.getElementById("asset-error").hidden=false;
+};
+characterSheet.src=CHARACTER_IMAGE;
 
-const characterSheet = new Image();
-let charactersReady = false;
-
-characterSheet.onload = () => {
-    charactersReady = true;
-    document.getElementById("asset-error").hidden = true;
+const CITIES={
+    seoul:[37.5665,126.978],anseong:[37.058,127.445],
+    incheon:[37.4563,126.7052],daejeon:[36.3504,127.3845],
+    gwangju:[35.1595,126.8526],daegu:[35.8714,128.6014],
+    busan:[35.1796,129.0756],gangneung:[37.7519,128.8761],
+    jeju:[33.4996,126.5312]
 };
 
-characterSheet.onerror = () => {
-    charactersReady = false;
-    document.getElementById("asset-error").hidden = false;
-};
-
-characterSheet.src = CHARACTER_IMAGE;
-
-const CITIES = {
-    seoul: [37.5665, 126.978],
-    anseong: [37.058, 127.445],
-    incheon: [37.4563, 126.7052],
-    daejeon: [36.3504, 127.3845],
-    gwangju: [35.1595, 126.8526],
-    daegu: [35.8714, 128.6014],
-    busan: [35.1796, 129.0756],
-    gangneung: [37.7519, 128.8761],
-    jeju: [33.4996, 126.5312]
-};
-
-const THEMES = [
+const THEMES=[
     {
-        sky: ["#93c9e8", "#e4f0df"],
-        ground: "#91c169",
-        grass: ["#77ac55", "#b7d680", "#98c46c"],
-        leaves: ["#f5c1d1", "#ffdfe5", "#eba6be", "#ffece8"],
-        pine: ["#568b70", "#39775e", "#73a086"]
+        sky:["#93c9e8","#e4f0df"],ground:"#91c169",
+        grass:["#77ac55","#b7d680","#98c46c"],
+        leaves:["#f5c1d1","#ffdfe5","#eba6be","#ffece8"],
+        pine:["#568b70","#39775e","#73a086"]
     },
     {
-        sky: ["#75b9e9", "#d5eeeb"],
-        ground: "#75b24f",
-        grass: ["#5b9e43", "#9ac765", "#82b94f"],
-        leaves: ["#5a9e54", "#85bd69", "#43854a", "#a0ce7d"],
-        pine: ["#3e805e", "#2e6b51", "#60966d"]
+        sky:["#75b9e9","#d5eeeb"],ground:"#75b24f",
+        grass:["#5b9e43","#9ac765","#82b94f"],
+        leaves:["#5a9e54","#85bd69","#43854a","#a0ce7d"],
+        pine:["#3e805e","#2e6b51","#60966d"]
     },
     {
-        sky: ["#b4ccdc", "#f5dfb6"],
-        ground: "#c9ac65",
-        grass: ["#b99b50", "#e3c985", "#c9a957"],
-        leaves: ["#d27a43", "#eaa553", "#b95f3e", "#edbd69"],
-        pine: ["#73814f", "#596b45", "#939b61"]
+        sky:["#b4ccdc","#f5dfb6"],ground:"#c9ac65",
+        grass:["#b99b50","#e3c985","#c9a957"],
+        leaves:["#d27a43","#eaa553","#b95f3e","#edbd69"],
+        pine:["#73814f","#596b45","#939b61"]
     },
     {
-        sky: ["#a4bed2", "#e7edf0"],
-        ground: "#e5eef0",
-        grass: ["#d0dfe5", "#f9fcfc", "#dce7eb"],
-        leaves: ["#e8f1f3", "#ffffff", "#d0e2e9", "#f7fafb"],
-        pine: ["#668e87", "#4c736e", "#8ca9a1"]
+        sky:["#a4bed2","#e7edf0"],ground:"#e5eef0",
+        grass:["#d0dfe5","#f9fcfc","#dce7eb"],
+        leaves:["#e8f1f3","#ffffff","#d0e2e9","#f7fafb"],
+        pine:["#668e87","#4c736e","#8ca9a1"]
     }
 ];
 
-const MESSAGES = {
-    clear: [
+const MESSAGES={
+    clear:[
         "오늘은 맑은 날이에요. 따뜻한 봄볕을 함께 느껴봐요.",
         "오늘은 맑은 날이에요. 초록 잎 사이로 햇살이 반짝여요.",
         "오늘은 맑은 날이에요. 가을 햇살 아래 천천히 걸어봐요.",
         "오늘은 맑은 날이에요. 겨울 하늘이 투명하게 빛나요."
     ],
-    cloudy: [
+    cloudy:[
         "오늘은 구름 많은 날이에요. 봄 하늘에 구름이 쉬어가요.",
         "오늘은 구름 많은 날이에요. 초록 숲에 그늘이 드리워요.",
         "오늘은 구름 많은 날이에요. 가을 숲이 차분해졌어요.",
         "오늘은 구름 많은 날이에요. 겨울 하늘이 포근해 보여요."
     ],
-    rain: [
+    rain:[
         "오늘은 비 오는 날이에요. 봄꽃이 촉촉해지고 있어요.",
         "오늘은 비 오는 날이에요. 초록 잎에 빗방울이 맺혀요.",
         "오늘은 비 오는 날이에요. 낙엽 위로 빗소리가 들려요.",
         "오늘은 비 오는 날이에요. 따뜻하게 입고 산책해요."
     ],
-    snow: [
+    snow:[
         "오늘은 눈 오는 날이에요. 봄 풍경 위로 눈이 내려요.",
         "오늘은 눈 오는 날이에요. 여름 풍경 위로 눈이 내려요.",
         "오늘은 눈 오는 날이에요. 가을빛 위로 눈이 내려요.",
         "오늘은 눈 오는 날이에요. 숲이 하얗게 물들고 있어요."
     ],
-    fog: [
+    fog:[
         "오늘은 안개 낀 날이에요. 봄 숲이 몽글몽글해요.",
         "오늘은 안개 낀 날이에요. 초록 숲이 신비로워요.",
         "오늘은 안개 낀 날이에요. 가을빛이 은은하게 번져요.",
         "오늘은 안개 낀 날이에요. 겨울 숲이 고요해졌어요."
     ],
-    storm: [
+    storm:[
         "오늘은 천둥과 비 소식이 있어요. 봄 산책은 잠시 쉬어가요.",
         "오늘은 천둥과 비 소식이 있어요. 여름 산책은 잠시 쉬어가요.",
         "오늘은 천둥과 비 소식이 있어요. 가을 산책은 잠시 쉬어가요.",
@@ -585,1314 +419,669 @@ const MESSAGES = {
     ]
 };
 
-/* ======================================================
-   계절마다 캐릭터 한 명 랜덤 배정
-   한 번 배정되면 새로고침 전까지 유지됩니다.
-   캐릭터가 3명이므로 네 계절 중 한 번은 재등장합니다.
-====================================================== */
-
-function shuffleCharacters() {
-    const order = ARTISTS.map((_, index) => index);
-
-    for (let i = order.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [order[i], order[j]] = [order[j], order[i]];
+/* 계절별 아티스트 한 명 배정 */
+function shuffled(){
+    const a=ARTISTS.map((_,i)=>i);
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
     }
-
-    return order;
+    return a;
 }
-
-const SEASON_CHARACTERS = [];
-
-while (SEASON_CHARACTERS.length < 4 && ARTISTS.length) {
-    const order = shuffleCharacters();
-
-    if (
-        order.length > 1 &&
-        order[0] === SEASON_CHARACTERS[SEASON_CHARACTERS.length - 1]
-    ) {
-        [order[0], order[1]] = [order[1], order[0]];
+const SEASON_CHARACTERS=[];
+while(SEASON_CHARACTERS.length<4&&ARTISTS.length){
+    const a=shuffled();
+    if(a.length>1&&a[0]===SEASON_CHARACTERS[SEASON_CHARACTERS.length-1]){
+        [a[0],a[1]]=[a[1],a[0]];
     }
-
-    SEASON_CHARACTERS.push(...order);
+    SEASON_CHARACTERS.push(...a);
 }
+SEASON_CHARACTERS.length=Math.min(SEASON_CHARACTERS.length,4);
 
-SEASON_CHARACTERS.length = Math.min(SEASON_CHARACTERS.length, 4);
-
-/* ======================================================
-   기본 그리기
-====================================================== */
-
-function rnd(n) {
-    const value = Math.sin(n * 127.1 + 311.7) * 43758.5453;
-    return value - Math.floor(value);
+/* 그리기 도구 */
+function rnd(n){
+    const v=Math.sin(n*127.1+311.7)*43758.5453;
+    return v-Math.floor(v);
 }
-
-function resize() {
-    W = innerWidth;
-    H = innerHeight;
-    DPR = Math.min(devicePixelRatio || 1, 2);
-
-    canvas.width = W * DPR;
-    canvas.height = H * DPR;
-
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
+function resize(){
+    W=innerWidth;H=innerHeight;DPR=Math.min(devicePixelRatio||1,2);
+    canvas.width=W*DPR;canvas.height=H*DPR;
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality="high";
 }
-
-addEventListener("resize", resize);
+addEventListener("resize",resize);
 resize();
 
-function oval(x, y, rx, ry, color) {
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
-    ctx.fill();
+function oval(x,y,rx,ry,color){
+    ctx.fillStyle=color;ctx.beginPath();
+    ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);ctx.fill();
 }
-
-function box(x, y, w, h, radius, color) {
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, radius);
-    ctx.fill();
+function box(x,y,w,h,r,color){
+    ctx.fillStyle=color;ctx.beginPath();
+    ctx.roundRect(x,y,w,h,r);ctx.fill();
 }
-
-function line(x1, y1, x2, y2, color, width) {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = width;
-    ctx.lineCap = "round";
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
+function line(x1,y1,x2,y2,color,width){
+    ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap="round";
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
 }
-
-function point(x, z) {
-    return {
-        x: W / 2 + (x - 0.5) * W * (0.7 + z * 0.55),
-        y: H * 0.32 + z * H * 0.59,
-        s: Math.min(W / 1000, H / 740) * (0.48 + z * 0.9)
+function point(x,z){
+    return{
+        x:W/2+(x-.5)*W*(.7+z*.55),
+        y:H*.32+z*H*.59,
+        s:Math.min(W/1000,H/740)*(.48+z*.9)
     };
 }
-
-/* ======================================================
-   한국 날짜와 계절
-====================================================== */
-
-function koreanParts() {
-    const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: "Asia/Seoul",
-        month: "numeric",
-        hour: "numeric",
-        hourCycle: "h23"
-    }).formatToParts(new Date());
-
-    return Object.fromEntries(parts.map(part => [part.type, part.value]));
+function label(text,x,y){
+    ctx.save();ctx.font="bold 11px sans-serif";ctx.textAlign="center";
+    const width=Math.max(72,ctx.measureText(text).width+24);
+    box(x-width/2,y,width,25,13,"#fffbeded");
+    ctx.fillStyle="#667155";ctx.fillText(text,x,y+17);
+    ctx.restore();
+    return width;
 }
 
-function actualSeason() {
-    const month = Number(koreanParts().month);
-
-    if (month >= 3 && month <= 5) return 0;
-    if (month >= 6 && month <= 8) return 1;
-    if (month >= 9 && month <= 11) return 2;
-
-    return 3;
+/* 한국 시각과 날씨 */
+function koreanParts(){
+    return Object.fromEntries(
+        new Intl.DateTimeFormat("en-US",{
+            timeZone:"Asia/Seoul",month:"numeric",hour:"numeric",hourCycle:"h23"
+        }).formatToParts(new Date()).map(p=>[p.type,p.value])
+    );
 }
-
-function updateCaption() {
-    const caption = document.getElementById("caption");
-    const names = ["봄", "여름", "가을", "겨울"];
-
-    if (!weatherReady) {
-        caption.textContent = weatherState === "error"
-            ? `${names[season]} 풍경을 산책해요. 현재 날씨 연결을 기다리고 있어요.`
-            : `${names[season]} 풍경을 산책해요. 현재 날씨를 확인하고 있어요.`;
+function actualSeason(){
+    const m=Number(koreanParts().month);
+    return m>=3&&m<=5?0:m>=6&&m<=8?1:m>=9&&m<=11?2:3;
+}
+function updateCaption(){
+    const c=document.getElementById("caption");
+    if(!weatherReady){
+        c.textContent=["봄","여름","가을","겨울"][season]+
+            (weatherState==="error"
+                ?" 풍경을 산책해요. 현재 날씨 연결을 기다리고 있어요."
+                :" 풍경을 산책해요. 현재 날씨를 확인하고 있어요.");
         return;
     }
-
-    const city = document.getElementById("city");
-    let message = (MESSAGES[weatherKind] || MESSAGES.clear)[season];
-
-    if (night && ["clear", "cloudy"].includes(weatherKind)) {
-        const nightMessages = [
+    let text=(MESSAGES[weatherKind]||MESSAGES.clear)[season];
+    if(night&&["clear","cloudy"].includes(weatherKind)){
+        text=(weatherKind==="cloudy"?"오늘은 구름 많은 밤이에요. ":"오늘은 맑은 밤이에요. ")+[
             "봄밤의 숲에서 잠시 쉬어갈까요?",
             "초록이 잠든 여름밤을 함께 걸어요.",
             "가을밤의 고요함을 함께 느껴봐요.",
             "겨울밤의 숲에서 따뜻한 이야기를 나눠요."
-        ];
-
-        message =
-            (weatherKind === "cloudy"
-                ? "오늘은 구름 많은 밤이에요. "
-                : "오늘은 맑은 밤이에요. ") +
-            nightMessages[season];
+        ][season];
     }
-
-    caption.textContent =
-        `${city.selectedOptions[0].textContent} · ${message}`;
+    c.textContent=document.getElementById("city").selectedOptions[0].textContent+" · "+text;
 }
-
-function updateSeasonUI() {
-    document.querySelectorAll("[data-season]").forEach(button => {
-        const selected = Number(button.dataset.season) === season;
-
-        button.classList.toggle("active", selected);
-        button.setAttribute("aria-pressed", String(selected));
+function updateSeasonUI(){
+    document.querySelectorAll("[data-season]").forEach(b=>{
+        const active=Number(b.dataset.season)===season;
+        b.classList.toggle("active",active);
+        b.setAttribute("aria-pressed",String(active));
     });
-
-    document.getElementById("auto").textContent =
-        manualSeason ? "오늘" : "오늘 기준";
-
+    document.getElementById("auto").textContent=manualSeason?"오늘":"오늘 기준";
     updateCaption();
 }
-
-/* ======================================================
-   실제 날씨
-====================================================== */
-
-function kindFromCode(code) {
-    if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
-    if ([95, 96, 99].includes(code)) return "storm";
-
-    if (
-        [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82]
-        .includes(code)
-    ) {
-        return "rain";
-    }
-
-    if ([45, 48].includes(code)) return "fog";
-    if ([2, 3].includes(code)) return "cloudy";
-
-    return "clear";
+function kindFromCode(code){
+    if([71,73,75,77,85,86].includes(code))return"snow";
+    if([95,96,99].includes(code))return"storm";
+    if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code))return"rain";
+    if([45,48].includes(code))return"fog";
+    if([2,3].includes(code))return"cloudy";
+    return"clear";
 }
-
-function weatherDescription(code) {
-    if (code === 0) return "맑음";
-    if (code <= 2) return "구름 조금";
-    if (code === 3) return "흐림";
-
-    return {
-        snow: "눈",
-        storm: "뇌우",
-        rain: "비",
-        fog: "안개",
-        cloudy: "구름 많음",
-        clear: "맑음"
-    }[kindFromCode(code)];
+function weatherDescription(code){
+    if(code===0)return"맑음";
+    if(code<=2)return"구름 조금";
+    if(code===3)return"흐림";
+    return{snow:"눈",storm:"뇌우",rain:"비",fog:"안개",cloudy:"구름 많음",clear:"맑음"}[kindFromCode(code)];
 }
-
-async function loadWeather() {
-    const id = ++requestId;
-
-    if (activeController) {
-        activeController.abort();
-    }
-
-    const controller = new AbortController();
-    activeController = controller;
-
-    weatherReady = false;
-    weatherState = "loading";
-    weatherKind = "clear";
-    cloudCover = 0;
-
-    const hour = Number(koreanParts().hour);
-    night = hour < 6 || hour >= 18;
-
+async function loadWeather(){
+    const id=++requestId;
+    if(activeController)activeController.abort();
+    const controller=new AbortController();
+    activeController=controller;
+    weatherReady=false;weatherState="loading";weatherKind="clear";cloudCover=0;
+    const h=Number(koreanParts().hour);
+    night=h<6||h>=18;
     updateCaption();
-
-    document.getElementById("weather-text").textContent =
-        "날씨 불러오는 중…";
-
-    document.getElementById("weather-status").textContent =
-        "선택한 지역의 날씨를 확인해요.";
-
-    const cityKey = document.getElementById("city").value;
-    const [latitude, longitude] = CITIES[cityKey];
-
-    const params = new URLSearchParams({
-        latitude,
-        longitude,
-        current: "temperature_2m,weather_code,is_day,cloud_cover",
-        timezone: "Asia/Seoul"
+    document.getElementById("weather-text").textContent="날씨 불러오는 중…";
+    document.getElementById("weather-status").textContent="선택한 지역의 날씨를 확인해요.";
+    const [latitude,longitude]=CITIES[document.getElementById("city").value];
+    const params=new URLSearchParams({
+        latitude,longitude,current:"temperature_2m,weather_code,is_day,cloud_cover",
+        timezone:"Asia/Seoul"
     });
-
-    const timeout = setTimeout(() => controller.abort(), 12000);
-
-    try {
-        const response = await fetch(
-            "https://api.open-meteo.com/v1/forecast?" + params,
-            { signal: controller.signal }
-        );
-
-        if (!response.ok) {
-            throw new Error("weather");
-        }
-
-        const data = await response.json();
-
-        if (id !== requestId) return;
-
-        const current = data.current;
-
-        if (
-            !current ||
-            !Number.isFinite(current.temperature_2m) ||
-            !Number.isFinite(current.weather_code) ||
-            ![0, 1].includes(current.is_day) ||
-            typeof current.time !== "string"
-        ) {
-            throw new Error("invalid weather");
-        }
-
-        weatherReady = true;
-        weatherState = "ready";
-        night = current.is_day === 0;
-        cloudCover = Number(current.cloud_cover) || 0;
-        weatherKind = kindFromCode(current.weather_code);
-
-        document.getElementById("weather-text").textContent =
-            `${Math.round(current.temperature_2m)}°C · ` +
-            `${weatherDescription(current.weather_code)} · ` +
-            `${night ? "밤" : "낮"}`;
-
-        const status = document.getElementById("weather-status");
+    const timeout=setTimeout(()=>controller.abort(),12000);
+    try{
+        const response=await fetch("https://api.open-meteo.com/v1/forecast?"+params,{
+            signal:controller.signal
+        });
+        if(!response.ok)throw new Error("weather");
+        const data=await response.json();
+        if(id!==requestId)return;
+        const c=data.current;
+        if(!c||!Number.isFinite(c.temperature_2m)||!Number.isFinite(c.weather_code)||
+           ![0,1].includes(c.is_day)||typeof c.time!=="string")throw new Error("invalid");
+        weatherReady=true;weatherState="ready";night=c.is_day===0;
+        cloudCover=Number(c.cloud_cover)||0;weatherKind=kindFromCode(c.weather_code);
+        document.getElementById("weather-text").textContent=
+            `${Math.round(c.temperature_2m)}°C · ${weatherDescription(c.weather_code)} · ${night?"밤":"낮"}`;
+        const status=document.getElementById("weather-status");
         status.replaceChildren();
-
-        status.append(document.createTextNode(
-            `자료 시각 ${current.time.slice(11, 16)} · 한국시간`
-        ));
-
+        status.append(document.createTextNode(`자료 시각 ${c.time.slice(11,16)} · 한국시간`));
         status.append(document.createElement("br"));
-
-        const source = document.createElement("a");
-        source.href = "https://open-meteo.com/";
-        source.target = "_blank";
-        source.rel = "noopener noreferrer";
-        source.textContent = "Weather data by Open-Meteo";
-
-        status.append(source);
-        status.append(document.createTextNode(" · 모델 기반"));
-
+        const link=document.createElement("a");
+        link.href="https://open-meteo.com/";link.target="_blank";
+        link.rel="noopener noreferrer";link.textContent="Weather data by Open-Meteo";
+        status.append(link,document.createTextNode(" · 모델 기반"));
         updateCaption();
-    } catch (error) {
-        if (id !== requestId) return;
-
-        weatherState = "error";
-
-        document.getElementById("weather-text").textContent =
-            "날씨 연결을 확인해 주세요";
-
-        document.getElementById("weather-status").textContent =
-            "기본 풍경 표시 중 · 지역을 다시 선택하면 재시도해요.";
-
+    }catch(error){
+        if(id!==requestId)return;
+        weatherState="error";
+        document.getElementById("weather-text").textContent="날씨 연결을 확인해 주세요";
+        document.getElementById("weather-status").textContent="기본 풍경 표시 중 · 지역을 다시 선택하면 재시도해요.";
         updateCaption();
-    } finally {
-        clearTimeout(timeout);
-    }
+    }finally{clearTimeout(timeout)}
 }
-
-document.getElementById("city").addEventListener("change", loadWeather);
-setInterval(loadWeather, 15 * 60 * 1000);
-
-document.querySelectorAll("[data-season]").forEach(button => {
-    button.addEventListener("click", () => {
-        manualSeason = true;
-        season = Number(button.dataset.season);
-        updateSeasonUI();
+document.getElementById("city").addEventListener("change",loadWeather);
+document.querySelectorAll("[data-season]").forEach(b=>b.addEventListener("click",()=>{
+    manualSeason=true;season=Number(b.dataset.season);updateSeasonUI();
+}));
+document.getElementById("auto").addEventListener("click",()=>{
+    manualSeason=false;season=actualSeason();updateSeasonUI();
+});
+function updateClock(){
+    document.getElementById("time").textContent=new Date().toLocaleTimeString("ko-KR",{
+        timeZone:"Asia/Seoul",hour:"2-digit",minute:"2-digit",hour12:false
     });
-});
-
-document.getElementById("auto").addEventListener("click", () => {
-    manualSeason = false;
-    season = actualSeason();
-    updateSeasonUI();
-});
-
-function updateClock() {
-    document.getElementById("time").textContent =
-        new Date().toLocaleTimeString("ko-KR", {
-            timeZone: "Asia/Seoul",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
-        });
-
-    if (!manualSeason && season !== actualSeason()) {
-        season = actualSeason();
-        updateSeasonUI();
+    if(!manualSeason&&season!==actualSeason()){
+        season=actualSeason();updateSeasonUI();
     }
-
-    if (!weatherReady) {
-        const hour = Number(koreanParts().hour);
-        night = hour < 6 || hour >= 18;
+    if(!weatherReady){
+        const h=Number(koreanParts().hour);night=h<6||h>=18;
     }
 }
 
-/* ======================================================
-   아티스트 소개창
-====================================================== */
-
-const artistDialog = document.getElementById("artist-dialog");
-const artistPhoto = document.getElementById("artist-photo");
-
-let photoRequestId = 0;
-
-function safeURL(value) {
-    if (!value) return "";
-
-    try {
-        const url = new URL(value, location.href);
-
-        return ["https:", "http:"].includes(url.protocol)
-            ? url.href
-            : "";
-    } catch {
-        return "";
-    }
+/* 아티스트 소개 */
+const artistDialog=document.getElementById("artist-dialog");
+let photoRequestId=0;
+function safeURL(value){
+    if(!value)return"";
+    try{
+        const u=new URL(value,location.href);
+        return["https:","http:"].includes(u.protocol)?u.href:"";
+    }catch{return""}
 }
-
-function openArtist(index) {
-    const artist = ARTISTS[index];
-
-    if (!artist) return;
-
-    const photoId = ++photoRequestId;
-
-    document.getElementById("artist-name").textContent = artist.name;
-    document.getElementById("artist-subtitle").textContent = artist.subtitle;
-    document.getElementById("artist-description").textContent = artist.description;
-
-    document.getElementById("artist-profile").textContent =
-        artist.profile || "프로필 준비 중";
-
-    const monogram = document.getElementById("artist-monogram");
-    monogram.textContent = artist.name.slice(0, 2);
-    monogram.hidden = false;
-
-    artistPhoto.hidden = true;
-    artistPhoto.removeAttribute("src");
-
-    const photoURL = safeURL(artist.photo);
-
-    if (photoURL) {
-        const preload = new Image();
-
-        preload.onload = () => {
-            if (photoId !== photoRequestId) return;
-
-            artistPhoto.src = photoURL;
-            artistPhoto.alt = `${artist.name} 사진`;
-            artistPhoto.hidden = false;
-            monogram.hidden = true;
+function openArtist(index){
+    const a=ARTISTS[index];if(!a)return;
+    const photoId=++photoRequestId;
+    document.getElementById("artist-name").textContent=a.name;
+    document.getElementById("artist-subtitle").textContent=a.subtitle;
+    document.getElementById("artist-description").textContent=a.description;
+    document.getElementById("artist-profile").textContent=a.profile||"프로필 준비 중";
+    const mono=document.getElementById("artist-monogram");
+    const img=document.getElementById("artist-photo");
+    mono.textContent=a.name.slice(0,2);mono.hidden=false;
+    img.hidden=true;img.removeAttribute("src");
+    const url=safeURL(a.photo);
+    if(url){
+        const preload=new Image();
+        preload.onload=()=>{
+            if(photoId!==photoRequestId)return;
+            img.src=url;img.alt=a.name+" 사진";img.hidden=false;mono.hidden=true;
         };
-
-        preload.onerror = () => {
-            if (photoId !== photoRequestId) return;
-
-            artistPhoto.hidden = true;
-            monogram.hidden = false;
-        };
-
-        preload.src = photoURL;
+        preload.src=url;
     }
-
-    const songs = document.getElementById("artist-songs");
+    const songs=document.getElementById("artist-songs");
     songs.replaceChildren();
-
-    if (Array.isArray(artist.songs) && artist.songs.length) {
-        artist.songs.forEach((song, i) => {
-            const row = document.createElement("div");
-
-            row.textContent =
-                `${String(i + 1).padStart(2, "0")}  ${song}`;
-
-            songs.append(row);
+    if(Array.isArray(a.songs)&&a.songs.length){
+        a.songs.forEach((s,i)=>{
+            const row=document.createElement("div");
+            row.textContent=String(i+1).padStart(2,"0")+"  "+s;songs.append(row);
         });
-    } else {
-        songs.textContent = "공연곡 준비 중";
-    }
-
-    const links = document.getElementById("artist-links");
-    links.replaceChildren();
-
-    [
-        ["Instagram", artist.instagram],
-        ["YouTube", artist.youtube]
-    ].forEach(([label, value]) => {
-        const href = safeURL(value);
-
-        if (!href) return;
-
-        const link = document.createElement("a");
-        link.href = href;
-        link.textContent = label;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-
-        links.append(link);
+    }else songs.textContent="공연곡 준비 중";
+    const links=document.getElementById("artist-links");links.replaceChildren();
+    [["Instagram",a.instagram],["YouTube",a.youtube]].forEach(([name,value])=>{
+        const href=safeURL(value);if(!href)return;
+        const link=document.createElement("a");link.href=href;link.textContent=name;
+        link.target="_blank";link.rel="noopener noreferrer";links.append(link);
     });
-
-    if (!artistDialog.open) {
-        artistDialog.showModal();
-    }
+    if(!artistDialog.open)artistDialog.showModal();
 }
-
-ARTISTS.forEach((artist, index) => {
-    const button = document.createElement("button");
-    button.textContent = artist.name;
-
-    button.addEventListener("click", () => {
-        openArtist(index);
-    });
-
-    document.getElementById("artist-menu").append(button);
+ARTISTS.forEach((a,i)=>{
+    const b=document.createElement("button");b.textContent=a.name;
+    b.addEventListener("click",()=>openArtist(i));
+    document.getElementById("artist-menu").append(b);
 });
+document.getElementById("artist-close").onclick=()=>artistDialog.close();
+document.getElementById("artist-back").onclick=()=>artistDialog.close();
 
-document.getElementById("close-top").addEventListener(
-    "click",
-    () => artistDialog.close()
-);
-
-document.getElementById("close-bottom").addEventListener(
-    "click",
-    () => artistDialog.close()
-);
-
-/* ======================================================
-   숲 구성
-====================================================== */
-
-const TREES = [];
-
-for (let row = 0; row < 4; row++) {
-    for (let col = 0; col < 9; col++) {
-        const x =
-            (col + 0.25 + rnd(row * 20 + col) * 0.45) / 9;
-
-        const z =
-            0.12 + row * 0.215 + rnd(row * 15 + col + 88) * 0.07;
-
-        const center = 0.52 + Math.sin(z * 5) * 0.08;
-
-        if (Math.abs(x - center) < 0.145) continue;
-        if (z > 0.65 && x > 0.2 && x < 0.8) continue;
-
-        TREES.push({
-            x,
-            z,
-            seed: row * 83 + col * 17,
-            pine: col % 4 === 0
-        });
-    }
+/* 숲 */
+const TREES=[];
+for(let row=0;row<4;row++)for(let col=0;col<9;col++){
+    const x=(col+.25+rnd(row*20+col)*.45)/9;
+    const z=.12+row*.215+rnd(row*15+col+88)*.07;
+    if(Math.abs(x-(.52+Math.sin(z*5)*.08))<.145)continue;
+    if(z>.60&&x>.2&&x<.85)continue;
+    TREES.push({x,z,seed:row*83+col*17,pine:col%4===0});
 }
-
-const GRASS = Array.from({ length: 1100 }, (_, i) => ({
-    x: rnd(i * 3 + 1),
-    z: rnd(i * 3 + 2),
-    color: i % 3
+const GRASS=Array.from({length:1000},(_,i)=>({
+    x:rnd(i*3+1),z:rnd(i*3+2),color:i%3
+}));
+const FLOWERS=Array.from({length:100},(_,i)=>({
+    x:rnd(i+800),z:.14+rnd(i+1000)*.8,id:i
+})).filter(f=>Math.abs(f.x-(.52+Math.sin(f.z*5)*.08))>.1);
+const PARTICLES=Array.from({length:120},(_,i)=>({
+    x:rnd(i+100),y:rnd(i+300),size:2+rnd(i+500)*4,
+    speed:.0004+rnd(i+700)*.0008,phase:rnd(i+900)*6.28
 }));
 
-const FLOWERS = Array.from({ length: 100 }, (_, i) => ({
-    x: rnd(i + 800),
-    z: 0.14 + rnd(i + 1000) * 0.8,
-    id: i
-})).filter(flower => {
-    const center =
-        0.52 + Math.sin(flower.z * 5) * 0.08;
-
-    return Math.abs(flower.x - center) > 0.1;
-});
-
-const PARTICLES = Array.from({ length: 120 }, (_, i) => ({
-    x: rnd(i + 100),
-    y: rnd(i + 300),
-    size: 2 + rnd(i + 500) * 4,
-    speed: 0.0004 + rnd(i + 700) * 0.0008,
-    phase: rnd(i + 900) * 6.28
-}));
-
-function drawTree(tree) {
-    const p = point(tree.x, tree.z);
-    const theme = THEMES[season];
-
-    oval(
-        p.x,
-        p.y + 2 * p.s,
-        47 * p.s,
-        12 * p.s,
-        "#294c3624"
-    );
-
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.scale(p.s, p.s);
-
-    ctx.fillStyle = "#a67f51";
+function drawTree(t){
+    const p=point(t.x,t.z),theme=THEMES[season];
+    oval(p.x,p.y+2*p.s,47*p.s,12*p.s,"#294c3624");
+    ctx.save();ctx.translate(p.x,p.y);ctx.scale(p.s,p.s);
+    ctx.fillStyle="#a67f51";ctx.beginPath();
+    ctx.moveTo(-12,-90);ctx.lineTo(12,-90);ctx.lineTo(15,-15);
+    ctx.lineTo(27,0);ctx.lineTo(10,-3);ctx.lineTo(3,3);
+    ctx.lineTo(-8,-3);ctx.lineTo(-25,0);ctx.lineTo(-12,-16);
+    ctx.closePath();ctx.fill();
+    line(-3,-76,-1,-14,"#c5a06b",7);
+    const sway=reduced?0:Math.sin(tick*.012+t.seed)*1.7;
+    if(t.pine){
+        for(let j=0;j<4;j++){
+            const y=-65-j*27,r=57-j*10;
+            ctx.fillStyle=theme.pine[j%3];ctx.beginPath();
+            ctx.moveTo(sway,y-62);ctx.quadraticCurveTo(r*.5,y-25,r,y);
+            ctx.quadraticCurveTo(0,y+18,-r,y);
+            ctx.quadraticCurveTo(-r*.5,y-25,sway,y-62);ctx.fill();
+            if(season===3||weatherKind==="snow"){
+                ctx.fillStyle=j%2?"#fcfefe":"#e6eff2";ctx.beginPath();
+                ctx.moveTo(sway,y-62);ctx.lineTo(r*.78,y-12);
+                ctx.quadraticCurveTo(0,y+3,-r*.78,y-12);ctx.closePath();ctx.fill();
+            }
+        }
+    }else{
+        oval(sway,-116,63,56,theme.leaves[2]);
+        for(let j=0;j<65;j++){
+            const a=rnd(t.seed+j*3)*Math.PI*2,r=Math.sqrt(rnd(t.seed+j*5+9));
+            const size=10+rnd(t.seed+j+2)*8;
+            oval(Math.cos(a)*57*r+sway,-121+Math.sin(a)*49*r,size,size*.85,theme.leaves[j%4]);
+        }
+        if(weatherKind==="snow"&&season!==3)oval(0,-160,40,13,"#eef7f9");
+        if(season===1)[[-30,-118],[29,-132],[7,-88]].forEach(([x,y])=>{
+            line(x,y,x+2,y-13,"#6c5d35",3);oval(x,y,10,11,"#d94f3b");
+            oval(x-3,y-4,3,4,"#ff9c72");oval(x+6,y-10,6,3,"#427c42");
+        });
+    }
+    ctx.restore();
+}
+function drawRiver(){
+    const l=[],r=[];
+    for(let i=0;i<=60;i++){
+        const z=i/60,c=.52+Math.sin(z*5)*.08;
+        l.push(point(c-.065,z));r.push(point(c+.065,z));
+    }
     ctx.beginPath();
-    ctx.moveTo(-12, -90);
-    ctx.lineTo(12, -90);
-    ctx.lineTo(15, -15);
-    ctx.lineTo(27, 0);
-    ctx.lineTo(10, -3);
-    ctx.lineTo(3, 3);
-    ctx.lineTo(-8, -3);
-    ctx.lineTo(-25, 0);
-    ctx.lineTo(-12, -16);
-    ctx.closePath();
-    ctx.fill();
-
-    line(-3, -76, -1, -14, "#c5a06b", 7);
-    line(9, -52, 10, -25, "#88683f70", 3);
-
-    const sway = reduced
-        ? 0
-        : Math.sin(tick * 0.012 + tree.seed) * 1.7;
-
-    if (tree.pine) {
-        for (let j = 0; j < 4; j++) {
-            const y = -65 - j * 27;
-            const r = 57 - j * 10;
-
-            ctx.fillStyle = theme.pine[j % 3];
-            ctx.beginPath();
-            ctx.moveTo(sway, y - 62);
-            ctx.quadraticCurveTo(r * 0.5, y - 25, r, y);
-            ctx.quadraticCurveTo(0, y + 18, -r, y);
-            ctx.quadraticCurveTo(-r * 0.5, y - 25, sway, y - 62);
-            ctx.fill();
-
-            if (season === 3 || weatherKind === "snow") {
-                ctx.fillStyle = j % 2 ? "#fcfefe" : "#e6eff2";
-
-                ctx.beginPath();
-                ctx.moveTo(sway, y - 62);
-                ctx.lineTo(r * 0.78, y - 12);
-                ctx.quadraticCurveTo(0, y + 3, -r * 0.78, y - 12);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-    } else {
-        oval(sway, -116, 63, 56, theme.leaves[2]);
-
-        for (let j = 0; j < 65; j++) {
-            const angle =
-                rnd(tree.seed + j * 3) * Math.PI * 2;
-
-            const radius =
-                Math.sqrt(rnd(tree.seed + j * 5 + 9));
-
-            const size =
-                10 + rnd(tree.seed + j + 2) * 8;
-
-            oval(
-                Math.cos(angle) * 57 * radius + sway,
-                -121 + Math.sin(angle) * 49 * radius,
-                size,
-                size * 0.85,
-                theme.leaves[j % 4]
-            );
-        }
-
-        if (weatherKind === "snow" && season !== 3) {
-            oval(0, -160, 40, 13, "#eef7f9");
-        }
-
-        if (season === 1) {
-            [
-                [-30, -118],
-                [29, -132],
-                [7, -88]
-            ].forEach(([x, y]) => {
-                line(x, y, x + 2, y - 13, "#6c5d35", 3);
-                oval(x, y, 10, 11, "#d94f3b");
-                oval(x - 3, y - 4, 3, 4, "#ff9c72");
-                oval(x + 6, y - 10, 6, 3, "#427c42");
-            });
-        }
+    l.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+    r.reverse().forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath();
+    ctx.strokeStyle=season===3?"#bfd7df":"#d7bd7c";
+    ctx.lineWidth=16;ctx.lineJoin="round";ctx.stroke();
+    const g=ctx.createLinearGradient(0,H*.3,0,H);
+    g.addColorStop(0,season===3?"#b5dbe4":"#81d0d8");
+    g.addColorStop(1,season===3?"#83b7cd":"#4aafc5");
+    ctx.fillStyle=g;ctx.fill();
+    for(let i=0;i<35;i++){
+        const z=rnd(i+100),c=.52+Math.sin(z*5)*.08;
+        const p=point(c+(rnd(i+34)-.5)*.09,z);
+        box(p.x+Math.sin(tick*.015+i)*5,p.y,12+p.s*15,2,1,"#ffffff65");
     }
-
+}
+function drawBridge(){
+    const z=.54,p=point(.52+Math.sin(z*5)*.08,z);
+    ctx.save();ctx.translate(p.x,p.y);ctx.scale(p.s,p.s);
+    oval(0,18,105,20,"#27483925");box(-103,-10,206,39,6,"#92734e");
+    for(let i=0;i<12;i++)box(-100+i*17,-12,15,36,2,i%2?"#c8a777":"#b99969");
+    for(const y of[-25,20]){
+        for(const x of[-102,-51,0,51,102]){
+            box(x-4,y-33,8,40,3,"#96724a");oval(x,y-33,6,4,"#d7b98a");
+        }
+        ctx.strokeStyle="#c9ab7e";ctx.lineWidth=7;ctx.beginPath();
+        ctx.moveTo(-102,y-21);ctx.quadraticCurveTo(0,y-44,102,y-21);ctx.stroke();
+    }
     ctx.restore();
 }
-
-function drawRiver() {
-    const left = [];
-    const right = [];
-
-    for (let i = 0; i <= 60; i++) {
-        const z = i / 60;
-        const center = 0.52 + Math.sin(z * 5) * 0.08;
-
-        left.push(point(center - 0.065, z));
-        right.push(point(center + 0.065, z));
+function drawFlower(f){
+    const p=point(f.x,f.z),s=p.s;
+    if(season===3||weatherKind==="snow"){
+        oval(p.x,p.y,6*s,2*s,"#ffffffa0");return;
     }
-
-    ctx.beginPath();
-
-    left.forEach((p, i) => {
-        if (i) ctx.lineTo(p.x, p.y);
-        else ctx.moveTo(p.x, p.y);
-    });
-
-    right.reverse().forEach(p => {
-        ctx.lineTo(p.x, p.y);
-    });
-
-    ctx.closePath();
-
-    ctx.strokeStyle =
-        season === 3 ? "#bfd7df" : "#d7bd7c";
-
-    ctx.lineWidth = 16;
-    ctx.lineJoin = "round";
-    ctx.stroke();
-
-    const gradient = ctx.createLinearGradient(
-        0,
-        H * 0.3,
-        0,
-        H
-    );
-
-    gradient.addColorStop(
-        0,
-        season === 3 ? "#b5dbe4" : "#81d0d8"
-    );
-
-    gradient.addColorStop(
-        1,
-        season === 3 ? "#83b7cd" : "#4aafc5"
-    );
-
-    ctx.fillStyle = gradient;
-    ctx.fill();
-
-    for (let i = 0; i < 35; i++) {
-        const z = rnd(i + 100);
-        const center = 0.52 + Math.sin(z * 5) * 0.08;
-
-        const p = point(
-            center + (rnd(i + 34) - 0.5) * 0.09,
-            z
-        );
-
-        box(
-            p.x + Math.sin(tick * 0.015 + i) * 5,
-            p.y,
-            12 + p.s * 15,
-            2,
-            1,
-            "#ffffff65"
-        );
+    if(season===2){
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(f.id);
+        oval(0,0,6*s,3*s,f.id%2?"#b67a3e":"#e8c978");ctx.restore();return;
     }
+    line(p.x,p.y,p.x,p.y-13*s,"#568746",2*s);
+    const color=["#fff4dc","#f2a8bc","#efda73","#ec8966"][f.id%4];
+    for(let j=0;j<5;j++){
+        const a=j*Math.PI*2/5;
+        oval(p.x+Math.cos(a)*4*s,p.y-15*s+Math.sin(a)*4*s,4*s,4*s,color);
+    }
+    oval(p.x,p.y-15*s,2.5*s,2.5*s,"#c9a34d");
 }
 
-function drawBridge() {
-    const z = 0.54;
-    const p = point(
-        0.52 + Math.sin(z * 5) * 0.08,
-        z
+/* 계절별 한 명의 아티스트 */
+function drawSeasonCharacter(){
+    const index=SEASON_CHARACTERS[season];
+    if(index===undefined)return;
+    const a=ARTISTS[index],p=point(.30,.75);
+    const size=Math.max(W<600?.78:.95,p.s);
+    const h=190*size;
+    const cell=charactersReady?characterSheet.naturalWidth/3:1;
+    const w=charactersReady?h*cell/characterSheet.naturalHeight:h*.5;
+    const bounce=reduced?0:Math.sin(tick*.025+index*2)*2;
+    const x=p.x-w/2,y=p.y-h+13*size+bounce;
+    oval(p.x,p.y+1,27*size,7*size,"#314c392b");
+    if(charactersReady)ctx.drawImage(
+        characterSheet,a.sprite*cell,0,cell,characterSheet.naturalHeight,
+        x,y,w,h
     );
-
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.scale(p.s, p.s);
-
-    oval(0, 18, 105, 20, "#27483925");
-    box(-103, -10, 206, 39, 6, "#92734e");
-
-    for (let i = 0; i < 12; i++) {
-        box(
-            -100 + i * 17,
-            -12,
-            15,
-            36,
-            2,
-            i % 2 ? "#c8a777" : "#b99969"
-        );
-    }
-
-    for (const y of [-25, 20]) {
-        for (const x of [-102, -51, 0, 51, 102]) {
-            box(x - 4, y - 33, 8, 40, 3, "#96724a");
-            oval(x, y - 33, 6, 4, "#d7b98a");
-        }
-
-        ctx.strokeStyle = "#c9ab7e";
-        ctx.lineWidth = 7;
-        ctx.beginPath();
-        ctx.moveTo(-102, y - 21);
-        ctx.quadraticCurveTo(0, y - 44, 102, y - 21);
-        ctx.stroke();
-    }
-
-    ctx.restore();
+    const lw=label(a.name,p.x,p.y+12);
+    if(charactersReady)hits.push({x,y,w,h,type:"artist",index});
+    hits.push({x:p.x-lw/2,y:p.y+12,w:lw,h:25,type:"artist",index});
 }
 
-function drawFlower(flower) {
-    const p = point(flower.x, flower.z);
-    const s = p.s;
-    const id = flower.id;
+/* 모든 계절에 등장하는 기타 강아지 */
+function drawGameDog(){
+    const p=point(.75,.79);
+    const s=Math.max(W<600?.72:.9,p.s);
+    const bob=reduced?0:Math.sin(tick*.025)*1.4;
+    oval(p.x,p.y+4*s,39*s,10*s,"#314c392b");
+    ctx.save();ctx.translate(p.x,p.y+bob);ctx.scale(s,s);
 
-    if (season === 3 || weatherKind === "snow") {
-        oval(p.x, p.y, 6 * s, 2 * s, "#ffffffa0");
-        return;
+    /* 나무 그루터기 */
+    oval(0,-2,37,14,"#956c3f");
+    box(-31,-17,62,18,5,"#ac8149");
+    oval(0,-18,34,13,"#d6b878");
+    ctx.strokeStyle="#b18b54";ctx.lineWidth=2;
+    ctx.beginPath();ctx.ellipse(0,-18,22,8,0,0,Math.PI*2);ctx.stroke();
+
+    /* 몸과 발 */
+    oval(0,-48,22,34,"#e4e9e7");
+    line(-11,-29,-12,-5,"#edf2ef",12);
+    line(12,-29,13,-5,"#f9fbf7",12);
+    oval(-13,-5,10,6,"#f9fbf7");oval(14,-5,10,6,"#edf2ef");
+
+    /* 귀와 머리 */
+    oval(-29,-112,11,24,"#dde5e3");
+    oval(29,-112,11,24,"#e4eae7");
+    const face=ctx.createRadialGradient(-14,-126,3,0,-105,48);
+    face.addColorStop(0,"#ffffff");face.addColorStop(1,"#dfe7e4");
+    oval(0,-111,35,36,face);
+    oval(0,-87,26,21,"#f7faf5");
+
+    /* 굵은 눈썹 */
+    ctx.fillStyle="#292c2b";
+    ctx.beginPath();ctx.moveTo(-25,-118);
+    ctx.quadraticCurveTo(-14,-137,-3,-117);
+    ctx.quadraticCurveTo(-15,-122,-25,-118);ctx.fill();
+    ctx.beginPath();ctx.moveTo(6,-119);
+    ctx.quadraticCurveTo(18,-139,27,-116);
+    ctx.quadraticCurveTo(17,-123,6,-119);ctx.fill();
+
+    oval(-14,-109,6,8,"#202625");
+    oval(17,-109,6,8,"#202625");
+    line(-22,-113,-6,-113,"#292c2b",3);
+    line(10,-113,25,-113,"#292c2b",3);
+
+    oval(1,-89,10,7,"#202625");
+    oval(-2,-92,4,2,"#54605a");
+    line(1,-83,1,-76,"#738078",2);
+    ctx.strokeStyle="#738078";ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(-9,-76);
+    ctx.quadraticCurveTo(1,-68,11,-76);ctx.stroke();
+
+    /* 기타 */
+    ctx.save();ctx.translate(-1,-48);ctx.rotate(-.22);
+    oval(-9,4,23,27,"#ad6934");
+    oval(0,-16,19,21,"#b7783d");
+    oval(-9,2,20,24,"#e3b859");
+    oval(0,-16,16,18,"#ebc76a");
+    box(2,-22,61,9,2,"#875b37");
+    box(58,-25,18,15,3,"#97623b");
+    oval(-1,-7,9,10,"#4b3428");
+    oval(-2,-7,6,7,"#241e1a");
+    box(-19,8,18,4,1,"#805031");
+    for(let i=0;i<4;i++)line(-17,9+i*.8,71,-21+i*1.4,"#f6e6b5",.7);
+    for(let i=0;i<3;i++){
+        oval(61+i*5,-27,2,3,"#dce3da");
+        oval(61+i*5,-9,2,3,"#dce3da");
     }
-
-    if (season === 2) {
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(id);
-
-        oval(
-            0,
-            0,
-            6 * s,
-            3 * s,
-            id % 2 ? "#b67a3e" : "#e8c978"
-        );
-
-        ctx.restore();
-        return;
-    }
-
-    line(p.x, p.y, p.x, p.y - 13 * s, "#568746", 2 * s);
-    oval(p.x - 3 * s, p.y - 5 * s, 5 * s, 2 * s, "#568746");
-
-    const color = [
-        "#fff4dc",
-        "#f2a8bc",
-        "#efda73",
-        "#ec8966"
-    ][id % 4];
-
-    for (let j = 0; j < 5; j++) {
-        const angle = j * Math.PI * 2 / 5;
-
-        oval(
-            p.x + Math.cos(angle) * 4 * s,
-            p.y - 15 * s + Math.sin(angle) * 4 * s,
-            4 * s,
-            4 * s,
-            color
-        );
-    }
-
-    oval(p.x, p.y - 15 * s, 2.5 * s, 2.5 * s, "#c9a34d");
-}
-
-/* ======================================================
-   업로드한 이미지에서 캐릭터 한 명 그리기
-====================================================== */
-
-function drawResident(artist, index) {
-    const p = point(0.31, 0.78);
-
-    const size = Math.max(
-        W < 600 ? 0.78 : 0.95,
-        p.s
-    );
-
-    const bounce = reduced
-        ? 0
-        : Math.sin(tick * 0.025 + index * 2) * 2;
-
-    const drawHeight = 195 * size;
-
-    const cellWidth = charactersReady
-        ? characterSheet.naturalWidth / 3
-        : 1;
-
-    const aspect = charactersReady
-        ? cellWidth / characterSheet.naturalHeight
-        : 0.5;
-
-    const drawWidth = drawHeight * aspect;
-    const drawX = p.x - drawWidth / 2;
-
-    const drawY =
-        p.y - drawHeight + 13 * size + bounce;
-
-    oval(
-        p.x,
-        p.y + 1,
-        27 * size,
-        7 * size,
-        "#314c392b"
-    );
-
-    if (charactersReady) {
-        ctx.drawImage(
-            characterSheet,
-            artist.sprite * cellWidth,
-            0,
-            cellWidth,
-            characterSheet.naturalHeight,
-            drawX,
-            drawY,
-            drawWidth,
-            drawHeight
-        );
-    }
-
-    ctx.save();
-    ctx.font = "bold 11px sans-serif";
-    ctx.textAlign = "center";
-
-    const labelWidth = Math.max(
-        70,
-        ctx.measureText(artist.name).width + 24
-    );
-
-    box(
-        p.x - labelWidth / 2,
-        p.y + 12,
-        labelWidth,
-        25,
-        13,
-        "#fffbeded"
-    );
-
-    ctx.fillStyle = "#667155";
-    ctx.fillText(artist.name, p.x, p.y + 29);
     ctx.restore();
 
-    residentHits.push({
-        x: drawX,
-        y: drawY,
-        width: drawWidth,
-        height: drawHeight,
-        centerX: p.x,
-        labelY: p.y + 12,
-        labelWidth,
-        index
-    });
-}
-
-function drawSeasonCharacter() {
-    const index = SEASON_CHARACTERS[season];
-
-    if (index === undefined) return;
-
-    drawResident(ARTISTS[index], index);
-}
-
-function drawDecorations() {
-    const p = point(0.18, 0.91);
-    const s = p.s;
-
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.scale(s, s);
-    ctx.transform(1, 0.06, -0.3, 0.5, 0, 0);
-
-    box(-52, -30, 104, 70, 3, "#f2e4c9");
-
-    for (let x = 0; x < 6; x++) {
-        for (let y = 0; y < 4; y++) {
-            if ((x + y) % 2 === 0) {
-                ctx.fillStyle =
-                    season === 3 ? "#91afb6" : "#bb8374";
-
-                ctx.fillRect(
-                    -50 + x * 17,
-                    -28 + y * 17,
-                    17,
-                    17
-                );
-            }
-        }
-    }
-
+    /* 기타 위 손 */
+    oval(-24,-58,9,14,"#f9fbf7");
+    oval(37,-57,9,12,"#f9fbf7");
     ctx.restore();
 
-    oval(
-        p.x,
-        p.y - 7 * s,
-        18 * s,
-        7 * s,
-        "#9b7446"
-    );
-
-    box(
-        p.x - 18 * s,
-        p.y - 22 * s,
-        36 * s,
-        16 * s,
-        4 * s,
-        "#be955e"
-    );
-
-    for (let i = 0; i < 6; i++) {
-        const m = point(
-            0.07 + rnd(i + 400) * 0.17,
-            0.5 + rnd(i + 500) * 0.45
-        );
-
-        box(
-            m.x - 3 * m.s,
-            m.y - 14 * m.s,
-            6 * m.s,
-            15 * m.s,
-            2 * m.s,
-            "#efdfbf"
-        );
-
-        oval(
-            m.x,
-            m.y - 15 * m.s,
-            11 * m.s,
-            7 * m.s,
-            season === 2 ? "#bd6951" : "#b9966b"
-        );
-
-        oval(
-            m.x - 3 * m.s,
-            m.y - 17 * m.s,
-            2 * m.s,
-            2 * m.s,
-            "#fff0d2"
-        );
-    }
+    const lw=label("기타 강아지 · 게임",p.x,p.y+16);
+    hits.push({x:p.x-52*s,y:p.y-151*s,w:130*s,h:160*s,type:"game"});
+    hits.push({x:p.x-lw/2,y:p.y+16,w:lw,h:25,type:"game"});
 }
 
-/* ======================================================
-   하늘과 날씨 효과
-====================================================== */
-
-function drawSky() {
-    const cloudy =
-        ["rain", "storm"].includes(weatherKind) ||
-        cloudCover > 75;
-
-    const colors = night
-        ? ["#192e49", "#647c91"]
-        : cloudy
-        ? ["#8eabb9", "#d1dce0"]
-        : THEMES[season].sky;
-
-    const gradient = ctx.createLinearGradient(
-        0,
-        0,
-        0,
-        H * 0.55
-    );
-
-    gradient.addColorStop(0, colors[0]);
-    gradient.addColorStop(1, colors[1]);
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, W, H);
-
-    if (night && cloudCover < 65) {
-        for (let i = 0; i < 45; i++) {
-            const alpha =
-                0.4 + Math.sin(tick * 0.02 + i) * 0.15;
-
-            oval(
-                rnd(i + 9) * W,
-                rnd(i + 28) * H * 0.32,
-                1.2,
-                1.2,
-                `rgba(255,250,218,${alpha})`
-            );
-        }
+/* 하늘 */
+function drawSky(){
+    const cloudy=["rain","storm"].includes(weatherKind)||cloudCover>75;
+    const colors=night?["#192e49","#647c91"]:
+        cloudy?["#8eabb9","#d1dce0"]:THEMES[season].sky;
+    const g=ctx.createLinearGradient(0,0,0,H*.55);
+    g.addColorStop(0,colors[0]);g.addColorStop(1,colors[1]);
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    if(night&&cloudCover<65)for(let i=0;i<45;i++){
+        oval(rnd(i+9)*W,rnd(i+28)*H*.32,1.2,1.2,
+            `rgba(255,250,218,${.4+Math.sin(tick*.02+i)*.15})`);
     }
-
-    if (!cloudy) {
-        oval(
-            W * 0.7,
-            H * 0.13,
-            27,
-            27,
-            night ? "#fff4cc" : "#fff0b5"
-        );
-
-        if (night) {
-            oval(
-                W * 0.7 + 10,
-                H * 0.13 - 7,
-                25,
-                25,
-                colors[0]
-            );
-        }
+    if(!cloudy){
+        oval(W*.7,H*.13,27,27,night?"#fff4cc":"#fff0b5");
+        if(night)oval(W*.7+10,H*.13-7,25,25,colors[0]);
     }
-
-    for (let i = 0; i < 6; i++) {
-        const x =
-            W * (i * 0.21 - 0.04) +
-            Math.sin(tick * 0.001 + i) * 20;
-
-        const y =
-            H * (0.16 + (i % 3) * 0.045);
-
-        const color = night
-            ? "#9fb1c13b"
-            : cloudy
-            ? "#e3ebedb0"
-            : "#ffffffab";
-
-        oval(x, y, 55, 13, color);
-        oval(x - 16, y - 8, 26, 18, color);
-        oval(x + 19, y - 7, 24, 15, color);
+    for(let i=0;i<6;i++){
+        const x=W*(i*.21-.04)+Math.sin(tick*.001+i)*20;
+        const y=H*(.16+(i%3)*.045);
+        const c=night?"#9fb1c13b":cloudy?"#e3ebedb0":"#ffffffab";
+        oval(x,y,55,13,c);oval(x-16,y-8,26,18,c);oval(x+19,y-7,24,15,c);
     }
 }
-
-function drawAtmosphere(dt) {
-    const rain = ["rain", "storm"].includes(weatherKind);
-    const snow = weatherKind === "snow";
-
-    const count = rain
-        ? 110
-        : snow
-        ? 90
-        : season === 1
-        ? 18
-        : 45;
-
-    for (let i = 0; i < count; i++) {
-        const particle = PARTICLES[i];
-
-        if (!reduced) {
-            particle.y +=
-                particle.speed * dt * (rain ? 6 : 1);
-
-            if (particle.y > 1.05) {
-                particle.y = -0.05;
-            }
-        }
-
-        const x =
-            particle.x * W +
-            Math.sin(tick * 0.01 + particle.phase) *
-            (rain ? 4 : 25);
-
-        const y = particle.y * H;
-
-        if (rain) {
-            line(
-                x,
-                y,
-                x - 4,
-                y + 13,
-                "#d8ecf077",
-                1
-            );
-        } else if (snow) {
-            oval(
-                x,
-                y,
-                particle.size * 0.65,
-                particle.size * 0.65,
-                "#ffffffd9"
-            );
-        } else if (season === 1) {
-            if (night) {
-                oval(x, y, 2, 2, "#f5ee9d9c");
-            }
-        } else {
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(tick * 0.009 + particle.phase);
-
-            oval(
-                0,
-                0,
-                particle.size,
-                particle.size * (season === 3 ? 1 : 0.45),
-                season === 0
-                    ? "#ffe4edcc"
-                    : season === 2
-                    ? "#d79756cc"
-                    : "#ffffff9c"
-            );
-
+function drawAtmosphere(dt){
+    const rain=["rain","storm"].includes(weatherKind),snow=weatherKind==="snow";
+    const count=rain?110:snow?90:season===1?18:45;
+    for(let i=0;i<count;i++){
+        const p=PARTICLES[i];
+        if(!reduced){p.y+=p.speed*dt*(rain?6:1);if(p.y>1.05)p.y=-.05}
+        const x=p.x*W+Math.sin(tick*.01+p.phase)*(rain?4:25),y=p.y*H;
+        if(rain)line(x,y,x-4,y+13,"#d8ecf077",1);
+        else if(snow)oval(x,y,p.size*.65,p.size*.65,"#ffffffd9");
+        else if(season===1){if(night)oval(x,y,2,2,"#f5ee9d9c")}
+        else{
+            ctx.save();ctx.translate(x,y);ctx.rotate(tick*.009+p.phase);
+            oval(0,0,p.size,p.size*(season===3?1:.45),
+                season===0?"#ffe4edcc":season===2?"#d79756cc":"#ffffff9c");
             ctx.restore();
         }
     }
-
-    if (weatherKind === "fog") {
-        ctx.fillStyle = "#e9eff166";
-        ctx.fillRect(0, H * 0.25, W, H * 0.75);
+    if(weatherKind==="fog"){
+        ctx.fillStyle="#e9eff166";ctx.fillRect(0,H*.25,W,H*.75);
     }
 }
 
-/* ======================================================
-   앞뒤 배치
-====================================================== */
+const OBJECTS=[
+    ...TREES.map(t=>({z:t.z,draw:()=>drawTree(t)})),
+    {z:.54,draw:drawBridge},
+    {z:.75,draw:drawSeasonCharacter},
+    {z:.79,draw:drawGameDog}
+].sort((a,b)=>a.z-b.z);
 
-const SCENE_OBJECTS = [
-    ...TREES.map(tree => ({
-        z: tree.z,
-        draw: () => drawTree(tree)
-    })),
-    {
-        z: 0.54,
-        draw: drawBridge
-    },
-    {
-        z: 0.78,
-        draw: drawSeasonCharacter
-    },
-    {
-        z: 0.89,
-        draw: drawDecorations
-    }
-].sort((a, b) => a.z - b.z);
-
-function render(time) {
-    const dt = Math.min(
-        (time - previousTime) / 16.67 || 1,
-        2
-    );
-
-    previousTime = time;
-
-    if (!reduced) {
-        tick += dt;
-    }
-
-    residentHits = [];
-
-    const theme = THEMES[season];
-
+function render(time){
+    const dt=Math.min((time-previousTime)/16.67||1,2);
+    previousTime=time;if(!reduced)tick+=dt;hits=[];
+    const theme=THEMES[season];
     drawSky();
-
-    ctx.fillStyle =
-        season === 3 ? "#c9dce0" : "#91b79a";
-
-    ctx.beginPath();
-    ctx.moveTo(0, H * 0.38);
-
-    ctx.bezierCurveTo(
-        W * 0.2,
-        H * 0.2,
-        W * 0.3,
-        H * 0.37,
-        W * 0.5,
-        H * 0.29
-    );
-
-    ctx.bezierCurveTo(
-        W * 0.7,
-        H * 0.19,
-        W * 0.85,
-        H * 0.32,
-        W,
-        H * 0.25
-    );
-
-    ctx.lineTo(W, H);
-    ctx.lineTo(0, H);
-    ctx.fill();
-
-    ctx.fillStyle = theme.ground;
-
-    ctx.beginPath();
-    ctx.moveTo(0, H * 0.39);
-    ctx.quadraticCurveTo(
-        W * 0.5,
-        H * 0.27,
-        W,
-        H * 0.38
-    );
-
-    ctx.lineTo(W, H);
-    ctx.lineTo(0, H);
-    ctx.fill();
-
-    GRASS.forEach(grass => {
-        const p = point(grass.x, grass.z);
-
-        ctx.fillStyle = theme.grass[grass.color];
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p.x - 2 * p.s, p.y - 4 * p.s);
-        ctx.lineTo(p.x + 4 * p.s, p.y - 2 * p.s);
-        ctx.closePath();
-        ctx.fill();
+    ctx.fillStyle=season===3?"#c9dce0":"#91b79a";ctx.beginPath();
+    ctx.moveTo(0,H*.38);
+    ctx.bezierCurveTo(W*.2,H*.2,W*.3,H*.37,W*.5,H*.29);
+    ctx.bezierCurveTo(W*.7,H*.19,W*.85,H*.32,W,H*.25);
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    ctx.fillStyle=theme.ground;ctx.beginPath();ctx.moveTo(0,H*.39);
+    ctx.quadraticCurveTo(W*.5,H*.27,W,H*.38);
+    ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    GRASS.forEach(g=>{
+        const p=point(g.x,g.z);ctx.fillStyle=theme.grass[g.color];
+        ctx.beginPath();ctx.moveTo(p.x,p.y);
+        ctx.lineTo(p.x-2*p.s,p.y-4*p.s);ctx.lineTo(p.x+4*p.s,p.y-2*p.s);
+        ctx.closePath();ctx.fill();
     });
-
-    drawRiver();
-    FLOWERS.forEach(drawFlower);
-
-    SCENE_OBJECTS.forEach(object => {
-        object.draw();
-    });
-
-    if (night) {
-        ctx.fillStyle = "#17355e55";
-        ctx.fillRect(0, H * 0.3, W, H * 0.7);
-    } else if (
-        ["rain", "storm"].includes(weatherKind)
-    ) {
-        ctx.fillStyle = "#415b711f";
-        ctx.fillRect(0, H * 0.3, W, H * 0.7);
+    drawRiver();FLOWERS.forEach(drawFlower);OBJECTS.forEach(o=>o.draw());
+    if(night){ctx.fillStyle="#17355e55";ctx.fillRect(0,H*.3,W,H*.7)}
+    else if(["rain","storm"].includes(weatherKind)){
+        ctx.fillStyle="#415b711f";ctx.fillRect(0,H*.3,W,H*.7);
     }
-
-    drawAtmosphere(dt);
-
-    requestAnimationFrame(render);
+    drawAtmosphere(dt);requestAnimationFrame(render);
 }
-
-/* ======================================================
-   캐릭터 및 이름표 클릭
-====================================================== */
-
-function hitResident(x, y) {
-    return [...residentHits].reverse().find(hit => {
-        const body =
-            charactersReady &&
-            x >= hit.x &&
-            x <= hit.x + hit.width &&
-            y >= hit.y &&
-            y <= hit.y + hit.height;
-
-        const label =
-            Math.abs(x - hit.centerX) <= hit.labelWidth / 2 &&
-            y >= hit.labelY &&
-            y <= hit.labelY + 25;
-
-        return body || label;
-    });
+function hitAt(x,y){
+    return[...hits].reverse().find(h=>x>=h.x&&x<=h.x+h.w&&y>=h.y&&y<=h.y+h.h);
 }
-
-canvas.addEventListener("pointerdown", event => {
-    const hit = hitResident(
-        event.clientX,
-        event.clientY
-    );
-
-    if (hit) {
-        openArtist(hit.index);
-    }
+canvas.addEventListener("pointerdown",e=>{
+    const h=hitAt(e.clientX,e.clientY);if(!h)return;
+    if(h.type==="game")openGame();else openArtist(h.index);
+});
+canvas.addEventListener("pointermove",e=>{
+    canvas.style.cursor=hitAt(e.clientX,e.clientY)?"pointer":"default";
 });
 
-canvas.addEventListener("pointermove", event => {
-    const hit = hitResident(
-        event.clientX,
-        event.clientY
-    );
+/* ==================================================
+   미니게임: 30초 동안 음표 15개
+================================================== */
 
-    canvas.style.cursor = hit ? "pointer" : "default";
-});
+const gameDialog=document.getElementById("game-dialog");
+const field=document.getElementById("game-field");
+const overlay=document.getElementById("game-overlay");
+const gameTitle=document.getElementById("game-result-title");
+const gameText=document.getElementById("game-result-text");
+const startButton=document.getElementById("game-start");
+const TARGET=15;
+const DURATION=30000;
+let playing=false,score=0,deadline=0,gameTimer=null,nextSpawn=0;
+let gameSeason=0;
+const slots=[];
+const notes=new Map();
+
+for(let i=0;i<20;i++){
+    const slot=document.createElement("div");
+    slot.className="game-slot";
+    field.insertBefore(slot,overlay);
+    slots.push(slot);
+}
+
+function updateGameStats(ms){
+    document.getElementById("game-time").textContent=Math.ceil(Math.max(0,ms)/1000)+"초";
+    document.getElementById("game-score").textContent=score+" / "+TARGET;
+}
+function clearNotes(){
+    notes.clear();slots.forEach(s=>s.replaceChildren());
+}
+function stopGame(){
+    playing=false;clearInterval(gameTimer);gameTimer=null;
+    clearNotes();
+}
+function prepareGame(){
+    stopGame();score=0;gameSeason=season;
+    updateGameStats(DURATION);
+    overlay.hidden=false;
+    gameTitle.textContent="계절의 멜로디를 찾아요";
+    gameText.textContent="30초 동안 나타나는 음표를 눌러 15개를 모으면 성공이에요.";
+    startButton.textContent="게임 시작";
+    field.style.background=[
+        "linear-gradient(#f4dfeb,#bed49e)",
+        "linear-gradient(#c5e9dc,#8fbd77)",
+        "linear-gradient(#f1dfbc,#caa369)",
+        "linear-gradient(#e4eff4,#b9d2da)"
+    ][gameSeason];
+}
+function openGame(){
+    prepareGame();
+    if(!gameDialog.open)gameDialog.showModal();
+}
+function finishGame(success){
+    stopGame();
+    overlay.hidden=false;
+    gameTitle.textContent=success?"계절의 멜로디 완성!":"조금만 더 모아볼까요?";
+    gameText.textContent=success
+        ?["봄","여름","가을","겨울"][gameSeason]+"의 음표를 모두 찾았어요. 기타 강아지가 고마워해요."
+        :`음표 ${score}개를 모았어요. 다시 도전해서 15개를 완성해 봐요.`;
+    startButton.textContent="다시 도전";
+    document.getElementById("game-announcement").textContent=
+        success?"성공! 음표 15개를 모았어요.":`게임 종료. 음표 ${score}개를 모았어요.`;
+    startButton.focus();
+}
+function spawnNote(now){
+    const empty=slots.map((_,i)=>i).filter(i=>!notes.has(i));
+    if(!empty.length)return;
+    const index=empty[Math.floor(Math.random()*empty.length)];
+    const button=document.createElement("button");
+    button.className="note";
+    button.textContent=Math.random()>.5?"♪":"♫";
+    button.setAttribute("aria-label","음표 모으기");
+    button.style.color=["#bb7596","#588b64","#b57d40","#648caa"][gameSeason];
+    notes.set(index,{button,expires:now+2600});
+    slots[index].append(button);
+    button.addEventListener("click",()=>{
+        if(!playing||notes.get(index)?.button!==button)return;
+        if(performance.now()>=deadline){finishGame(false);return}
+        notes.delete(index);button.remove();score++;
+        updateGameStats(deadline-performance.now());
+        if(score>=TARGET)finishGame(true);
+    });
+}
+function gameStep(){
+    if(!playing)return;
+    const now=performance.now(),remaining=deadline-now;
+    updateGameStats(remaining);
+    if(remaining<=0){finishGame(false);return}
+    for(const [index,note] of notes){
+        if(now>=note.expires){
+            note.button.remove();notes.delete(index);
+        }
+    }
+    if(now>=nextSpawn&&notes.size<5){
+        spawnNote(now);nextSpawn=now+520;
+    }
+}
+function startGame(){
+    stopGame();score=0;overlay.hidden=true;
+    deadline=performance.now()+DURATION;nextSpawn=0;playing=true;
+    document.getElementById("game-announcement").textContent="게임 시작! 나타나는 음표를 눌러주세요.";
+    updateGameStats(DURATION);
+    spawnNote(performance.now());
+    nextSpawn=performance.now()+520;
+    gameTimer=setInterval(gameStep,100);
+    const first=field.querySelector(".note");
+    if(first)first.focus();
+}
+document.getElementById("open-game").onclick=openGame;
+startButton.onclick=startGame;
+document.getElementById("game-retry").onclick=()=>{
+    prepareGame();startGame();
+};
+document.getElementById("game-close").onclick=()=>gameDialog.close();
+document.getElementById("game-back").onclick=()=>gameDialog.close();
+gameDialog.addEventListener("close",stopGame);
+gameDialog.addEventListener("cancel",stopGame);
 
 /* 시작 */
-
-season = actualSeason();
-
-updateSeasonUI();
-updateClock();
-
-setInterval(updateClock, 10000);
-
+season=actualSeason();
+updateSeasonUI();updateClock();
+setInterval(updateClock,10000);
 loadWeather();
-
+setInterval(loadWeather,15*60*1000);
 requestAnimationFrame(render);
 </script>
 </body>
